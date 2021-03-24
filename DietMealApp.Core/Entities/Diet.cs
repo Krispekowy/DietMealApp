@@ -10,6 +10,6 @@ namespace DietMealApp.Core.Entities
     {
         public string DietName { get; set; }
         public string Description { get; set; }
-        public IEnumerable<DietDay> Days { get; set; }
+        public List<DietDay> Days { get; set; }
     }
 }
