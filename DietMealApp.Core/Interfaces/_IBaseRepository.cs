@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.DataAccessLayer.Interfaces
 {
-    public interface IBaseRepository<TEntity> where TEntity : class
+    public interface _IBaseRepository<TEntity> where TEntity : class
     {
 		void Delete(TEntity entityToDelete);
 

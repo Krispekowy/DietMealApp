@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DietMealApp.Core.Interfaces
 {
-    public interface IDietRepository:IBaseRepository<Diet>
+    public interface IDietRepository:_IBaseRepository<Diet>
     {
     }
 }

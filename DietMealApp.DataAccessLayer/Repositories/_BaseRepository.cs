@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DietMealApp.DataAccessLayer.Repositories
 {
-    public sealed class BaseRepository : IDisposable
+    public sealed class _BaseRepository : IDisposable
     {
         public AppDbContext _AppDbContext { get; set; }
 

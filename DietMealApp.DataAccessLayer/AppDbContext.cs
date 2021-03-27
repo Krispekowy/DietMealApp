@@ -10,6 +10,13 @@ namespace DietMealApp.DataAccessLayer
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
+
+        public DbSet<Meal> Meals { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<MealProduct> MealProducts { get; set; }
+        public DbSet<DietDayMeals> DayDietMeals { get; set; }
+        public DbSet<DietDay> DietDays { get; set; }
+        public DbSet<Diet> Diets { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
