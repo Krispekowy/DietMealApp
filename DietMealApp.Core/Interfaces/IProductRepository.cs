@@ -8,5 +8,6 @@ namespace DietMealApp.Core.Interfaces
 {
     public interface IProductRepository : _IBaseRepository<Product>
     {
+        public IEnumerable<Product> SearchProduct(string searchTerm);
     }
 }

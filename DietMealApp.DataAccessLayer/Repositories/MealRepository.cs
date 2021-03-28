@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.DataAccessLayer.Repositories
 {
-    class DietDayRepository : IDietDayRepository
+    class MealRepository : IMealRepository
     {
-        private AppDbContext dbContext;
+        private readonly AppDbContext dbContext;
 
-        public DietDayRepository(AppDbContext dbContext)
+        public MealRepository(AppDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
-        public bool Any(Func<DietDay, bool> filterCondition)
+        public bool Any(Func<Meal, bool> filterCondition)
         {
-            return dbContext.DietDays.Any(filterCondition);
+            return dbContext.Meals.Any(filterCondition);
         }
 
         public void Commit()
@@ -32,7 +32,7 @@ namespace DietMealApp.DataAccessLayer.Repositories
             await dbContext.SaveChangesAsync();
         }
 
-        public void Delete(DietDay entityToDelete)
+        public void Delete(Meal entityToDelete)
         {
             entityToDelete.IsDeleted = true;
             entityToDelete.DeleteDate = DateTime.Now;
@@ -47,33 +47,32 @@ namespace DietMealApp.DataAccessLayer.Repositories
             Update(entityToDelete);
         }
 
-        public IQueryable<DietDay> Get()
+        public IQueryable<Meal> Get()
         {
-            return dbContext.DietDays.AsNoTracking().Where(a => !a.IsDeleted);
+            return dbContext.Meals.AsNoTracking().Where(a => !a.IsDeleted);
         }
 
-        public IQueryable<DietDay> Get(Func<DietDay, bool> filterCondition)
+        public IQueryable<Meal> Get(Func<Meal, bool> filterCondition)
         {
-            return dbContext.DietDays.AsNoTracking().Where(filterCondition).AsQueryable();
+            return dbContext.Meals.AsNoTracking().Where(filterCondition).AsQueryable();
         }
 
-        public async Task<DietDay> GetByID(Guid id)
+        public async Task<Meal> GetByID(Guid id)
         {
-            return await dbContext.DietDays
+            return await dbContext.Meals
                 .AsNoTracking()
-                .Where(a => a.Id == id)
-                .Include(a=>a.DayDietMeals)
-                .FirstOrDefaultAsync();
+                .Include(x => x.MealProducts)
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
-        public void Insert(DietDay entity)
+        public void Insert(Meal entity)
         {
             dbContext.Add(entity);
         }
 
-        public void Update(DietDay entityToUpdate)
+        public void Update(Meal entityToUpdate)
         {
-            dbContext.DietDays.Update(entityToUpdate);
+            dbContext.Update(entityToUpdate);
         }
     }
 }
