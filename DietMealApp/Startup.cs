@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,6 +12,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using DietMealApp.DataAccessLayer;
 
 namespace DietMealApp
 {
@@ -66,6 +66,10 @@ namespace DietMealApp
             //});
             services.AddAuthorization();
             services.AddMvc().AddDataAnnotationsLocalization().AddViewLocalization();
+            #endregion
+            #region DataAccessLayerConfig
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DietMealAppDB")));
             #endregion
             services.AddControllersWithViews();
         }

@@ -1,12 +1,11 @@
 ﻿using DietMealApp.Core.Entities;
-using DietMealApp.Service.DTOs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace DietMealApp.Service.DTOs
+namespace DietMealApp.Core.DTOs
 {
     public sealed class DietDayDTO : _BaseDTO
     {

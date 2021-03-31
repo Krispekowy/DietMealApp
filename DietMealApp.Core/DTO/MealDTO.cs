@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 
-namespace DietMealApp.Service.DTOs
+namespace DietMealApp.Core.DTOs
 {
     public sealed class MealDTO : _BaseDTO
     {

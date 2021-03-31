@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DietMealApp.Service.DTOs
+namespace DietMealApp.Core.DTOs
 {
-    public class ProductsToBuyDTO
+    public class ShoppingDayDTO
     {
-        public string Product { get; set; }
+        public int DayId { get; set; }
         public int Quantity { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DietMealApp.Service.DTOs
+namespace DietMealApp.Core.DTOs
 {
     public abstract class _BaseDTO
     {

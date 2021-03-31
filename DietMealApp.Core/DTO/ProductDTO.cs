@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace DietMealApp.Service.DTOs
+namespace DietMealApp.Core.DTOs
 {
     public sealed class ProductDTO : _BaseDTO
     {
