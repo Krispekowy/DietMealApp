@@ -1,4 +1,5 @@
-﻿using DietMealApp.Core.Entities;
+﻿using DietMealApp.Core.Abstract;
+using DietMealApp.Core.Entities;
 using DietMealApp.Core.Enums;
 using System;
 using System.Collections.Generic;

@@ -69,7 +69,12 @@ namespace DietMealApp
             #endregion
             #region DataAccessLayerConfig
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DietMealAppDB")));
+                options.UseSqlServer(Configuration
+                .GetConnectionString("DietMealAppDB")));
+
+            services.AddDbContext<AppUsersDbContext>(options =>
+                options.UseSqlServer(Configuration
+                .GetConnectionString("UsersDietMealDB")));
             #endregion
             services.AddControllersWithViews();
         }
