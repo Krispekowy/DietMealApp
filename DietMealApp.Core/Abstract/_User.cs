@@ -24,10 +24,10 @@ namespace DietMealApp.Core.Abstract
         public string LastName { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public virtual DateTime RegisterDate { get; set; }
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
 
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public virtual DateTime LastEditDate { get; set; }
+        public DateTime LastEditDate { get; set; } = DateTime.Now;
         public bool IsDeleted { get; set; }
 
     }

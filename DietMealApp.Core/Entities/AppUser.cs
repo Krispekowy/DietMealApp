@@ -27,11 +27,6 @@ namespace DietMealApp.Core.Entities
         }
 
         //Dostępy do etapów
-        public bool CompleatedOfferPreferencesForm { get; set; }
-        public bool UserHasLabel { get; set; }
-        public bool UserHasElectroniclySignedContract { get; set; }
-        public bool UserHasCompleatedContract { get; set; }
-        public bool IsConfirmedFromIntranet { get; set; }
         public string ImagePath { get; set; }
         public bool HasUserAdminRights { get; set; }
         public bool AllowEmailNotification { get; set; }
@@ -41,8 +36,5 @@ namespace DietMealApp.Core.Entities
         public bool AllowNewsletter { get; set; }
         public bool AcceptedRegulations { get; set; }
         public bool ReadInformationClause { get; set; }
-        public bool AlertSent { get; set; } = false;
-        public bool AllowSublabelsModule { get; set; } = false;
-        public bool RemovalAlertSent { get; set; } = false;
     }
 }

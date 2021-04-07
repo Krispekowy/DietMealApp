@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Core.Entities;
+using DietMealApp.Core.MappingEntity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,5 +17,12 @@ namespace DietMealApp.DataAccessLayer
             : base(options)
         {
         }
+        public DbSet<AppUser> AppUsers { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            new AppUsersMap(modelBuilder.Entity<AppUser>());
+        }
+        
     }
 }

@@ -4,14 +4,16 @@ using DietMealApp.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DietMealApp.DataAccessLayer.Migrations.AppUsersDb
 {
     [DbContext(typeof(AppUsersDbContext))]
-    partial class AppUsersDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210406193304_RemoveUserAllowedColumns")]
+    partial class RemoveUserAllowedColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,8 +70,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppUsersDb
 
                     b.Property<DateTime>("LastEditDate")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");

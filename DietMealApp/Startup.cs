@@ -13,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using DietMealApp.DataAccessLayer;
+using Microsoft.AspNetCore.Identity;
+using DietMealApp.Core.Entities;
 
 namespace DietMealApp
 {
@@ -76,6 +78,39 @@ namespace DietMealApp
                 options.UseSqlServer(Configuration
                 .GetConnectionString("UsersDietMealDB")));
             #endregion
+            #region Identity
+            services.AddIdentity<AppUser, IdentityRole<Guid>>(
+                options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = true;
+                    options.User.AllowedUserNameCharacters = "QqWwEeRrTtYyUuIiOoPpLlKkJjHhGgFfDdSsAaZzXxCcVvBbNnMm1234567890-._";
+                    options.User.RequireUniqueEmail = true;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequiredLength = 8;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(1);
+                    options.Lockout.MaxFailedAccessAttempts = 3;
+                })
+                .AddUserManager<UserManager<AppUser>>()
+                .AddSignInManager<SignInManager<AppUser>>()
+                .AddRoleManager<RoleManager<IdentityRole<Guid>>>()
+                .AddEntityFrameworkStores<AppUsersDbContext>()
+                .AddDefaultTokenProviders()
+                .AddDefaultUI();
+            #endregion
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
             services.AddControllersWithViews();
         }
 

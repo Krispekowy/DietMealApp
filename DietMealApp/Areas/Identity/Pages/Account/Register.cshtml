@@ -1,0 +1,70 @@
+﻿@page
+@model RegisterModel
+@using Microsoft.Extensions.Configuration
+@using DietMealApp.Core.Helpers
+@inject IConfiguration Configuration
+@{
+    ViewData["Title"] = "Rejestracja";
+}
+
+<form method="post" id="registerForm" enctype="multipart/form-data">
+    <h3>Rejestracja</h3>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="Input.FirstName">Imię</label>
+                <input class="form-control" asp-for="Input.FirstName" id="Input.FirstName" placeholder="Wprowadź imię" type="text" autocomplete="off" />
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Input.LastName">Nazwisko</label>
+                <input class="form-control" asp-for="Input.LastName" id="Input.LastName" placeholder="Wprowadź nazwisko" type="text" autocomplete="off" />
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Input.UserName">Nazwa</label>
+                <input class="form-control" asp-for="Input.UserName" id="Input.UserName" placeholder="Wprowadź nazwe użytkownika" type="text" autocomplete="off" />
+                <span asp-validation-for="Input.UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Input.Email">E-mail</label>
+                <input class="form-control" asp-for="Input.Email" id="Input.Email" placeholder="Wprowadź adres e-mail" type="text" autocomplete="off" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="Input.PhoneNumber">Nr tel.</label>
+                <input class="form-control" asp-for="Input.PhoneNumber" id="Input.PhoneNumber" placeholder="Wprowadź numer telefonu" type="text" autocomplete="off" />
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="Input.Password">Hasło</label>
+                <input class="form-control" asp-for="Input.Password" type="password" placeholder="Wprowadź hasło" id="Input.Password" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                <div class="validation-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="Input.ConfirmPassword">Potwierdź hasło</label>
+                <input class="form-control" asp-for="Input.ConfirmPassword" type="password" placeholder="Wprowadź hasło" id="Input.ConfirmPassword" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="captcha-wrapper">
+            @Html.GoogleReCaptcha(Configuration.GetValue<string>("GoogleReCaptcha:ClientKey"))
+        </div>
+        <span class="validation-message" asp-validation-for="@Model.GoogleReCaptchaResponse"></span>*@
+
+    <button type="submit" class="btn btn-primary">Dalej</button>
+    <div class="auth-links">
+        <a asp-page="./Login">Logowanie</a>
+        <a href="#" target="_blank">Regulamin konta użytkownika</a>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <partial name="_ValidationScriptsPartial" />
+}
