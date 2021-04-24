@@ -1,5 +1,7 @@
 ﻿using DietMealApp.Core.Abstract;
 using DietMealApp.Core.Entities;
+using Foolproof;
+using Microsoft.AspNetCore.Authentication;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,12 +32,23 @@ namespace DietMealApp.Core.DTO
             ReadInformationClause = user.ReadInformationClause;
         }
 
-        [Required]
         public string FirstName { get; set; }
-        [Required]
         public string LastName { get; set; }
         public string UserName { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name = "Hasło")]
+        public string Password { get; set; }
+        [Required]
+        [DataType(DataType.Password)]
+        [Display(Name ="Potwierdź hasło")]
+        [Compare("Password", ErrorMessage = "Hasła nie są takie same")]
+        public string ConfirmPassword { get; set; }
+        [Display(Name = "Zapamiętaj mnie")]
+        public bool RememberMe { get; set; }
         public string PhoneNumber { get; set; }
         public string ImagePath { get; set; }
         public bool HasUserAdminRights { get; set; }
@@ -45,5 +58,11 @@ namespace DietMealApp.Core.DTO
         public bool AllowNewsletter { get; set; }
         public bool AcceptedRegulations { get; set; }
         public bool ReadInformationClause { get; set; }
+
+        #region Pomocniczne właściwości
+        public List<AuthenticationScheme> ExternalLogins { get; set; }
+        public string ReturnUrl { get; set; }
+        #endregion
+
     }
 }

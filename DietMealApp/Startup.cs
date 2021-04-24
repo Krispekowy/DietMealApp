@@ -82,7 +82,8 @@ namespace DietMealApp
             services.AddIdentity<AppUser, IdentityRole<Guid>>(
                 options =>
                 {
-                    options.SignIn.RequireConfirmedAccount = true;
+                    options.SignIn.RequireConfirmedEmail = false;
+                    options.SignIn.RequireConfirmedAccount = false;
                     options.User.AllowedUserNameCharacters = "QqWwEeRrTtYyUuIiOoPpLlKkJjHhGgFfDdSsAaZzXxCcVvBbNnMm1234567890-._";
                     options.User.RequireUniqueEmail = true;
                     options.Password.RequireUppercase = true;

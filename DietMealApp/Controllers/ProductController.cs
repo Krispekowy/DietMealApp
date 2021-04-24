@@ -12,16 +12,19 @@ namespace DietMealApp.WebClient.Controllers
 {
     public class ProductController : _ParentController
     {
-        public ProductController(IConfiguration configuration, RestClient restClient) 
-            : base(configuration, restClient) { }
+        public ProductController(
+            IConfiguration configuration, 
+            RestClient restClient) 
+            : base(configuration, 
+                  restClient) { }
 
         public async Task<IActionResult> Index()
         {
             //await _RestClient.RequestAsync($"Products/GetAll", HttpMethod.Get, "", _SenderId);
-            if (!_RestClient.IsSuccessful || String.IsNullOrEmpty(_RestClient.ResponseMessage))
-            {
-                return StatusCode(500);
-            }
+            //if (!restClient.IsSuccessful || String.IsNullOrEmpty(restClient.ResponseMessage))
+            //{
+            //    return StatusCode(500);
+            //}
             //var products = JsonConvert.DeserializeObject
             return View();
         }

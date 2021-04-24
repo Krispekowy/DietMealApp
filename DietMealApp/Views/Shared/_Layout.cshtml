@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject SignInManager<AppUser> signInManager
+
+<!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="utf-8" lang="pl" />
@@ -21,7 +23,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">MealApp</a>
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">Home</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -36,12 +38,29 @@
                         </li>
                         <li class="nav-item">
                             <a class="dropdown-item" asp-controller="Diet" asp-action="Index">Pokaż diety</a>
-                        </li>>
+                        </li>
                     </ul>
-                </div>
-                <div class="nav-login-wrapper">
-                    <a href="/Identity/Account/Login">Zaloguj</a>
-                    <a href="/Identity/Account/Register">Zarejestruj</a>
+                    <ul class="navbar-nav ml-auto">
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <form method="post" href="/Identity/Account/Logout">
+                                    <button type="submit" class="nav-link btn btn-link py-0">
+                                        Wyloguj się @User.Identity.Name
+                                    </button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a asp-controller="Account" asp-action="Login" class="nav-link">Zaloguj</a>
+                            </li>
+                            <li class="nav-item">
+                                <a asp-controller="Account" asp-action="Register" class="nav-link">Zarejestruj</a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>
