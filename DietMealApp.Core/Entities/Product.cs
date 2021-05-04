@@ -1,4 +1,5 @@
-﻿using DietMealApp.Core.Entities;
+﻿using DietMealApp.Core.DTO;
+using DietMealApp.Core.Entities;
 using DietMealApp.Core.Enums;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,18 @@ namespace DietMealApp.Core.Entities
 {
     public class Product : _BaseEntity
     {
+        public static Product GetProductFromDTO(ProductDTO dto)
+        {
+            return new Product()
+            {
+                Category = dto.Category,
+                Kcal = dto.Kcal,
+                PhotoPath = dto.PhotoPath,
+                ProductName = dto.ProductName,
+                QuantityUnit = dto.QuantityUnit,
+                Unit = dto.Unit
+            };
+        }
         public string ProductName { get; set; }
         public int Kcal { get; set; }
         public int QuantityUnit { get; set; }

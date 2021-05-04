@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace DietMealApp.Core.DTOs
+namespace DietMealApp.Core.DTO
 {
     public sealed class DietDayDTO : _BaseDTO
     {

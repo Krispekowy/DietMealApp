@@ -1,4 +1,3 @@
-using DietMealApp.Core.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Features;
@@ -15,6 +14,9 @@ using System.Globalization;
 using DietMealApp.DataAccessLayer;
 using Microsoft.AspNetCore.Identity;
 using DietMealApp.Core.Entities;
+using DietMealApp.Service;
+using DietMealApp.Core.Interfaces;
+using DietMealApp.DataAccessLayer.Repositories;
 
 namespace DietMealApp
 {
@@ -53,11 +55,12 @@ namespace DietMealApp
             services.AddLocalization(options => options.ResourcesPath = "");
 
             #endregion
-            #region RestClientConfig
-            services.AddTransient(i =>
-                new RestClient(Configuration["ApiLink"])
-            );
+
+            #region DependencyInjection
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductService, ProductService>();
             #endregion
+
             #region MvcConfig
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddControllers().AddNewtonsoftJson();

@@ -1,5 +1,5 @@
 ﻿
-@model IEnumerable<DietMealApp.Core.DTOs.ProductDTO>
+@model List<DietMealApp.Core.DTO.ProductDTO>
 @{
     ViewData["Title"] = "Lista produktów";
 }
@@ -17,7 +17,7 @@
 <p></p>
 <div class="form-group row">
     <div class="col-sm-10">
-        <a asp-page="/Products/Add" class="btn btn-primary">Dodaj nowy</a>
+        <a asp-controller="Product" asp-action="Create" class="btn btn-primary">Dodaj nowy</a>
     </div>
 </div>
 

@@ -30,21 +30,24 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Product" asp-action="Index">Produkty</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="Meal" asp-action="Index">Posiłki</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="dropdown-item" asp-controller="Diet" asp-action="Index">Pokaż diety</a>
-                        </li>
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Product" asp-action="Index">Produkty</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Meal" asp-action="Index">Posiłki</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Diet" asp-action="Index">Pokaż diety</a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         @if (signInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
-                                <form method="post" href="/Identity/Account/Logout">
+                                <form method="post" asp-controller="Account" asp-action="Logout">
                                     <button type="submit" class="nav-link btn btn-link py-0">
                                         Wyloguj się @User.Identity.Name
                                     </button>

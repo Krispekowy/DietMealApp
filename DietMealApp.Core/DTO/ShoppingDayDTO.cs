@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DietMealApp.Core.DTOs
+namespace DietMealApp.Core.DTO
 {
     public class ShoppingDayDTO
     {

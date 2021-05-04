@@ -34,6 +34,7 @@ namespace DietMealApp.Core.DTO
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        [Display(Name = "Nazwa użytkownika")]
         public string UserName { get; set; }
         [Required]
         [DataType(DataType.EmailAddress)]
@@ -58,11 +59,6 @@ namespace DietMealApp.Core.DTO
         public bool AllowNewsletter { get; set; }
         public bool AcceptedRegulations { get; set; }
         public bool ReadInformationClause { get; set; }
-
-        #region Pomocniczne właściwości
-        public List<AuthenticationScheme> ExternalLogins { get; set; }
-        public string ReturnUrl { get; set; }
-        #endregion
 
     }
 }

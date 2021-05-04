@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DietMealApp.Core.DTOs
+namespace DietMealApp.Core.DTO
 {
     public sealed class ShoppingListDTO
     {

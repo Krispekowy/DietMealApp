@@ -1,4 +1,5 @@
-﻿using DietMealApp.Core.Services;
+﻿using DietMealApp.Core.DTO;
+using DietMealApp.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -12,21 +13,33 @@ namespace DietMealApp.WebClient.Controllers
 {
     public class ProductController : _ParentController
     {
-        public ProductController(
-            IConfiguration configuration, 
-            RestClient restClient) 
-            : base(configuration, 
-                  restClient) { }
+        private readonly IProductService _productService;
 
+        public ProductController(
+            IConfiguration configuration,
+            IProductService productService) 
+            : base(configuration)
+        {
+            _productService = productService;
+        }
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            //await _RestClient.RequestAsync($"Products/GetAll", HttpMethod.Get, "", _SenderId);
-            //if (!restClient.IsSuccessful || String.IsNullOrEmpty(restClient.ResponseMessage))
-            //{
-            //    return StatusCode(500);
-            //}
-            //var products = JsonConvert.DeserializeObject
-            return View();
+            var products = await _productService.Index();
+            return View(products);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            var model = await _productService.Create();
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(ProductDTO model)
+        {
+            await _productService.Create(model);
+            return View("Index");
+
         }
     }
 }

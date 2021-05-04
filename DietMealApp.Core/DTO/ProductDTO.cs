@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace DietMealApp.Core.DTOs
+namespace DietMealApp.Core.DTO
 {
-    public sealed class ProductDTO : _BaseDTO
+    public class ProductDTO : _BaseDTO
     {
         public ProductDTO() : base() { }
         public static ProductDTO ProductEntityToDTO(Product entity)

@@ -1,7 +1,8 @@
 ﻿using DietMealApp.Core.DTO;
 using DietMealApp.Core.Entities;
-using DietMealApp.Core.Services;
+using DietMealApp.Core.ViewModels.Identity;
 using DietMealApp.DataAccessLayer;
+using DietMealApp.Service;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,6 @@ namespace DietMealApp.WebClient.Controllers
     public class AccountController : _ParentController
     {
         private readonly IConfiguration _configuration;
-        private readonly RestClient _restClient;
         private readonly AppUsersDbContext _appUsersDbContext;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
@@ -28,18 +28,13 @@ namespace DietMealApp.WebClient.Controllers
 
         public AccountController(
             IConfiguration configuration,
-            RestClient restClient,
             AppUsersDbContext appUsersDbContext,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             ILogger<AppUserDTO> logger) 
-            : base(configuration, 
-                  restClient, 
-                  appUsersDbContext, 
-                  userManager)
+            : base(configuration)
         {
             _configuration = configuration;
-            _restClient = restClient;
             _appUsersDbContext = appUsersDbContext;
             _userManager = userManager;
             _signInManager = signInManager;
@@ -107,7 +102,7 @@ namespace DietMealApp.WebClient.Controllers
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
-            var model = new AppUserDTO();
+            var model = new LoginViewModel();
             string errorMessage = "";
             if (!string.IsNullOrEmpty(errorMessage))
             {
@@ -126,17 +121,18 @@ namespace DietMealApp.WebClient.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(AppUserDTO appUser, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             var hasErrorAlready = false;
             var externalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
             if (ModelState.IsValid)
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(appUser.Email, appUser.Password, appUser.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("Użytkownik zalogowany.");
@@ -144,7 +140,7 @@ namespace DietMealApp.WebClient.Controllers
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = appUser.RememberMe });
+                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 }
                 if (result.IsLockedOut)
                 {
@@ -155,14 +151,30 @@ namespace DietMealApp.WebClient.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "Proszę zweryfikować adres e-mail.");
                     hasErrorAlready = true;
+                    return LocalRedirect(returnUrl);
                 }
                 if (hasErrorAlready == false)
                 {
                     ModelState.AddModelError(string.Empty, "Logowanie nie powiodło się.");
+                    return LocalRedirect(returnUrl);
                 }
             }
 
-            return RedirectToAction("Index", "Home");
+            return LocalRedirect(returnUrl);
+        }
+
+        public async Task<IActionResult> Logout(string returnUrl = null)
+        {
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
+            if (returnUrl != null)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
     }
 }

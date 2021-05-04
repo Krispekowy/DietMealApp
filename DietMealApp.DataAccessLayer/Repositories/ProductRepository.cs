@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.DataAccessLayer.Repositories
 {
-    class ProductRepository : IProductRepository
+    public class ProductRepository : IProductRepository
     {
         private readonly AppDbContext dbContext;
 

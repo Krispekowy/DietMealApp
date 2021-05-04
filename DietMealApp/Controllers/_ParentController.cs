@@ -1,5 +1,4 @@
 ﻿using DietMealApp.Core.Entities;
-using DietMealApp.Core.Services;
 using DietMealApp.DataAccessLayer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,32 +15,28 @@ namespace DietMealApp.WebClient.Controllers
     {
         
         protected readonly IConfiguration _configuration;
-        protected readonly RestClient _restClient;
         private readonly AppUsersDbContext _appUsersDbContext;
         private readonly UserManager<AppUser> _userManager;
         public string _senderId { get; set; }
 
         public _ParentController(
             IConfiguration configuration,
-            RestClient restClient,
             AppUsersDbContext appUsersDbContext,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager
             )
         {
             _configuration = configuration;
-            _restClient = restClient;
             _appUsersDbContext = appUsersDbContext;
             _userManager = userManager;
         }
 
-        public _ParentController(IConfiguration configuration, RestClient restClient)
+        public _ParentController(IConfiguration configuration)
         {
             _configuration = configuration;
-            _restClient = restClient;
         }
 
-        public _ParentController(IConfiguration configuration, RestClient restClient, AppUsersDbContext appUsersDbContext, UserManager<AppUser> userManager) : this(configuration, restClient)
+        public _ParentController(IConfiguration configuration, AppUsersDbContext appUsersDbContext, UserManager<AppUser> userManager)
         {
         }
 
@@ -52,26 +47,5 @@ namespace DietMealApp.WebClient.Controllers
                 _senderId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             }
         }
-        //public async Task<bool> UserHasCompleatedContract()
-        //{
-        //    var user = await _ApplicationUserMannager.GetUserAsync(User);
-        //    return user.UserHasCompleatedContract;
-        //}
-        //public async Task<bool> UserHasElectroniclySignedContract()
-        //{
-        //    var user = await _ApplicationUserMannager.GetUserAsync(User);
-        //    return user.UserHasElectroniclySignedContract;
-        //}
-        //public async Task<bool> UserHasLabel()
-        //{
-        //    var user = await _ApplicationUserMannager.GetUserAsync(User);
-        //    return user.UserHasLabel;
-        //}
-
-        //public async Task<bool> UserCompleadedOfferPref()
-        //{
-        //    var user = await _ApplicationUserMannager.GetUserAsync(User);
-        //    return user.CompleatedOfferPreferencesForm;
-        //}
     }
 }
