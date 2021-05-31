@@ -66,6 +66,7 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<GetProductByIdQuery, Product>, GetProductByIdQueryHandler>();
             services.AddScoped<IRequestHandler<InsertProductCommand, Unit>, InsertProductCommandHandler> ();
             services.AddScoped<IRequestHandler<DeleteProductCommand, Unit>, DeleteProductCommandHandler> ();
+            services.AddScoped<IRequestHandler<UpdateProductCommand, Unit>, UpdateProductCommandHandler>();
             #endregion
 
             #region MvcConfig

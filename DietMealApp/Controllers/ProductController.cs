@@ -93,5 +93,28 @@ namespace DietMealApp.WebClient.Controllers
             await _mediator.Send(request);
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var request = new GetProductByIdQuery
+            {
+                Id = id
+            };
+            var result = await _mediator.Send(request);
+            var productDTO = ProductDTO.ProductEntityToDTO(result);
+            return View(productDTO);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ProductDTO productDTO)
+        {
+            var request = new UpdateProductCommand
+            {
+                Product = Product.GetProductFromDTO(productDTO)
+            };
+            await _mediator.Send(request);
+            return RedirectToAction("Index");
+        }
     }
 }
