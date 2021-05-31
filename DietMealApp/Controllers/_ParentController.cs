@@ -1,5 +1,6 @@
 ﻿using DietMealApp.Core.Entities;
 using DietMealApp.DataAccessLayer;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -17,18 +18,22 @@ namespace DietMealApp.WebClient.Controllers
         protected readonly IConfiguration _configuration;
         private readonly AppUsersDbContext _appUsersDbContext;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IMediator _mediator;
+
         public string _senderId { get; set; }
 
         public _ParentController(
             IConfiguration configuration,
             AppUsersDbContext appUsersDbContext,
             UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager
+            SignInManager<AppUser> signInManager,
+            IMediator mediator
             )
         {
             _configuration = configuration;
             _appUsersDbContext = appUsersDbContext;
             _userManager = userManager;
+            _mediator = mediator;
         }
 
         public _ParentController(IConfiguration configuration)

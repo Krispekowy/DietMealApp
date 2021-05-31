@@ -1,5 +1,10 @@
 ﻿using DietMealApp.Core.DTO;
+using DietMealApp.Core.DTO.Products;
+using DietMealApp.Core.Entities;
 using DietMealApp.Service;
+using DietMealApp.Service.Functions.Command;
+using DietMealApp.Service.Functions.Query;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -13,33 +18,80 @@ namespace DietMealApp.WebClient.Controllers
 {
     public class ProductController : _ParentController
     {
-        private readonly IProductService _productService;
+        private readonly IMediator _mediator;
 
         public ProductController(
             IConfiguration configuration,
-            IProductService productService) 
+            IMediator mediator)
             : base(configuration)
         {
-            _productService = productService;
+            _mediator = mediator;
         }
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<ActionResult<IndexProductDTO>> Index()
         {
-            var products = await _productService.Index();
-            return View(products);
+            try
+            {
+                var request = new GetAllProductsQuery
+                {
+                    OrderBy = Core.Enums.OrderByProductOptions.ByName
+                };
+                var result = await _mediator.Send(request);
+                return View(new IndexProductDTO()
+                {
+                    Products = IndexProductDTO.ProductEntityToDTO(result)
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var model = await _productService.Create();
+            var model = new ProductDTO();
             return View(model);
         }
         [HttpPost]
         public async Task<IActionResult> Create(ProductDTO model)
         {
-            await _productService.Create(model);
-            return View("Index");
+            try
+            {
+                var request = new InsertProductCommand
+                {
+                    Product = model
+                };
+                await _mediator.Send(request);
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var request = new GetProductByIdQuery
+            {
+                Id = id
+            };
+            var result = await _mediator.Send(request);
+            var productDTO = ProductDTO.ProductEntityToDTO(result);
+            return View(productDTO);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(ProductDTO productDTO)
+        {
+            var request = new DeleteProductCommand
+            {
+                Id = productDTO.Id
+            };
+            await _mediator.Send(request);
+            return RedirectToAction("Index");
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Core.DTO;
+using DietMealApp.Core.DTO.Products;
 using DietMealApp.Core.Entities;
 using DietMealApp.Core.Enums;
 using System;
@@ -14,6 +15,7 @@ namespace DietMealApp.Core.Entities
         {
             return new Product()
             {
+                Id = dto.Id,
                 Category = dto.Category,
                 Kcal = dto.Kcal,
                 PhotoPath = dto.PhotoPath,

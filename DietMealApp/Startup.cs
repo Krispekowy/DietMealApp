@@ -17,6 +17,10 @@ using DietMealApp.Core.Entities;
 using DietMealApp.Service;
 using DietMealApp.Core.Interfaces;
 using DietMealApp.DataAccessLayer.Repositories;
+using MediatR;
+using System.Reflection;
+using DietMealApp.Service.Functions.Query;
+using DietMealApp.Service.Functions.Command;
 
 namespace DietMealApp
 {
@@ -58,7 +62,10 @@ namespace DietMealApp
 
             #region DependencyInjection
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IRequestHandler<GetAllProductsQuery, List<Product>>, GetAllProductsQueryHandler>();
+            services.AddScoped<IRequestHandler<GetProductByIdQuery, Product>, GetProductByIdQueryHandler>();
+            services.AddScoped<IRequestHandler<InsertProductCommand, Unit>, InsertProductCommandHandler> ();
+            services.AddScoped<IRequestHandler<DeleteProductCommand, Unit>, DeleteProductCommandHandler> ();
             #endregion
 
             #region MvcConfig
@@ -105,6 +112,7 @@ namespace DietMealApp
                 .AddDefaultUI();
             #endregion
 
+            services.AddMediatR(Assembly.GetExecutingAssembly());
             services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings

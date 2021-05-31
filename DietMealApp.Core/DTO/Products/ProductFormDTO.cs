@@ -1,38 +1,19 @@
 ﻿using DietMealApp.Core.Abstract;
-using DietMealApp.Core.Entities;
 using DietMealApp.Core.Enums;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace DietMealApp.Core.DTO
+namespace DietMealApp.Core.DTO.Products
 {
-    public class ProductDTO : _BaseDTO
+    public class ProductFormDTO : _BaseDTO
     {
-        public ProductDTO() : base() { }
-        public static ProductDTO ProductEntityToDTO(Product entity)
-        {
-            if (entity != null)
-            {
-                var dto = new ProductDTO()
-                {
-                    Id = entity.Id,
-                    Category = entity.Category,
-                    Kcal = entity.Kcal,
-                    ProductName = entity.ProductName,
-                    PhotoPath = entity.PhotoPath,
-                    Unit = entity.Unit,
-                    QuantityUnit = entity.QuantityUnit
-                };
-                return dto;
-            }
-            return null;
-        }
-
         [Required(ErrorMessage = "Nazwa produktu jest wymagana")]
-        [MinLength(3, ErrorMessage= "Nazwa produktu nie może być krótsza niż 3 znaki")]
+        [MinLength(3, ErrorMessage = "Nazwa produktu nie może być krótsza niż 3 znaki")]
         public string ProductName { get; set; }
         [Required(ErrorMessage = "Podaj ilość kalorii")]
         [RegularExpression("^[0-9]*$", ErrorMessage = "W tym polu możesz wpisać tylko cyfry")]
