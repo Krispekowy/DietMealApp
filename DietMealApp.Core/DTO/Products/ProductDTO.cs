@@ -12,24 +12,6 @@ namespace DietMealApp.Core.DTO.Products
     public class ProductDTO : _BaseDTO
     {
         public ProductDTO() : base() { }
-        public static ProductDTO ProductEntityToDTO(Product entity)
-        {
-            if (entity != null)
-            {
-                var dto = new ProductDTO()
-                {
-                    Id = entity.Id,
-                    Category = entity.Category,
-                    Kcal = entity.Kcal,
-                    ProductName = entity.ProductName,
-                    PhotoPath = entity.PhotoPath,
-                    Unit = entity.Unit,
-                    QuantityUnit = entity.QuantityUnit
-                };
-                return dto;
-            }
-            return null;
-        }
 
         [Required(ErrorMessage = "Nazwa produktu jest wymagana")]
         [MinLength(3, ErrorMessage= "Nazwa produktu nie może być krótsza niż 3 znaki")]

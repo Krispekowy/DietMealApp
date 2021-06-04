@@ -1,6 +1,5 @@
-﻿using DietMealApp.Core.DTO.Products;
+﻿using DietMealApp.Core.DTO;
 using DietMealApp.Core.Entities;
-using DietMealApp.Core.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,8 +9,8 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Service.Functions.Query
 {
-    public class GetProductByIdQuery : IRequest<ProductDTO>
+    public class GetMealsByUserQuery : IRequest<List<MealDTO>>
     {
-        public Guid Id { get; set; }
+        public string UserId { get; set; }
     }
 }

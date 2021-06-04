@@ -12,6 +12,7 @@ namespace DietMealApp.Core.Entities
         public TypesOfMeal TypeOfMeal { get; set; }
         public string MealName { get; set; }
         public string Description { get; set; }
+        public string UserId { get; set; }
 
         public int Kcal { get; set; }
         [ForeignKey("MealId")]

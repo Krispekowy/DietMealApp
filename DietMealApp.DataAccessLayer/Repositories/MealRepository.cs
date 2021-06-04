@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.DataAccessLayer.Repositories
 {
-    class MealRepository : IMealRepository
+    public class MealRepository : IMealRepository
     {
         private readonly AppDbContext dbContext;
 
@@ -63,6 +63,11 @@ namespace DietMealApp.DataAccessLayer.Repositories
                 .AsNoTracking()
                 .Include(x => x.MealProducts)
                 .FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        public async Task<List<Meal>> GetMealsByUser(string user)
+        {
+            return await dbContext.Meals.Where(x => x.UserId == user).ToListAsync();
         }
 
         public void Insert(Meal entity)

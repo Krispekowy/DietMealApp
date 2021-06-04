@@ -21,6 +21,10 @@ using MediatR;
 using System.Reflection;
 using DietMealApp.Service.Functions.Query;
 using DietMealApp.Service.Functions.Command;
+using DietMealApp.Core.DTO.Products;
+using AutoMapper;
+using DietMealApp.Core.Mappings;
+using DietMealApp.Core.DTO;
 
 namespace DietMealApp
 {
@@ -62,11 +66,13 @@ namespace DietMealApp
 
             #region DependencyInjection
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IRequestHandler<GetAllProductsQuery, List<Product>>, GetAllProductsQueryHandler>();
-            services.AddScoped<IRequestHandler<GetProductByIdQuery, Product>, GetProductByIdQueryHandler>();
+            services.AddScoped<IMealRepository, MealRepository>();
+            services.AddScoped<IRequestHandler<GetAllProductsQuery, List<ProductDTO>>, GetAllProductsQueryHandler>();
+            services.AddScoped<IRequestHandler<GetProductByIdQuery, ProductDTO>, GetProductByIdQueryHandler>();
             services.AddScoped<IRequestHandler<InsertProductCommand, Unit>, InsertProductCommandHandler> ();
             services.AddScoped<IRequestHandler<DeleteProductCommand, Unit>, DeleteProductCommandHandler> ();
             services.AddScoped<IRequestHandler<UpdateProductCommand, Unit>, UpdateProductCommandHandler>();
+            services.AddScoped<IRequestHandler<GetMealsByUserQuery, List<MealDTO>>, GetMealsByUserQueryHandler>();
             #endregion
 
             #region MvcConfig
@@ -80,6 +86,7 @@ namespace DietMealApp
             services.AddAuthorization();
             services.AddMvc().AddDataAnnotationsLocalization().AddViewLocalization();
             #endregion
+
             #region DataAccessLayerConfig
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(Configuration
@@ -89,6 +96,7 @@ namespace DietMealApp
                 options.UseSqlServer(Configuration
                 .GetConnectionString("UsersDietMealDB")));
             #endregion
+
             #region Identity
             services.AddIdentity<AppUser, IdentityRole<Guid>>(
                 options =>
@@ -113,7 +121,13 @@ namespace DietMealApp
                 .AddDefaultUI();
             #endregion
 
+            #region AutoMapper
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddSingleton(AutoMapperConfig.RegisterMappings());
+            #endregion
+
             services.AddMediatR(Assembly.GetExecutingAssembly());
+
             services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings

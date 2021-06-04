@@ -32,15 +32,8 @@ namespace DietMealApp.WebClient.Controllers
         {
             try
             {
-                var request = new GetAllProductsQuery
-                {
-                    OrderBy = Core.Enums.OrderByProductOptions.ByName
-                };
-                var result = await _mediator.Send(request);
-                return View(new IndexProductDTO()
-                {
-                    Products = IndexProductDTO.ProductEntityToDTO(result)
-                });
+                var result = await _mediator.Send(new GetAllProductsQuery(){ OrderBy = Core.Enums.OrderByProductOptions.ByName });
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -50,19 +43,14 @@ namespace DietMealApp.WebClient.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var model = new ProductDTO();
-            return View(model);
+            return View();
         }
         [HttpPost]
         public async Task<IActionResult> Create(ProductDTO model)
         {
             try
             {
-                var request = new InsertProductCommand
-                {
-                    Product = model
-                };
-                await _mediator.Send(request);
+                await _mediator.Send(new InsertProductCommand() { Product = model});
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
@@ -74,46 +62,28 @@ namespace DietMealApp.WebClient.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var request = new GetProductByIdQuery
-            {
-                Id = id
-            };
-            var result = await _mediator.Send(request);
-            var productDTO = ProductDTO.ProductEntityToDTO(result);
-            return View(productDTO);
+            var result = await _mediator.Send(new GetProductByIdQuery() { Id = id});
+            return View(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(ProductDTO productDTO)
         {
-            var request = new DeleteProductCommand
-            {
-                Id = productDTO.Id
-            };
-            await _mediator.Send(request);
+            await _mediator.Send(new DeleteProductCommand() { Id = productDTO.Id });
             return RedirectToAction("Index");
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var request = new GetProductByIdQuery
-            {
-                Id = id
-            };
-            var result = await _mediator.Send(request);
-            var productDTO = ProductDTO.ProductEntityToDTO(result);
-            return View(productDTO);
+            var result = await _mediator.Send(new GetProductByIdQuery(){ Id = id });
+            return View(result);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(ProductDTO productDTO)
         {
-            var request = new UpdateProductCommand
-            {
-                Product = Product.GetProductFromDTO(productDTO)
-            };
-            await _mediator.Send(request);
+            await _mediator.Send(new UpdateProductCommand() { Product = productDTO });
             return RedirectToAction("Index");
         }
     }

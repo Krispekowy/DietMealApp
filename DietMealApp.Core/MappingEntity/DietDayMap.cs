@@ -11,7 +11,7 @@ namespace DietMealApp.Core.MappingEntity
         public DietDayMap(EntityTypeBuilder<DietDay> entityBuilder)
         {
             entityBuilder.HasKey(t => t.Id);
-            entityBuilder.Property(t => t.DayName).IsRequired();
+            entityBuilder.Property(t => t.Name).IsRequired();
         }
     }
 }

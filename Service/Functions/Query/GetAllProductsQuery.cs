@@ -1,4 +1,5 @@
-﻿using DietMealApp.Core.Entities;
+﻿using DietMealApp.Core.DTO.Products;
+using DietMealApp.Core.Entities;
 using DietMealApp.Core.Enums;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Service.Functions.Query
 {
-    public class GetAllProductsQuery : IRequest<List<Product>>
+    public class GetAllProductsQuery : IRequest<List<ProductDTO>>
     {
         public OrderByProductOptions OrderBy { get; set; }
     }

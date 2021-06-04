@@ -4,14 +4,16 @@ using DietMealApp.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DietMealApp.DataAccessLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210602185804_UserIdColumn_MealTable")]
+    partial class UserIdColumn_MealTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,18 +61,16 @@ namespace DietMealApp.DataAccessLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Breakfast")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Brunch")
-                        .HasColumnType("int");
-
                     b.Property<bool>("CanBeEdited")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("DayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -81,28 +81,15 @@ namespace DietMealApp.DataAccessLayer.Migrations
                     b.Property<Guid?>("DietId1")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Dinner")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<int>("Kcal")
                         .HasColumnType("int");
 
-                    b.Property<int>("Lunch")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("ModifyDate")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Tea")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

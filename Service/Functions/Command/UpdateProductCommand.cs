@@ -1,4 +1,5 @@
-﻿using DietMealApp.Core.Entities;
+﻿using DietMealApp.Core.DTO.Products;
+using DietMealApp.Core.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace DietMealApp.Service.Functions.Command
 {
     public class UpdateProductCommand : IRequest<Unit>
     {
-        public Product Product { get; set; }
+        public ProductDTO Product { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using DietMealApp.Core.Entities;
+﻿using AutoMapper;
+using DietMealApp.Core.Entities;
 using DietMealApp.Core.Interfaces;
 using MediatR;
 using System;
@@ -13,16 +14,20 @@ namespace DietMealApp.Service.Functions.Command
     public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, Unit>
     {
         private readonly IProductRepository _productRepository;
+        private readonly IMapper _mapper;
 
-        public DeleteProductCommandHandler(IProductRepository productRepository)
+        public DeleteProductCommandHandler(
+            IProductRepository productRepository,
+            IMapper mapper)
         {
             _productRepository = productRepository;
+            _mapper = mapper;
         }
-        public Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            _productRepository.Delete(request.Id);
-            _productRepository.CommitAsync();
-            return Task.FromResult(Unit.Value);
+            await _productRepository.Delete(request.Id);
+            await _productRepository.CommitAsync();
+            return Unit.Value;
         }
     }
 }
