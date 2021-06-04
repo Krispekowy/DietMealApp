@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DietMealApp.Core", "DietMea
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DietMealApp.DataAccessLayer", "DietMealApp.DataAccessLayer\DietMealApp.DataAccessLayer.csproj", "{F43416C6-785A-46BF-9D1A-1F4C3C740927}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DietMealApp.Service", "Service\DietMealApp.Service.csproj", "{FB1DA8D4-3F19-4169-942C-D6A303C57D95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DietMealApp.Application", "Service\DietMealApp.Application.csproj", "{FB1DA8D4-3F19-4169-942C-D6A303C57D95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
