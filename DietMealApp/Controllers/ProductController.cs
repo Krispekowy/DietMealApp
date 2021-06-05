@@ -1,7 +1,7 @@
 ﻿using DietMealApp.Core.DTO;
 using DietMealApp.Core.DTO.Products;
 using DietMealApp.Core.Entities;
-using DietMealApp.Service;
+using DietMealApp;
 using DietMealApp.Service.Functions.Command;
 using DietMealApp.Service.Functions.Query;
 using MediatR;

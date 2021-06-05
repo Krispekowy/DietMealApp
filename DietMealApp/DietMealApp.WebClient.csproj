@@ -30,9 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DietMealApp.Application\DietMealApp.Application.csproj" />
     <ProjectReference Include="..\DietMealApp.Core\DietMealApp.Core.csproj" />
     <ProjectReference Include="..\DietMealApp.DataAccessLayer\DietMealApp.DataAccessLayer.csproj" />
-    <ProjectReference Include="..\Service\DietMealApp.Application.csproj" />
   </ItemGroup>
 
 </Project>
