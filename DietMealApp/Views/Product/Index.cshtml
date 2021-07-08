@@ -1,5 +1,5 @@
 ﻿
-@model DietMealApp.Core.DTO.Products.IndexProductDTO
+@model List<DietMealApp.Core.DTO.Products.ProductDTO>
 @{
     ViewData["Title"] = "Lista produktów";
 }
@@ -22,7 +22,7 @@
 </div>
 
 <div class="card-deck">
-    @foreach (var item in Model.Products)
+    @foreach (var item in Model)
     {
         <div class="card m-3" style="padding: 10px; min-width: 25rem; max-width:50%">
             <div class="media align-items-lg-start text-center text-lg-left flex-column flex-lg-row">

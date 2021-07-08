@@ -13,23 +13,6 @@ namespace DietMealApp.Core.DTO
     public sealed class MealDTO : _BaseDTO
     {
         public MealDTO() : base() { }
-        public static MealDTO MealEntityToDTO(Meal entity)
-        {
-            if (entity != null)
-            {
-                var dto = new MealDTO()
-                {
-                    Id = entity.Id,
-                    MealName = entity.MealName,
-                    Kcal = entity.Kcal,
-                    Description = entity.Description,
-                    TypeOfMeal = entity.TypeOfMeal,
-                    MealProducts = entity.MealProducts
-                };
-                return dto;
-            }
-            return null;
-        }
 
         [Required(ErrorMessage = "Pole typ posiłku jest wymagane")]
         public TypesOfMeal TypeOfMeal { get; set; }

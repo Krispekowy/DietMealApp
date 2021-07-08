@@ -2,12 +2,13 @@
 using DietMealApp.DataAccessLayer.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DietMealApp.Core.Interfaces
 {
     public interface IProductRepository : _IBaseRepository<Product>
     {
-        public IEnumerable<Product> SearchProduct(string searchTerm);
+        public IQueryable<Product> SearchProduct(string searchTerm);
     }
 }

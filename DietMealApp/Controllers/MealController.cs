@@ -19,6 +19,7 @@ namespace DietMealApp.WebClient.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             InitId();
@@ -32,6 +33,12 @@ namespace DietMealApp.WebClient.Controllers
 
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            return View();
         }
     }
 }

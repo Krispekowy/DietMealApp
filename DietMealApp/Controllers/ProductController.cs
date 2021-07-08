@@ -28,12 +28,12 @@ namespace DietMealApp.WebClient.Controllers
             _mediator = mediator;
         }
         [HttpGet]
-        public async Task<ActionResult<IndexProductDTO>> Index()
+        public async Task<IActionResult> Index()
         {
             try
             {
                 var result = await _mediator.Send(new GetAllProductsQuery(){ OrderBy = Core.Enums.OrderByProductOptions.ByName });
-                return Ok(result);
+                return View(result);
             }
             catch (Exception ex)
             {

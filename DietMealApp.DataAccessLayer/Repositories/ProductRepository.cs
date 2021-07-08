@@ -70,7 +70,7 @@ namespace DietMealApp.DataAccessLayer.Repositories
             dbContext.Add(entity);
         }
 
-        public IEnumerable<Product> SearchProduct(string searchTerm)
+        public IQueryable<Product> SearchProduct(string searchTerm)
         {
             if (string.IsNullOrEmpty(searchTerm))
             {

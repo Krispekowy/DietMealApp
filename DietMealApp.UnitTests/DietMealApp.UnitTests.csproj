@@ -26,8 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DietMealApp\DietMealApp.Core\DietMealApp.Core.csproj" />
-    <ProjectReference Include="..\DietMealApp\DietMealApp.Application\DietMealApp.Application.csproj" />
+    <ProjectReference Include="..\DietMealApp.Application\DietMealApp.Application.csproj" />
+    <ProjectReference Include="..\DietMealApp.Core\DietMealApp.Core.csproj" />
   </ItemGroup>
 
 </Project>

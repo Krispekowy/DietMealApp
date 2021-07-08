@@ -25,6 +25,7 @@ using DietMealApp.Core.DTO.Products;
 using AutoMapper;
 using DietMealApp.Core.Mappings;
 using DietMealApp.Core.DTO;
+using DietMealApp.Core.Services;
 
 namespace DietMealApp
 {
@@ -74,6 +75,20 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<UpdateProductCommand, Unit>, UpdateProductCommandHandler>();
             services.AddScoped<IRequestHandler<GetMealsByUserQuery, List<MealDTO>>, GetMealsByUserQueryHandler>();
             #endregion
+
+            #region RestClientConfig
+
+            ////services.AddHttpClient();
+            ////services.AddHttpClient("meta", a =>
+            ////{
+            ////    a.BaseAddress = new Uri("http://localhost:63494");
+            ////});
+
+            //services.AddTransient(i =>
+            //    new RestClient(Configuration["ApiLink"])
+            //);
+
+            #endregion RestClientConfig
 
             #region MvcConfig
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();

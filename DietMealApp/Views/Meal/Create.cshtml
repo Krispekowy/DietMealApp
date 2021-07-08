@@ -1,0 +1,166 @@
+﻿@model DietMealApp.Core.DTO.MealDTO
+@using DietMealApp.Core.Enums;
+@{
+
+}
+
+<h1>Dodaj posiłek</h1>
+
+<form method="post" class="mt-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group row">
+        <label asp-for="MealName" class="col-sm-2 col-form-label">
+            Nazwa
+        </label>
+        <div class="col-sm-4">
+            <input asp-for="MealName" class="form-control" placeholder="Wprowadź nazwę">
+            <span asp-validation-for="MealName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="TypeOfMeal" class="col-sm-2 col-form-label">
+            Typ
+        </label>
+        <div class="col-sm-4">
+            <select class="form-control" asp-for="TypeOfMeal"
+                    asp-items="Html.GetEnumSelectList<TypesOfMeal>()">
+            </select>
+            <span asp-validation-for="TypeOfMeal" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Description" class="col-sm-2 col-form-label">
+            Opis
+        </label>
+        <div class="col-sm-6">
+            <textarea rows="5" asp-for="Description" class="form-control" placeholder="Maksymalnie 1000 znaków"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+    </div>
+    <hr class="dashed">
+    <div class="form-group row">
+        <div class="form-group col">
+            <label class="col-sm-12 col-form-label">
+                Nazwa produktu
+            </label>
+            <div class="col-sm-12">
+                <input id="productSelect" type="text" list="productsToSelect" class="form-control custom-select" autocomplete="on">
+                <datalist id="productsToSelect">
+                    @foreach (var product in Model.MealProducts.Select(a=>a.Product))
+                    {
+                        <option id="@product.Id" value="@product.ProductName"></option>
+                    }
+                </datalist>
+            </div>
+        </div>
+        <div class="form-group col">
+            <label class="col-sm-12 col-form-label">
+                Ilość (w gramach)
+            </label>
+            <div class="col-sm-12">
+                <input id="quantity" class="form-control" placeholder="Ilość" />
+            </div>
+        </div>
+        <div class="form-group col">
+            <label class="col-sm-12 col-form-label">
+            </label>
+            <div class="col-sm-12">
+                <input type="button" value="Dodaj produkt " id="add-row" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+    <div id="productsTable" class="datatable" data-hover="true" data-border-color="dark ">
+        <table class="table datatable-table">
+            <thead class="datatable-header">
+                <tr id="rowHeader">
+                    <th>Produkt</th>
+                    <th>Ilość</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="datatable-body">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Dodaj</button>
+            <a asp-page="/Meals/Index" class="btn btn-danger">Anuluj</a>
+        </div>
+    </div>
+
+</form>
+@section Scripts {
+    <partial name="~/Pages/Shared/_ValidationScriptsPartial.cshtml" />
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#add-row").click(function () {
+            var tabela = $('#productsTable tr');
+            var wierszy = tabela.length;
+            var indeks = wierszy - 1;
+            var produkt = GetOptionSelected('value');
+            var produktId = GetOptionSelected('id');
+            var ilosc = $('#quantity').val();
+            var markup = '<tr onclick="GetIndex(this)" class="productsRows"><td><input type="hidden" class="product" id="MealDTO_MealProducts_' + indeks + '__ProductId" value=' + produktId + ' name="MealDTO.MealProducts[' + indeks + '].ProductId"><label id="MealDTO_MealProducts_' + indeks + '__ProductLabelId" class="produktLabel">' + produkt + '</label></td><td><input class="quantity" type="hidden" value=' + ilosc + ' id="quantity' + indeks + '"__Quantity" name="MealDTO.MealProducts[' + indeks + '].Quantity"><label class="col-form-label">' + ilosc + '</label></td><td><button id=' + indeks + ' type="button" class="btn btn-danger delete-row"><i class="fa fa-close"></button></td></tr>';
+            $('table tbody').append(markup);
+            SetNull();
+            HideShowSelected(produkt, false);
+
+        });
+    });
+
+    $(document).on("click", ".delete-row", function (e) {
+        e.preventDefault();
+        var produkt = document.getElementById('MealDTO_MealProducts_' + index + '__ProductLabelId').textContent;
+        var parentDiv = $(this).parent().parent();
+        $(parentDiv).remove();
+        var rows = $(".productsRows");
+        for (var tr = 0; tr < rows.length; tr++) {
+            var oneRow = rows[tr];
+            var newProduct = 'MealDTO.MealProducts[' + tr + '].ProductId';
+            var newIdProduct = 'MealDTO_MealProducts_' + tr + '__ProductId';
+            var newLabelProduct = 'MealDTO_MealProducts_' + tr + '__ProductLabelId';
+            $(oneRow).find('.product').attr({ "name": newProduct, "id": newIdProduct });
+            $(oneRow).find('.produktLabel').attr("id", newLabelProduct);
+            var newQuantity = 'MealDTO.MealProducts[' + tr + '].Quantity';
+            $(oneRow).find('.quantity').attr("name", newQuantity);
+        };
+        HideShowSelected(produkt, true);
+        return false;
+    });
+
+    function GetOptionSelected(attributeOfOption) {
+        const Value = document.querySelector('#productSelect').value;
+        if (!Value) return;
+        const Id = document.querySelector('option[value="' + Value + '"]').id;
+        const option = document.createElement("option");
+        option.value = Value;
+        option.id = Id;
+        if (attributeOfOption == 'value') {
+            return option.value;
+        }
+        else {
+            return option.id;
+        }
+    };
+
+    function GetIndex(x) {
+        index = x.rowIndex - 1;
+    };
+
+    function HideShowSelected(produkt, hideShow) {
+        if (hideShow) {
+            document.querySelector('option[value="' + produkt + '"]').removeAttribute('disabled');
+        }
+        else {
+            document.querySelector('option[value="' + produkt + '"]').setAttribute('disabled', true);
+        }
+    };
+
+    function SetNull() {
+        $("#productSelect").val(null);
+        document.getElementById("quantity").value = "";
+    }
+</script>

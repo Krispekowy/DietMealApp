@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Core.Entities;
+using DietMealApp.Core.Services;
 using DietMealApp.DataAccessLayer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,16 @@ namespace DietMealApp.WebClient.Controllers
         public HomeController(
             IConfiguration configuration,
             AppUsersDbContext appUsersDbContext,
-            UserManager<AppUser> userManager)
-            : base(configuration)
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager)
+            : base(configuration, 
+                  appUsersDbContext,
+                  userManager,
+                  signInManager)
         {
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             InitId();
             return View();

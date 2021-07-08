@@ -17,7 +17,7 @@ namespace DietMealApp.UnitTests.Products.Mocks
             var products = GetProducts();
             var mockProductRepository = new Mock<IProductRepository>();
 
-            mockProductRepository.Setup(repo => repo.Get().ToList()).Returns(products);
+            //mockProductRepository.Setup(repo => repo.Get().ToList()).Returns(products);
 
             mockProductRepository.Setup(repo => repo.GetByID(It.IsAny<Guid>()).Result).Returns(
                 (Guid id) =>
