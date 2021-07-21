@@ -1,19 +1,19 @@
 ﻿using DietMealApp.Core.Abstract;
+using DietMealApp.Core.DTO.Products;
 using DietMealApp.Core.Entities;
 using DietMealApp.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace DietMealApp.Core.DTO
+namespace DietMealApp.Core.DTO.Meals
 {
-    public sealed class MealDTO : _BaseDTO
+    public class MealFormDTO : _BaseDTO
     {
-        public MealDTO() : base() { }
-
+        public string UserId { get; set; }
         [Required(ErrorMessage = "Pole typ posiłku jest wymagane")]
         public TypesOfMeal TypeOfMeal { get; set; }
         [Required(ErrorMessage = "Pole nazwa posiłku jest wymagane")]
@@ -23,7 +23,7 @@ namespace DietMealApp.Core.DTO
         [MaxLength(1000, ErrorMessage = "Maksymalna długość opisu to 1000 znaków")]
         public string Description { get; set; }
         public int Kcal { get; set; } = 0;
+        public IEnumerable<ProductDTO> Products { get; set; }
         public List<MealProduct> MealProducts { get; set; }
-
     }
 }

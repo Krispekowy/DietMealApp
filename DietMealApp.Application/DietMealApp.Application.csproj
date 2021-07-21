@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Functions\Meal\Command\" />
     <Folder Include="Mappings\" />
   </ItemGroup>
 

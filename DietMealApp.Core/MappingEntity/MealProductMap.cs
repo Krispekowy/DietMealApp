@@ -22,6 +22,8 @@ namespace DietMealApp.Core.MappingEntity
                 .WithMany(a => a.MealProducts)
                 .HasForeignKey(t => t.ProductId)
                 .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Cascade);
+            entityBuilder
+                .Property(t => t.Id).ValueGeneratedOnAdd();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DietMealApp.Core.DTO;
+using DietMealApp.Core.DTO.Meals;
 using DietMealApp.Core.Entities;
 using DietMealApp.Core.Interfaces;
 using MediatR;

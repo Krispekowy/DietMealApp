@@ -29,6 +29,7 @@ namespace DietMealApp.Core.Entities
         public int QuantityUnit { get; set; }
         public Unit Unit { get; set; }
         public ProductCategories Category { get; set; }
+        [ForeignKey("ProductId")]
         public virtual List<MealProduct> MealProducts { get; set; }
         public string PhotoPath { get; set; }
     }

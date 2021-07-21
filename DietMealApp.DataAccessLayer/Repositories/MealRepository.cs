@@ -77,7 +77,46 @@ namespace DietMealApp.DataAccessLayer.Repositories
 
         public void Update(Meal entityToUpdate)
         {
-            dbContext.Update(entityToUpdate);
+            var existingMeal = dbContext.Meals
+                .Where(x => x.Id == entityToUpdate.Id)
+                .Include(m => m.MealProducts)
+                .SingleOrDefault();
+
+            if (existingMeal !=null)
+            {
+                // Update parent
+                dbContext.Entry(existingMeal).CurrentValues.SetValues(entityToUpdate);
+
+                // Delete children
+                foreach (var existingMealProduct in existingMeal.MealProducts)
+                {
+                    if (!entityToUpdate.MealProducts.Any(c => c.MealId == existingMealProduct.MealId && c.ProductId == existingMealProduct.ProductId))
+                        dbContext.MealProducts.Remove(existingMealProduct);
+                }
+
+                // Update and Insert children
+                foreach (var newOrUpdateMealProduct in entityToUpdate.MealProducts)
+                {
+                    var existingMealProduct = existingMeal.MealProducts
+                        .Where(c => c.MealId == newOrUpdateMealProduct.MealId && c.MealId != default(Guid) && c.ProductId == newOrUpdateMealProduct.ProductId && c.ProductId != default(Guid))
+                        .SingleOrDefault();
+
+                    if (existingMealProduct != null)
+                        // Update child
+                        dbContext.Entry(existingMealProduct).CurrentValues.SetValues(newOrUpdateMealProduct);
+                    else
+                    {
+                        // Insert child
+                        var newMealProduct = new MealProduct
+                        {
+                            MealId = newOrUpdateMealProduct.MealId,
+                            ProductId = newOrUpdateMealProduct.ProductId,
+                            Quantity = newOrUpdateMealProduct.Quantity
+                        };
+                        existingMeal.MealProducts.Add(newMealProduct);
+                    }
+                }
+            }
         }
     }
 }

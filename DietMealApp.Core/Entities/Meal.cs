@@ -16,7 +16,7 @@ namespace DietMealApp.Core.Entities
 
         public int Kcal { get; set; }
         [ForeignKey("MealId")]
-        public virtual List<MealProduct> MealProducts { get; set; }
+        public virtual List<MealProduct> MealProducts { get; set; } = new List<MealProduct>();
         public virtual List<DietDayMeals> DayDietMeals { get; set; }
     }
 }

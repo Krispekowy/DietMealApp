@@ -26,6 +26,10 @@ using AutoMapper;
 using DietMealApp.Core.Mappings;
 using DietMealApp.Core.DTO;
 using DietMealApp.Core.Services;
+using DietMealApp.Application.Functions.Meal.Command.InsertMeal;
+using DietMealApp.Core.DTO.Meals;
+using DietMealApp.Application.Functions.Meal.Query.GetMealById;
+using DietMealApp.Application.Functions.Meal.Command.UpdateMeal;
 
 namespace DietMealApp
 {
@@ -74,6 +78,9 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<DeleteProductCommand, Unit>, DeleteProductCommandHandler> ();
             services.AddScoped<IRequestHandler<UpdateProductCommand, Unit>, UpdateProductCommandHandler>();
             services.AddScoped<IRequestHandler<GetMealsByUserQuery, List<MealDTO>>, GetMealsByUserQueryHandler>();
+            services.AddScoped<IRequestHandler<InsertMealCommand, Unit>, InsertMealCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateMealCommand, Unit>, UpdateMealCommandHandler>();
+            services.AddScoped<IRequestHandler<GetMealFormByIdQuery, MealFormDTO>, GetMealFormByIdQueryHandler>();
             #endregion
 
             #region RestClientConfig

@@ -13,6 +13,7 @@ namespace DietMealApp.Core.MappingEntity
             entityBuilder.HasKey(t => t.Id);
             entityBuilder.Property(t => t.MealName).IsRequired();
             entityBuilder.Property(t => t.TypeOfMeal).IsRequired();
+            entityBuilder.HasMany(t => t.MealProducts);
         }
     }
 }

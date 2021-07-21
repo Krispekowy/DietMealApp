@@ -18,7 +18,7 @@ namespace DietMealApp.Core.Entities
 		public DateTime CreationDate { get; set; } = DateTime.UtcNow;
 
 		[DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-		public DateTime ModifyDate { get; set; } = DateTime.UtcNow;
+		public DateTime? ModifyDate { get; set; } = DateTime.UtcNow;
 
 		public DateTime? DeleteDate { get; set; }
 

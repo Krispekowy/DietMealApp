@@ -1,6 +1,5 @@
 ﻿using DietMealApp.Core.DTO;
 using DietMealApp.Core.DTO.Meals;
-using DietMealApp.Core.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DietMealApp.Service.Functions.Query
+namespace DietMealApp.Application.Functions.Meal.Query.GetMealById
 {
-    public class GetMealsByUserQuery : IRequest<List<MealDTO>>
+    public class GetMealFormByIdQuery : IRequest<MealFormDTO>
     {
-        public string UserId { get; set; }
+        public Guid Id { get; set; }
     }
 }
