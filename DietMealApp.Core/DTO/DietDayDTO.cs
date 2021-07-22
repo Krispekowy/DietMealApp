@@ -18,9 +18,7 @@ namespace DietMealApp.Core.DTO
                 var dto = new DietDayDTO()
                 {
                     Id = entity.Id,
-                    DietId = entity.DietId,
-                    Kcal = entity.Kcal,
-                    DayDietMeals = entity.DayDietMeals
+                    Kcal = entity.Kcal
                 };
                 return dto;
             }
@@ -43,7 +41,7 @@ namespace DietMealApp.Core.DTO
         public int Tea { get; set; }
         [Required(ErrorMessage = "Wybierz posiłek na kolację")]
         public int Dinner { get; set; }
-        public int Kcal { get; set; }
+        public float Kcal { get; set; }
         public List<DietDayMeals> DayDietMeals { get; set; }
     }
 }

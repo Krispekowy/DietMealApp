@@ -49,7 +49,7 @@ namespace DietMealApp.DataAccessLayer.Repositories
 
         public IQueryable<Meal> Get()
         {
-            return dbContext.Meals.AsNoTracking().Where(a => !a.IsDeleted);
+            return dbContext.Meals.AsNoTracking().Where(a => a.IsDeleted != true);
         }
 
         public IQueryable<Meal> Get(Func<Meal, bool> filterCondition)
@@ -67,7 +67,7 @@ namespace DietMealApp.DataAccessLayer.Repositories
 
         public async Task<List<Meal>> GetMealsByUser(string user)
         {
-            return await dbContext.Meals.Where(x => x.UserId == user).ToListAsync();
+            return await dbContext.Meals.Where(x => x.UserId == user && !x.IsDeleted).ToListAsync();
         }
 
         public void Insert(Meal entity)

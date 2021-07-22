@@ -1,4 +1,5 @@
-﻿using DietMealApp.Application.Functions.Meal.Command.InsertMeal;
+﻿using DietMealApp.Application.Functions.Meal.Command.DeleteMeal;
+using DietMealApp.Application.Functions.Meal.Command.InsertMeal;
 using DietMealApp.Application.Functions.Meal.Command.UpdateMeal;
 using DietMealApp.Application.Functions.Meal.Query.GetMealById;
 using DietMealApp.Core.DTO.Meals;
@@ -105,5 +106,34 @@ namespace DietMealApp.WebClient.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            InitId();
+            try
+            {
+                var model = await _mediator.Send(new GetMealFormByIdQuery() { Id = id });
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(MealFormDTO model)
+        {
+            InitId();
+            try
+            {
+                await _mediator.Send(new DeleteMealCommand() { Id = model.Id });
+                return RedirectToAction("Index", "Meal");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
     }
 }

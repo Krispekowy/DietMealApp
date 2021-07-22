@@ -30,6 +30,7 @@ using DietMealApp.Application.Functions.Meal.Command.InsertMeal;
 using DietMealApp.Core.DTO.Meals;
 using DietMealApp.Application.Functions.Meal.Query.GetMealById;
 using DietMealApp.Application.Functions.Meal.Command.UpdateMeal;
+using DietMealApp.Application.Functions.Meal.Command.DeleteMeal;
 
 namespace DietMealApp
 {
@@ -81,6 +82,7 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<InsertMealCommand, Unit>, InsertMealCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateMealCommand, Unit>, UpdateMealCommandHandler>();
             services.AddScoped<IRequestHandler<GetMealFormByIdQuery, MealFormDTO>, GetMealFormByIdQueryHandler>();
+            services.AddScoped<IRequestHandler<DeleteMealCommand, Unit>, DeleteMealCommandHandler>();
             #endregion
 
             #region RestClientConfig

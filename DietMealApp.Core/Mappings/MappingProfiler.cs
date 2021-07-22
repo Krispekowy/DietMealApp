@@ -40,6 +40,7 @@ namespace DietMealApp.Core.Mappings
                 .ForMember(a => a.MealName, b => b.MapFrom(c => c.MealName))
                 .ForMember(a=>a.MealProducts, b=>b.MapFrom(c=>c.MealProducts))
                 .ForMember(a=>a.Id, b=>b.MapFrom(c=>c.Id))
+                .ForMember(a=>a.Description, b=>b.MapFrom(c=>c.Description))
                 .ForAllOtherMembers(a => a.Ignore());
 
         }

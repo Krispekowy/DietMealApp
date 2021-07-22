@@ -62,7 +62,7 @@ namespace DietMealApp.DataAccessLayer.Repositories
             return await dbContext.DietDays
                 .AsNoTracking()
                 .Where(a => a.Id == id)
-                .Include(a=>a.DayDietMeals)
+                //.Include(a=>a.DayDietMeals)
                 .FirstOrDefaultAsync();
         }
 

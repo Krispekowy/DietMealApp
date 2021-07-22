@@ -62,8 +62,8 @@ namespace DietMealApp.DataAccessLayer.Repositories
             return await dbContext.Diets
                 .Where(b => b.Id == id)
                 .Include(d => d.Days)
-                    .ThenInclude(ddm => ddm.DayDietMeals)
-                        .ThenInclude(m => m.Meal)
+                    //.ThenInclude(ddm => ddm.DayDietMeals)
+                    //    .ThenInclude(m => m.Meal)
                 .FirstOrDefaultAsync();
         }
 

@@ -14,11 +14,11 @@ namespace DietMealApp.Core.MappingEntity
                 .HasKey(t => new { t.DietDayId, t.MealId });
             entityBuilder
                 .HasOne(t => t.DayDiet)
-                .WithMany(a => a.DayDietMeals)
+                .WithMany(a => a.DietDayMeals)
                 .HasForeignKey(t => t.DietDayId);
             entityBuilder
                 .HasOne(t => t.Meal)
-                .WithMany(a => a.DayDietMeals)
+                .WithMany(a => a.DietDayMeals)
                 .HasForeignKey(t => t.MealId);
         }
     }
