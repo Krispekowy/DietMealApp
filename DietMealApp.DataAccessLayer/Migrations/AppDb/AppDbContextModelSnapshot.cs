@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace DietMealApp.DataAccessLayer.Migrations
+namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -18,6 +18,59 @@ namespace DietMealApp.DataAccessLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("DietMealApp.Core.Entities.Day", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Breakfast")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Brunch")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("CanBeEdited")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Dinner")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<float>("Kcal")
+                        .HasColumnType("real");
+
+                    b.Property<int>("Lunch")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("ModifyDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Tea")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Days");
+                });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Diet", b =>
                 {
@@ -51,76 +104,6 @@ namespace DietMealApp.DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Diets");
-                });
-
-            modelBuilder.Entity("DietMealApp.Core.Entities.DietDay", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Breakfast")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Brunch")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("CanBeEdited")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeleteDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DietId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Dinner")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<float>("Kcal")
-                        .HasColumnType("real");
-
-                    b.Property<int>("Lunch")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("ModifyDate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Tea")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DietId");
-
-                    b.ToTable("DietDays");
-                });
-
-            modelBuilder.Entity("DietMealApp.Core.Entities.DietDayMeals", b =>
-                {
-                    b.Property<Guid>("DietDayId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("MealId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("DietDayId", "MealId");
-
-                    b.HasIndex("MealId");
-
-                    b.ToTable("DayDietMeals");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Meal", b =>
@@ -165,29 +148,6 @@ namespace DietMealApp.DataAccessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Meals");
-                });
-
-            modelBuilder.Entity("DietMealApp.Core.Entities.MealProduct", b =>
-                {
-                    b.Property<Guid>("MealId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("MealId", "ProductId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("MealProducts");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Product", b =>
@@ -237,35 +197,98 @@ namespace DietMealApp.DataAccessLayer.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("DietMealApp.Core.Entities.DietDay", b =>
+            modelBuilder.Entity("DietMealApp.Core.Intersections.DayMeals", b =>
                 {
-                    b.HasOne("DietMealApp.Core.Entities.Diet", "Diet")
-                        .WithMany("Days")
-                        .HasForeignKey("DietId");
+                    b.Property<Guid>("DayId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Navigation("Diet");
+                    b.Property<Guid>("MealId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("DayId", "MealId");
+
+                    b.HasIndex("MealId");
+
+                    b.ToTable("DayMeals");
                 });
 
-            modelBuilder.Entity("DietMealApp.Core.Entities.DietDayMeals", b =>
+            modelBuilder.Entity("DietMealApp.Core.Intersections.DietDay", b =>
                 {
-                    b.HasOne("DietMealApp.Core.Entities.DietDay", "DayDiet")
-                        .WithMany("DietDayMeals")
-                        .HasForeignKey("DietDayId")
+                    b.Property<Guid>("DayId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IdDiety")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("DayId", "IdDiety");
+
+                    b.HasIndex("IdDiety");
+
+                    b.ToTable("DietDays");
+                });
+
+            modelBuilder.Entity("DietMealApp.Core.Intersections.MealProduct", b =>
+                {
+                    b.Property<Guid>("MealId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("MealId", "ProductId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("MealProducts");
+                });
+
+            modelBuilder.Entity("DietMealApp.Core.Intersections.DayMeals", b =>
+                {
+                    b.HasOne("DietMealApp.Core.Entities.Day", "Day")
+                        .WithMany("DayMeals")
+                        .HasForeignKey("DayId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DietMealApp.Core.Entities.Meal", "Meal")
-                        .WithMany("DietDayMeals")
+                        .WithMany("DayMeals")
                         .HasForeignKey("MealId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("DayDiet");
+                    b.Navigation("Day");
 
                     b.Navigation("Meal");
                 });
 
-            modelBuilder.Entity("DietMealApp.Core.Entities.MealProduct", b =>
+            modelBuilder.Entity("DietMealApp.Core.Intersections.DietDay", b =>
+                {
+                    b.HasOne("DietMealApp.Core.Entities.Day", "Day")
+                        .WithMany("DietDays")
+                        .HasForeignKey("DayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DietMealApp.Core.Entities.Diet", "Diet")
+                        .WithMany("DietDays")
+                        .HasForeignKey("IdDiety")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Day");
+
+                    b.Navigation("Diet");
+                });
+
+            modelBuilder.Entity("DietMealApp.Core.Intersections.MealProduct", b =>
                 {
                     b.HasOne("DietMealApp.Core.Entities.Meal", "Meal")
                         .WithMany("MealProducts")
@@ -284,19 +307,21 @@ namespace DietMealApp.DataAccessLayer.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("DietMealApp.Core.Entities.Diet", b =>
+            modelBuilder.Entity("DietMealApp.Core.Entities.Day", b =>
                 {
-                    b.Navigation("Days");
+                    b.Navigation("DayMeals");
+
+                    b.Navigation("DietDays");
                 });
 
-            modelBuilder.Entity("DietMealApp.Core.Entities.DietDay", b =>
+            modelBuilder.Entity("DietMealApp.Core.Entities.Diet", b =>
                 {
-                    b.Navigation("DietDayMeals");
+                    b.Navigation("DietDays");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Meal", b =>
                 {
-                    b.Navigation("DietDayMeals");
+                    b.Navigation("DayMeals");
 
                     b.Navigation("MealProducts");
                 });

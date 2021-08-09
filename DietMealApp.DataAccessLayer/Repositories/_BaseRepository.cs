@@ -14,7 +14,7 @@ namespace DietMealApp.DataAccessLayer.Repositories
 
         #region Repositories
         public IDietRepository dietRepository { get; set; }
-        public IDietDayRepository dietDayRepository { get; set; }
+        public IDayRepository dayRepository { get; set; }
         public IMealRepository mealRepository { get; set; }
         public IProductRepository productRepository { get; set; }
 

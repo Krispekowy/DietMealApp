@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.DataAccessLayer.Repositories
 {
-    class DietRepository : IDietRepository
+    public class DietRepository : IDietRepository
     {
         private readonly AppDbContext dbContext;
 
@@ -61,9 +61,9 @@ namespace DietMealApp.DataAccessLayer.Repositories
         {
             return await dbContext.Diets
                 .Where(b => b.Id == id)
-                .Include(d => d.Days)
-                    //.ThenInclude(ddm => ddm.DayDietMeals)
-                    //    .ThenInclude(m => m.Meal)
+                .Include(d => d.DietDays)
+                    .ThenInclude(ddm => ddm.Day)
+                        .ThenInclude(m => m.DayMeals)
                 .FirstOrDefaultAsync();
         }
 

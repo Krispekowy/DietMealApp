@@ -2,6 +2,7 @@
 using DietMealApp.Core.DTO.Products;
 using DietMealApp.Core.Entities;
 using DietMealApp.Core.Enums;
+using DietMealApp.Core.Intersections;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace DietMealApp.Core.Entities
+namespace DietMealApp.Core.Intersections
 {
     public class MealProduct
     {

@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Core.Entities;
+using DietMealApp.Core.Intersections;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -6,19 +7,19 @@ using System.Text;
 
 namespace DietMealApp.Core.MappingEntity
 {
-    public class DietDayMealsMap
+    public class DayMealsMap
     {
-        public DietDayMealsMap(EntityTypeBuilder<DietDayMeals> entityBuilder)
+        public DayMealsMap(EntityTypeBuilder<DayMeals> entityBuilder)
         {
             entityBuilder
-                .HasKey(t => new { t.DietDayId, t.MealId });
+                .HasKey(t => new { t.DayId, t.MealId });
             entityBuilder
-                .HasOne(t => t.DayDiet)
-                .WithMany(a => a.DietDayMeals)
-                .HasForeignKey(t => t.DietDayId);
+                .HasOne(t => t.Day)
+                .WithMany(a => a.DayMeals)
+                .HasForeignKey(t => t.DayId);
             entityBuilder
                 .HasOne(t => t.Meal)
-                .WithMany(a => a.DietDayMeals)
+                .WithMany(a => a.DayMeals)
                 .HasForeignKey(t => t.MealId);
         }
     }

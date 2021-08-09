@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Core.Entities;
+using DietMealApp.Core.Intersections;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;

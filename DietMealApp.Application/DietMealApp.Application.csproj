@@ -23,6 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Functions\DietDay\Command\DeleteDay\" />
+    <Folder Include="Functions\DietDay\Command\InsertDay\" />
+    <Folder Include="Functions\DietDay\Command\UpdateMeal\" />
+    <Folder Include="Functions\DietDay\Query\GetDayById\" />
     <Folder Include="Mappings\" />
   </ItemGroup>
 

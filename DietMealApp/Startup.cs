@@ -31,6 +31,7 @@ using DietMealApp.Core.DTO.Meals;
 using DietMealApp.Application.Functions.Meal.Query.GetMealById;
 using DietMealApp.Application.Functions.Meal.Command.UpdateMeal;
 using DietMealApp.Application.Functions.Meal.Command.DeleteMeal;
+using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
 
 namespace DietMealApp
 {
@@ -73,8 +74,12 @@ namespace DietMealApp
             #region DependencyInjection
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IMealRepository, MealRepository>();
+            services.AddScoped<IDayRepository, DayRepository>();
+            services.AddScoped<IDietRepository, DietRepository>();
+
             services.AddScoped<IRequestHandler<GetAllProductsQuery, List<ProductDTO>>, GetAllProductsQueryHandler>();
             services.AddScoped<IRequestHandler<GetProductByIdQuery, ProductDTO>, GetProductByIdQueryHandler>();
+            services.AddScoped<IRequestHandler<GetDaysByUserQuery, List<DayDTO>>, GetDaysByUserQueryHandler>();
             services.AddScoped<IRequestHandler<InsertProductCommand, Unit>, InsertProductCommandHandler> ();
             services.AddScoped<IRequestHandler<DeleteProductCommand, Unit>, DeleteProductCommandHandler> ();
             services.AddScoped<IRequestHandler<UpdateProductCommand, Unit>, UpdateProductCommandHandler>();
@@ -83,6 +88,7 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<UpdateMealCommand, Unit>, UpdateMealCommandHandler>();
             services.AddScoped<IRequestHandler<GetMealFormByIdQuery, MealFormDTO>, GetMealFormByIdQueryHandler>();
             services.AddScoped<IRequestHandler<DeleteMealCommand, Unit>, DeleteMealCommandHandler>();
+
             #endregion
 
             #region RestClientConfig

@@ -1,5 +1,6 @@
 ﻿using DietMealApp.Core.Abstract;
 using DietMealApp.Core.Entities;
+using DietMealApp.Core.Intersections;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,7 +18,7 @@ namespace DietMealApp.Core.DTO
                 var dto = new DietDTO()
                 {
                     Id = entity.Id,
-                    Days = entity.Days,
+                    Days = entity.DietDays,
                     Description = entity.Description,
                     DietName = entity.DietName
                 };

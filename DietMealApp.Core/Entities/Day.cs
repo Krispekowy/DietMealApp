@@ -1,11 +1,13 @@
 ﻿using DietMealApp.Core.Entities;
+using DietMealApp.Core.Intersections;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace DietMealApp.Core.Entities
 {
-    public class DietDay : _BaseEntity
+    public class Day : _BaseEntity
     {
         public string Name { get; set; }
         public int Breakfast { get; set; }
@@ -13,8 +15,10 @@ namespace DietMealApp.Core.Entities
         public int Lunch { get; set; }
         public int Tea { get; set; }
         public int Dinner { get; set; }
-        public Diet Diet { get; set; }
-        public virtual List<DietDayMeals> DietDayMeals { get; set; }
+
+        public virtual List<DietDay> DietDays { get; set; }
+        public virtual List<DayMeals> DayMeals { get; set; }
         public float Kcal { get; set; }
+        public string UserId { get; set; }
     }
 }

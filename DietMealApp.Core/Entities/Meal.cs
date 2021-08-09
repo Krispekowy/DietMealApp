@@ -1,5 +1,6 @@
 ﻿using DietMealApp.Core.Entities;
 using DietMealApp.Core.Enums;
+using DietMealApp.Core.Intersections;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,6 +18,6 @@ namespace DietMealApp.Core.Entities
         public int Kcal { get; set; }
         [ForeignKey("MealId")]
         public virtual List<MealProduct> MealProducts { get; set; } = new List<MealProduct>();
-        public virtual List<DietDayMeals> DietDayMeals { get; set; }
+        public virtual List<DayMeals> DayMeals { get; set; }
     }
 }

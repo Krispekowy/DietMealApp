@@ -1,5 +1,6 @@
 ﻿using DietMealApp.Core.Abstract;
 using DietMealApp.Core.Entities;
+using DietMealApp.Core.Intersections;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,14 +9,14 @@ using System.Text;
 
 namespace DietMealApp.Core.DTO
 {
-    public sealed class DietDayDTO : _BaseDTO
+    public sealed class DayDTO : _BaseDTO
     {
-        public DietDayDTO() : base() { }
-        public static DietDayDTO DietDayEntityToDTO(DietDay entity)
+        public DayDTO() : base() { }
+        public static DayDTO DietDayEntityToDTO(Day entity)
         {
             if (entity != null)
             {
-                var dto = new DietDayDTO()
+                var dto = new DayDTO()
                 {
                     Id = entity.Id,
                     Kcal = entity.Kcal
@@ -30,7 +31,6 @@ namespace DietMealApp.Core.DTO
         [MinLength(3, ErrorMessage = "Nazwa musi mieć co najmniej 3 znaki")]
         [MaxLength(50, ErrorMessage = "Nazwa może mieć maksymalnie 50 znaków")]
         public string Name { get; set; }
-        public int DietId { get; set; }
         [Required(ErrorMessage = "Wybierz posiłek na I śniadanie")]
         public int Breakfast { get; set; }
         [Required(ErrorMessage = "Wybierz posiłek na II śniadanie")]
@@ -42,6 +42,7 @@ namespace DietMealApp.Core.DTO
         [Required(ErrorMessage = "Wybierz posiłek na kolację")]
         public int Dinner { get; set; }
         public float Kcal { get; set; }
-        public List<DietDayMeals> DayDietMeals { get; set; }
+        public ICollection<DayMeals> DayMeals { get; set; }
+        public ICollection<DietDay> DietDays { get; set; }
     }
 }

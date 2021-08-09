@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Folder Include="MigrationsUsers\" />
+    <Folder Include="Migrations\AppDb\" />
   </ItemGroup>
 
 </Project>
