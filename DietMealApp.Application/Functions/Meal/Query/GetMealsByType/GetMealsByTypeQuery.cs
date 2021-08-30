@@ -1,5 +1,6 @@
 ﻿using DietMealApp.Core.DTO.Meals;
 using DietMealApp.Core.Enums;
+using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -7,11 +8,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DietMealApp.Core.DTO.Days
+namespace DietMealApp.Application.Functions.Meal.Query.GetMealsByType
 {
-    public sealed class MealMenuItemDTO
+    public sealed class GetMealsByTypeQuery : IRequest<SelectList>
     {
-        public MealDTO SelectedMeal { get; set; }
-        public MealTimeType AssignedMealTimeType { get; set; }
+        public string UserId { get; set; }
+        public MealTimeType Type { get; set; }
     }
 }

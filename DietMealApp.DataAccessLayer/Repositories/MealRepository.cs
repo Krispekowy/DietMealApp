@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Core.Entities;
+using DietMealApp.Core.Enums;
 using DietMealApp.Core.Interfaces;
 using DietMealApp.Core.Intersections;
 using Microsoft.EntityFrameworkCore;
@@ -64,6 +65,22 @@ namespace DietMealApp.DataAccessLayer.Repositories
                 .AsNoTracking()
                 .Include(x => x.MealProducts)
                 .FirstOrDefaultAsync(m => m.Id == id);
+        }
+
+        public async Task<List<Meal>> GetMealsByType(MealTimeType type)
+        {
+            return await dbContext.Meals
+                .AsNoTracking()
+                .Where(m => m.TypeOfMeal == type && !m.IsDeleted)
+                .ToListAsync();
+        }
+
+        public async Task<List<Meal>> GetMealsByType(string user, MealTimeType type)
+        {
+            return await dbContext.Meals
+                .AsNoTracking()
+                .Where(m => m.TypeOfMeal == type && !m.IsDeleted && m.UserId == user)
+                .ToListAsync();
         }
 
         public async Task<List<Meal>> GetMealsByUser(string user)

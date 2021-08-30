@@ -2,7 +2,9 @@
 using DietMealApp.Application.Functions.Meal.Command.InsertMeal;
 using DietMealApp.Application.Functions.Meal.Command.UpdateMeal;
 using DietMealApp.Application.Functions.Meal.Query.GetMealById;
+using DietMealApp.Application.Functions.Meal.Query.GetMealsByType;
 using DietMealApp.Core.DTO.Meals;
+using DietMealApp.Core.Enums;
 using DietMealApp.Service.Functions.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -126,6 +128,22 @@ namespace DietMealApp.WebClient.Controllers
             {
                 await _mediator.Send(new DeleteMealCommand() { Id = model.Id });
                 return RedirectToAction("Index", "Meal");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet]
+        
+        public async Task<IActionResult> GetMealsByType([FromQuery] MealTimeType type)
+        {
+            InitId();
+            try
+            {
+                var meals = await _mediator.Send(new GetMealsByTypeQuery() { Type = type, UserId = _senderId });
+                return Json(meals);
             }
             catch (Exception ex)
             {

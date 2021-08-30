@@ -24,7 +24,6 @@ namespace DietMealApp.Core.DTO.Meals
         [MaxLength(1000, ErrorMessage = "Maksymalna długość opisu to 1000 znaków")]
         public string Description { get; set; }
         public int Kcal { get; set; } = 0;
-        public List<MealProduct> MealProducts { get; set; }
 
     }
 }

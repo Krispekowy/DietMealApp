@@ -2,6 +2,7 @@
 using DietMealApp.Core.DTO.Days;
 using DietMealApp.Service.Functions.Query;
 using MediatR;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,17 +32,8 @@ namespace DietMealApp.Application.Functions.Day.Query.GetDayForm
                 UserId = request.UserId,
                 Kcal = 0,
                 Name = "",
-                MealMenu = new List<MealMenuItemDTO>()
-                {
-                    new MealMenuItemDTO()
-                    {
-                        Meals = meals.Select(a=> new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-                        {
-                            Value = a.Id.ToString().ToUpper(),
-                            Text = a.MealName
-                        }).ToList()
-                    }
-                }
+                MealMenu = new List<MealMenuItemDTO>() { new MealMenuItemDTO() },
+                Meals = new SelectList(meals, "Id", "MealName")
             };
             return response;
         }

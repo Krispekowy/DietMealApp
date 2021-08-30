@@ -23,8 +23,8 @@
             <label class="col-sm-12 col-form-label">
                 Rodzaj posiłku
             </label>
-            <div class="col-sm-4">
-                <select class="form-control" asp-for="MealMenu[0].AssignedMealTimeType"
+            <div class="col-sm-12">
+                <select id="selectMealType" class="form-control" asp-for="MealMenu[0].AssignedMealTimeType"
                         asp-items="Html.GetEnumSelectList<MealTimeType>()">
                 </select>
                 <span asp-validation-for="MealMenu[0].AssignedMealTimeType" class="text-danger"></span>
@@ -35,17 +35,46 @@
                 Posiłek
             </label>
             <div class="col-sm-12">
-                <select class="form-control" asp-for="MealMenu[0].SelectedMeal"
-                        asp-items="@Model.MealMenu[0].Meals">
+                <select id="selectMeal" class="form-control" asp-for="MealMenu[0].SelectedMeal"
+                        asp-items="@Model.Meals">
                 </select>
             </div>
         </div>
-
+    </div>
     <div class="form-group row">
         <div class="col-sm-10">
             <button type="submit" class="btn btn-primary">Dodaj</button>
             <a asp-action="Index" class="btn btn-danger">Anuluj</a>
         </div>
     </div>
-
 </form>
+
+@section Scripts {
+    <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+}
+<script type="text/javascript">
+    $('#selectMealType').change(function () {
+        var m = document.getElementById("selectMealType");
+        var selectedMeal = m.value;
+        $.ajax({
+            url: `/Meal/GetMealsByType?type=`+ selectedMeal,
+            type: "GET", //send it through get method
+            dataType: "json",
+            success: function (data) {
+                let mealDropdown = $('#selectMeal');
+                mealDropdown.find('option').remove().end();
+                if (data.length == 0) {
+                    mealDropdown.append('<option value=0>Brak posiłków tego typu</option>');
+                }
+                else {
+                    $.each(data, function (dataIndex, item) {
+                        mealDropdown.append($('<option></option>').attr('value', item.value).text(item.text));
+                    });
+                }
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+            }
+        });
+    });
+</script>

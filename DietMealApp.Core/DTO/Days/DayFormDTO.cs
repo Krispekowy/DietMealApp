@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Core.Intersections;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +19,7 @@ namespace DietMealApp.Core.DTO.Days
         [MaxLength(50, ErrorMessage = "Nazwa może mieć maksymalnie 50 znaków")]
         public string Name { get; set; }
         public float Kcal { get; set; }
+        public SelectList Meals { get; set; }
         public List<MealMenuItemDTO> MealMenu { get; set; }
     }
 }
