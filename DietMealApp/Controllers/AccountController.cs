@@ -3,6 +3,7 @@ using DietMealApp.Core.Entities;
 using DietMealApp.Core.ViewModels.Identity;
 using DietMealApp.DataAccessLayer;
 using DietMealApp.Service;
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,8 +32,9 @@ namespace DietMealApp.WebClient.Controllers
             AppUsersDbContext appUsersDbContext,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
-            ILogger<AppUserDTO> logger) 
-            : base(configuration)
+            ILogger<AppUserDTO> logger,
+            IMediator mediator) 
+            : base(configuration, mediator)
         {
             _configuration = configuration;
             _appUsersDbContext = appUsersDbContext;

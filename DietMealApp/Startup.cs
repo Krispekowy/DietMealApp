@@ -14,7 +14,6 @@ using System.Globalization;
 using DietMealApp.DataAccessLayer;
 using Microsoft.AspNetCore.Identity;
 using DietMealApp.Core.Entities;
-using DietMealApp.Service;
 using DietMealApp.Core.Interfaces;
 using DietMealApp.DataAccessLayer.Repositories;
 using MediatR;
@@ -22,16 +21,16 @@ using System.Reflection;
 using DietMealApp.Service.Functions.Query;
 using DietMealApp.Service.Functions.Command;
 using DietMealApp.Core.DTO.Products;
-using AutoMapper;
 using DietMealApp.Core.Mappings;
 using DietMealApp.Core.DTO;
-using DietMealApp.Core.Services;
 using DietMealApp.Application.Functions.Meal.Command.InsertMeal;
 using DietMealApp.Core.DTO.Meals;
 using DietMealApp.Application.Functions.Meal.Query.GetMealById;
 using DietMealApp.Application.Functions.Meal.Command.UpdateMeal;
 using DietMealApp.Application.Functions.Meal.Command.DeleteMeal;
 using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
+using DietMealApp.Application.Functions.Day.Query.GetDayForm;
+using DietMealApp.Core.DTO.Days;
 
 namespace DietMealApp
 {
@@ -88,22 +87,9 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<UpdateMealCommand, Unit>, UpdateMealCommandHandler>();
             services.AddScoped<IRequestHandler<GetMealFormByIdQuery, MealFormDTO>, GetMealFormByIdQueryHandler>();
             services.AddScoped<IRequestHandler<DeleteMealCommand, Unit>, DeleteMealCommandHandler>();
+            services.AddScoped<IRequestHandler<GetDayFormQuery, DayFormDTO>, GetDayFormQueryHandler>();
 
             #endregion
-
-            #region RestClientConfig
-
-            ////services.AddHttpClient();
-            ////services.AddHttpClient("meta", a =>
-            ////{
-            ////    a.BaseAddress = new Uri("http://localhost:63494");
-            ////});
-
-            //services.AddTransient(i =>
-            //    new RestClient(Configuration["ApiLink"])
-            //);
-
-            #endregion RestClientConfig
 
             #region MvcConfig
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();

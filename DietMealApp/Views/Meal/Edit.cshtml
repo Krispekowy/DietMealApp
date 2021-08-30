@@ -24,7 +24,7 @@
         </label>
         <div class="col-sm-6">
             <select class="form-control" asp-for="TypeOfMeal"
-                    asp-items="Html.GetEnumSelectList<TypesOfMeal>()">
+                    asp-items="Html.GetEnumSelectList<MealTimeType>()">
             </select>
             <span asp-validation-for="TypeOfMeal" class="text-danger"></span>
         </div>

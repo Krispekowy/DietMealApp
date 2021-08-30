@@ -1,10 +1,10 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:58501",
-      "sslPort": 44310
+      "applicationUrl": "http://localhost:50727/",
+      "sslPort": 44340
     }
   },
   "profiles": {
@@ -17,12 +17,12 @@
     },
     "DietMealApp": {
       "commandName": "Project",
-      "dotnetRunMessages": "true",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:20002",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": "true",
+      "applicationUrl": "https://localhost:20002"
     }
   }
 }

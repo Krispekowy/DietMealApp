@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DietMealApp.Core.DTO;
+using DietMealApp.Core.DTO.Days;
 using DietMealApp.Core.DTO.Meals;
 using DietMealApp.Core.DTO.Products;
 using DietMealApp.Core.Entities;

@@ -31,16 +31,6 @@ namespace DietMealApp.Core.DTO
         [MinLength(3, ErrorMessage = "Nazwa musi mieć co najmniej 3 znaki")]
         [MaxLength(50, ErrorMessage = "Nazwa może mieć maksymalnie 50 znaków")]
         public string Name { get; set; }
-        [Required(ErrorMessage = "Wybierz posiłek na I śniadanie")]
-        public int Breakfast { get; set; }
-        [Required(ErrorMessage = "Wybierz posiłek na II śniadanie")]
-        public int Brunch { get; set; }
-        [Required(ErrorMessage = "Wybierz posiłek na obiad")]
-        public int Lunch { get; set; }
-        [Required(ErrorMessage = "Wybierz posiłek na podwieczorek")]
-        public int Tea { get; set; }
-        [Required(ErrorMessage = "Wybierz posiłek na kolację")]
-        public int Dinner { get; set; }
         public float Kcal { get; set; }
         public ICollection<DayMeals> DayMeals { get; set; }
         public ICollection<DietDay> DietDays { get; set; }

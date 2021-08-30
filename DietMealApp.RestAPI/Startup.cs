@@ -1,80 +1,104 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DietMealApp.Application;
+using Microsoft.Extensions.Options;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using MediatR;
+using System.Reflection;
+using DietMealApp.Service.Functions.Query;
+using DietMealApp.Core.DTO.Products;
+using DietMealApp.Core.Interfaces;
+using DietMealApp.DataAccessLayer.Repositories;
 using DietMealApp.DataAccessLayer;
+using Microsoft.EntityFrameworkCore;
+using DietMealApp.Core.Mappings;
 
 namespace DietMealApp.RestAPI
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
+        public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "Diet Meal App API",
-                });
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IRequestHandler<GetProductByIdQuery, ProductDTO>, GetProductByIdQueryHandler>();
+            #region MvcConfig
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddControllers().AddNewtonsoftJson();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
+            //services.AddAuthentication().AddCookie(c =>
+            //{
+            //    c.LoginPath = "/Identity/Account/Login";
+            //});
+            services.AddAuthorization();
+            services.AddMvc().AddDataAnnotationsLocalization().AddViewLocalization();
+            #endregion
+            #region DataAccessLayerConfig
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(Configuration
+                .GetConnectionString("DietMealAppDB")));
 
-            });
+            services.AddDbContext<AppUsersDbContext>(options =>
+                options.UseSqlServer(Configuration
+                .GetConnectionString("UsersDietMealDB")));
+            #endregion
 
-            services.AddDietMealApp();
-            services.AddDietMealAppPersistenceEFServices(Configuration);
+            #region AutoMapper
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddSingleton(AutoMapperConfig.RegisterMappings());
+            #endregion
 
-            services.AddControllers();
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("Open",
-                    builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-            });
+            services.AddMediatR(Assembly.GetExecutingAssembly());
         }
 
-
-
-
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
-            app.UseRouting();
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            else
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Diet Meal App API");
-            });
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
 
-
-            app.UseCors("Open");
+            var localizationOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value;
+            app.UseRequestLocalization(localizationOptions);
+            app.UseStaticFiles();
+            app.UseRouting();
+            app.UseCors();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("pl-PL"),
+                SupportedCultures = new List<CultureInfo> { new CultureInfo("pl-PL") },
+                SupportedUICultures = new List<CultureInfo> { new CultureInfo("pl-PL") }
+            });
+
+
         }
     }
 }

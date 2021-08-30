@@ -10,12 +10,6 @@ namespace DietMealApp.Core.Entities
     public class Day : _BaseEntity
     {
         public string Name { get; set; }
-        public int Breakfast { get; set; }
-        public int Brunch { get; set; }
-        public int Lunch { get; set; }
-        public int Tea { get; set; }
-        public int Dinner { get; set; }
-
         public virtual List<DietDay> DietDays { get; set; }
         public virtual List<DayMeals> DayMeals { get; set; }
         public float Kcal { get; set; }

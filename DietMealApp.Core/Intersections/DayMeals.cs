@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Core.Entities;
+using DietMealApp.Core.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,5 +13,6 @@ namespace DietMealApp.Core.Intersections
         public Day Day { get; set; }
         public Guid MealId { get; set; }
         public Meal Meal { get; set; }
+        public MealTimeType Type { get; set; }
     }
 }

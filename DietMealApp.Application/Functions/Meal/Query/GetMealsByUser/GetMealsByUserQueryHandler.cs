@@ -28,6 +28,10 @@ namespace DietMealApp.Service.Functions.Query
         public async Task<List<MealDTO>> Handle(GetMealsByUserQuery request, CancellationToken cancellationToken)
         {
             var result = await _mealRepository.GetMealsByUser(request.UserId);
+            if (request.Type != null)
+            {
+                result = result.Where(a => a.TypeOfMeal == request.Type).ToList();
+            }
             var ordered = result.OrderBy(a => a.MealName);
             return _mapper.Map<List<MealDTO>>(ordered);
         }

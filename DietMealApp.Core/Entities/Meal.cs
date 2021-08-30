@@ -10,7 +10,7 @@ namespace DietMealApp.Core.Entities
 {
     public class Meal : _BaseEntity
     {
-        public TypesOfMeal TypeOfMeal { get; set; }
+        public MealTimeType TypeOfMeal { get; set; }
         public string MealName { get; set; }
         public string Description { get; set; }
         public string UserId { get; set; }

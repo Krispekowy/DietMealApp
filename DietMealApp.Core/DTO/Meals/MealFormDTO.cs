@@ -16,7 +16,7 @@ namespace DietMealApp.Core.DTO.Meals
     {
         public string UserId { get; set; }
         [Required(ErrorMessage = "Pole typ posiłku jest wymagane")]
-        public TypesOfMeal TypeOfMeal { get; set; }
+        public MealTimeType TypeOfMeal { get; set; }
         [Required(ErrorMessage = "Pole nazwa posiłku jest wymagane")]
         [MinLength(5, ErrorMessage = "Nazwa posiłku musi składać się z minimum 5 znaków")]
         [MaxLength(50, ErrorMessage = "Nazwa posiłku może składać się z maksimum 50 znaków")]

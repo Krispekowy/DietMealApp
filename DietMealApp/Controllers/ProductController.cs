@@ -1,38 +1,29 @@
-﻿using DietMealApp.Core.DTO;
+﻿
 using DietMealApp.Core.DTO.Products;
-using DietMealApp.Core.Entities;
-using DietMealApp;
 using DietMealApp.Service.Functions.Command;
 using DietMealApp.Service.Functions.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace DietMealApp.WebClient.Controllers
 {
     public class ProductController : _ParentController
     {
-        private readonly IMediator _mediator;
-
         public ProductController(
             IConfiguration configuration,
             IMediator mediator)
-            : base(configuration)
+            : base(configuration, mediator)
         {
-            _mediator = mediator;
         }
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             try
             {
-                var result = await _mediator.Send(new GetAllProductsQuery(){ OrderBy = Core.Enums.OrderByProductOptions.ByName });
+                var result = await _mediator.Send(new GetAllProductsQuery() { OrderBy = Core.Enums.OrderByProductOptions.ByName}) ;
                 return View(result);
             }
             catch (Exception ex)
@@ -76,7 +67,7 @@ namespace DietMealApp.WebClient.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
-            var result = await _mediator.Send(new GetProductByIdQuery(){ Id = id });
+            var result = await _mediator.Send(new GetProductByIdQuery() { Id = id });
             return View(result);
         }
 

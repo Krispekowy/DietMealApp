@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DietMealApp.Core.DTO;
+using DietMealApp.Core.DTO.Days;
 using DietMealApp.Core.Interfaces;
 using MediatR;
 using System;

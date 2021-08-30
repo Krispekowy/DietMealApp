@@ -14,14 +14,11 @@ namespace DietMealApp.WebClient.Controllers
 {
     public class MealController : _ParentController
     {
-        private readonly IMediator _mediator;
-
         public MealController(
             IConfiguration configuration,
             IMediator mediator
-            ) : base(configuration)
+            ) : base(configuration, mediator)
         {
-            _mediator = mediator;
         }
 
         [HttpGet]

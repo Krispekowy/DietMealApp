@@ -2,16 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>6d00a5fe-c213-467c-b9d8-8e93e899ff39</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.0" NoWarn="NU1605" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.0" NoWarn="NU1605" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DietMealApp.Application\DietMealApp.Application.csproj" />
+    <ProjectReference Include="..\DietMealApp.Core\DietMealApp.Core.csproj" />
     <ProjectReference Include="..\DietMealApp.DataAccessLayer\DietMealApp.DataAccessLayer.csproj" />
   </ItemGroup>
 

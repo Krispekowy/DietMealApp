@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Core.DTO;
+using DietMealApp.Core.DTO.Days;
 using MediatR;
 using System;
 using System.Collections.Generic;

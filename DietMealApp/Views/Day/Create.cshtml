@@ -1,0 +1,51 @@
+﻿@model DietMealApp.Core.DTO.Days.DayFormDTO
+@using DietMealApp.Core.Enums;
+@{
+
+}
+
+<h1>Tworzenie dnia diety</h1>
+
+<form method="post" class="mt-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="UserId" />
+    <div class="form-group row">
+        <label asp-for="Name" class="col-sm-2 col-form-label">
+            Nazwa
+        </label>
+        <div class="col-sm-4">
+            <input asp-for="Name" class="form-control" placeholder="Wprowadź nazwę">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="form-group col">
+            <label class="col-sm-12 col-form-label">
+                Rodzaj posiłku
+            </label>
+            <div class="col-sm-4">
+                <select class="form-control" asp-for="MealMenu[0].AssignedMealTimeType"
+                        asp-items="Html.GetEnumSelectList<MealTimeType>()">
+                </select>
+                <span asp-validation-for="MealMenu[0].AssignedMealTimeType" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group col">
+            <label class="col-sm-12 col-form-label">
+                Posiłek
+            </label>
+            <div class="col-sm-12">
+                <select class="form-control" asp-for="MealMenu[0].SelectedMeal"
+                        asp-items="@Model.MealMenu[0].Meals">
+                </select>
+            </div>
+        </div>
+
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Dodaj</button>
+            <a asp-action="Index" class="btn btn-danger">Anuluj</a>
+        </div>
+    </div>
+
+</form>

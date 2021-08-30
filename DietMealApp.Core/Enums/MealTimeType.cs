@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DietMealApp.Core.Enums
 {
-    public enum TypesOfMeal
+    public enum MealTimeType
     {
         [Display(Name = "-")]
         Brak = 0,
