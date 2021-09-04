@@ -27,6 +27,7 @@ namespace DietMealApp.Application.Functions.Meal.Command.InsertMeal
 
         public async Task<Unit> Handle(InsertMealCommand request, CancellationToken cancellationToken)
         {
+            request.MealForm.MealProducts.RemoveAll(item => item.ProductId == Guid.Empty);
             var meal = _mapper.Map<DietMealApp.Core.Entities.Meal>(request.MealForm);
             _mealRepository.Insert(meal);
             await _mealRepository.CommitAsync();

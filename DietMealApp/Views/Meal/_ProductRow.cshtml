@@ -1,0 +1,17 @@
+﻿@model DietMealApp.Core.ViewModels.ProductRow
+
+<tr onclick="getIndex(this)">
+    <td style="width:70%">
+        <select class="form-control" id="selectedProduct_@Model.Index" name="MealProducts[@Model.Index].ProductId">
+            <option selected> --Wybierz produkt-- </option>
+            @foreach (var product in Model.Products)
+            {
+                <option value="@product.Id">@product.ProductName</option>
+            }
+        </select>
+    </td>
+    <td style="width:30%">
+        <input id="quantity" class="form-control" name="MealProducts[@Model.Index].Quantity" placeholder="Ilość" />
+    </td>
+    <input type="hidden" name="MealProducts[@Model.Index].MealId" />
+</tr>

@@ -39,149 +39,62 @@
         </div>
     </div>
     <hr class="dashed">
-    <div class="form-group row">
-        <div class="form-group col">
-            <label class="col-sm-12 col-form-label">
-                Nazwa produktu
-            </label>
-            <div class="col-sm-12">
-                <input id="productSelect" type="text" list="productsToSelect" class="form-control custom-select" autocomplete="on">
-                <datalist id="productsToSelect">
-                    @foreach (var product in Model.Products)
-                    {
-                        <option id="@product.Id" value="@product.ProductName"></option>
-                    }
-                </datalist>
-            </div>
-        </div>
-        <div class="form-group col">
-            <label class="col-sm-12 col-form-label">
-                Ilość (w gramach)
-            </label>
-            <div class="col-sm-12">
-                <input id="quantity" class="form-control" placeholder="Ilość" />
-            </div>
-        </div>
-        <div class="form-group col">
-            <label class="col-sm-12 col-form-label">
-            </label>
-            <div class="col-sm-12">
-                <input type="button" value="Dodaj produkt " id="add-row" class="btn btn-primary" />
-            </div>
-        </div>
-    </div>
-    <div id="myTable" class="datatable" data-hover="true" data-border-color="dark ">
-        <table id="productsTable" class="table datatable-table">
-            <thead class="datatable-header">
-                <tr>
-                    <th>Produkt</th>
-                    <th>Ilość</th>
-                    <th></th>
+    <table id="productsTable" style="width:100%">
+        <tr>
+            <th style="width:70%" class="col">Nazwa produktu</th>
+            <th style="width:30%" class="col">Ilość (w gramach)</th>
+        </tr>
+        @if (Model.MealProducts != null)
+        {
+            @for (int i = 0; i < Model.MealProducts.Count; i++)
+            {
+                <tr onclick="getIndex(this)">
+                    <td style="width:70%">
+                        <select class="form-control" id="selectedProduct_@i" name="@Model.MealProducts[i].ProductId">
+                            @foreach (var product in Model.Products)
+                            {
+                                if (product.Id == Model.MealProducts[i].ProductId)
+                                {
+                                    <option selected value="@product.Id">@product.ProductName</option>
+                                }
+                                <option value="@product.Id">@product.ProductName</option>
+                            }
+                        </select>
+                    </td>
+                    <td style="width:30%">
+                        <input id="quantity" class="form-control" name="@Model.MealProducts[i].Quantity" placeholder="Ilość" value="@Model.MealProducts[i].Quantity" />
+                    </td>
+                    <input type="hidden" name="@Model.MealProducts[i].MealId" />
                 </tr>
-            </thead>
-            <tbody class="datatable-body">
-                @foreach (var product in Model.MealProducts)
-                {
-                    <tr onclick="GetIndex(this)" class="productsRows">
-                        <td>
-                            <input type="hidden" value="@product.Id" asp-for="MealProducts[Model.MealProducts.IndexOf(product)].Id" />
-                            <input class="mealId" value="@Model.Id" type="hidden" asp-for="MealProducts[Model.MealProducts.IndexOf(product)].MealId" />
-                            <label id=@("MealProducts_" + Model.MealProducts.IndexOf(product) + "__ProductLabelId") class="col-form-label">@Model.Products.Where(a => a.Id == product.ProductId).Select(a => a.ProductName).FirstOrDefault()</label>
-                            <input class="product" type="hidden" asp-for="MealProducts[Model.MealProducts.IndexOf(product)].ProductId" />
-                        </td>
-                        <td>
-                            <label class="col-form-label">@product.Quantity</label>
-                            <input class="quantity" type="hidden" asp-for="MealProducts[Model.MealProducts.IndexOf(product)].Quantity" />
-                        </td>
-                        <td><button type="button" class="btn btn-danger delete-row"><i class="fa fa-close" /></button></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+            }
+        }
+    </table>
     <div class="form-group row">
-        <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">Aktualizuj</button>
+        <div class="col-sm-12">
+            <input type="button" value="+ Dodaj produkt " id="add-row" class="btn btn-link" style="margin-top:10px" />
+        </div>
+        <div class="col-sm-12" style="display:flex; justify-content:flex-end">
+            <button style="margin-right:10px" type="submit" class="btn btn-primary">Aktualizuj</button>
             <a asp-action="Index" class="btn btn-danger">Wróć do listy posiłków</a>
         </div>
+    </div>
+    <div class="form-group row">
+
     </div>
 </form>
 @section Scripts {
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
 }
 <script type="text/javascript">
-    $(document).ready(function () {
-        $(".productsRows").each(function (index) {
-            var produkt = document.getElementById('MealProducts_' + index + '__ProductLabelId').textContent;
-            HideShowSelected(produkt, false);
-        });
-        $("#add-row").click(function () {
-            var tabela = $('#productsTable tr');
-            var wierszy = tabela.length;
-            var indeks = wierszy - 1;
-            var produkt = GetOptionSelected('value');
-            var produktId = GetOptionSelected('id');
-            var ilosc = $('#quantity').val();
-            var mealId = $('#mealId').val();
-            var markup = '<tr onclick="GetIndex(this)" class="productsRows"><td><input class="mealId" type="hidden" value=' + mealId + ' name="MealProducts[' + indeks + '].MealId"/><input id="MealProducts_' + indeks + '__ProductId" class="product" type="hidden" value=' + produktId + ' name="MealProducts[' + indeks + '].ProductId"/><label id="MealProducts_' + indeks + '__ProductLabelId" class="col-form-label">' + produkt + '</label></td><td><input class="quantity" type="hidden" value=' + ilosc + ' id="MealProducts_' + indeks + '__Quantity" name="MealProducts[' + indeks + '].Quantity"><label class="col-form-label">' + ilosc + '</label></td><td><button type="button" class="btn btn-danger delete-row"><i class="fa fa-close"></button></td></tr>';
-            $('table tbody').append(markup);
-            SetNull();
-            HideShowSelected(produkt, false);
+
+    $(document).on("click", "#add-row", function () {
+        var indexProductTable = document.getElementById("productsTable").rows.length - 1;
+        $.ajax({
+            method: "GET",
+            url: "/Meal/AddProductRow?index=" + indexProductTable,
+            success: function (data) {
+                $("#productsTable").append(data);
+            }
         });
     });
-    $(document).on("click", ".delete-row", function (e) {
-        e.preventDefault();
-        var produkt = document.getElementById('MealProducts_' + index + '__ProductLabelId').textContent;
-        var parentDiv = $(this).parent().parent();
-        $(parentDiv).remove();
-        var rows = $(".productsRows");
-        for (var tr = 0; tr < rows.length; tr++) {
-            var oneRow = rows[tr];
-            var newProduct = 'MealProducts[' + tr + '].ProductId';
-            var newIdProduct = 'MealProducts_' + tr + '__ProductId'
-            $(oneRow).find('.product').attr({ "name": newProduct, "id": newIdProduct });
-            var newMeal = 'MealProducts[' + tr + '].MealId';
-            $(oneRow).find('.mealId').attr("name", newMeal);
-            var newLabelProduct = 'MealProducts_' + tr + '__ProductLabelId';
-            $(oneRow).find('.produktLabel').attr("id", newLabelProduct);
-            $(oneRow).find('.product').attr({ "name": newProduct, "id": newIdProduct });
-            var newQuantity = 'MealProducts[' + tr + '].Quantity';
-            $(oneRow).find('.quantity').attr("name", newQuantity);
-        };
-        HideShowSelected(produkt, true);
-        return false;
-    });
-
-    function GetOptionSelected(attributeOfOption) {
-        const Value = document.querySelector('#productSelect').value;
-        if (!Value) return;
-        const Id = document.querySelector('option[value="' + Value + '"]').id;
-        const option = document.createElement("option");
-        option.value = Value;
-        option.id = Id;
-        if (attributeOfOption == 'value') {
-            return option.value;
-        }
-        else {
-            return option.id;
-        }
-    };
-
-    function GetIndex(x) {
-        index = x.rowIndex - 1;
-    }
-
-    function HideShowSelected(produkt, hideShow) {
-        if (hideShow) {
-            document.querySelector('option[value="' + produkt + '"]').removeAttribute('disabled');
-        }
-        else {
-            document.querySelector('option[value="' + produkt + '"]').setAttribute('disabled', true);
-        }
-    };
-
-    function SetNull() {
-        $("#productSelect").val(null);
-        document.getElementById("quantity").value = "";
-    }
 </script>

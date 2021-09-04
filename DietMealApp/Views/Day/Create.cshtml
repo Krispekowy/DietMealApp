@@ -67,6 +67,7 @@
                     mealDropdown.append('<option value=0>Brak posiłków tego typu</option>');
                 }
                 else {
+                    mealDropdown.append('<option value=0>-- Wybierz --</option>');
                     $.each(data, function (dataIndex, item) {
                         mealDropdown.append($('<option></option>').attr('value', item.value).text(item.text));
                     });

@@ -64,6 +64,7 @@ namespace DietMealApp.DataAccessLayer.Repositories
             return await dbContext.Meals
                 .AsNoTracking()
                 .Include(x => x.MealProducts)
+                    .ThenInclude(x=>x.Product)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 
@@ -80,6 +81,13 @@ namespace DietMealApp.DataAccessLayer.Repositories
             return await dbContext.Meals
                 .AsNoTracking()
                 .Where(m => m.TypeOfMeal == type && !m.IsDeleted && m.UserId == user)
+                .ToListAsync();
+        }
+
+        public async Task<List<Meal>> GetMealsByQuery(string user, string query = "")
+        {
+            return await dbContext.Meals
+                .Where(m => m.MealName.Contains(query) && !m.IsDeleted && m.UserId == user)
                 .ToListAsync();
         }
 

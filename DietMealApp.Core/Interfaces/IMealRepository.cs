@@ -13,5 +13,6 @@ namespace DietMealApp.Core.Interfaces
         Task<List<Meal>> GetMealsByUser(string user);
         Task<List<Meal>> GetMealsByType(MealTimeType type);
         Task<List<Meal>> GetMealsByType(string user, MealTimeType type);
+        Task<List<Meal>> GetMealsByQuery(string user, string query);
     }
 }

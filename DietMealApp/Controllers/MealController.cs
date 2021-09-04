@@ -2,9 +2,11 @@
 using DietMealApp.Application.Functions.Meal.Command.InsertMeal;
 using DietMealApp.Application.Functions.Meal.Command.UpdateMeal;
 using DietMealApp.Application.Functions.Meal.Query.GetMealById;
+using DietMealApp.Application.Functions.Meal.Query.GetMealsBySearch;
 using DietMealApp.Application.Functions.Meal.Query.GetMealsByType;
 using DietMealApp.Core.DTO.Meals;
 using DietMealApp.Core.Enums;
+using DietMealApp.Core.ViewModels;
 using DietMealApp.Service.Functions.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -136,7 +138,6 @@ namespace DietMealApp.WebClient.Controllers
         }
 
         [HttpGet]
-        
         public async Task<IActionResult> GetMealsByType([FromQuery] MealTimeType type)
         {
             InitId();
@@ -148,6 +149,37 @@ namespace DietMealApp.WebClient.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetMealsBySearchQuery([FromQuery] string query = "")
+        {
+            InitId();
+            try
+            {
+                var meals = await _mediator.Send(new GetMealsBySearchQuery() { UserId = _senderId, Query = query });
+                return Json(meals);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddProductRow(int index)
+        {
+            InitId();
+            try
+            {
+                var products = await _mediator.Send(new GetAllProductsQuery());
+                return PartialView("_ProductRow", model: new ProductRow { Index = index, Products = products });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+                throw;
             }
         }
     }

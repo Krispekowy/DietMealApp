@@ -1,4 +1,5 @@
 ﻿
+using DietMealApp.Application.Functions.Product.Query.GetProductsBySearch;
 using DietMealApp.Core.DTO.Products;
 using DietMealApp.Service.Functions.Command;
 using DietMealApp.Service.Functions.Query;
@@ -76,6 +77,13 @@ namespace DietMealApp.WebClient.Controllers
         {
             await _mediator.Send(new UpdateProductCommand() { Product = productDTO });
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetProductsBySearchQuery([FromQuery] string query = "")
+        {
+            var productsList = await _mediator.Send(new GetProductsBySearchQuery() { Query = query });
+            return Json(productsList);
         }
     }
 }

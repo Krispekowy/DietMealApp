@@ -33,6 +33,8 @@ using DietMealApp.Application.Functions.Day.Query.GetDayForm;
 using DietMealApp.Core.DTO.Days;
 using DietMealApp.Application.Functions.Meal.Query.GetMealsByType;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using DietMealApp.Application.Functions.Meal.Query.GetMealsBySearch;
+using DietMealApp.Application.Functions.Product.Query.GetProductsBySearch;
 
 namespace DietMealApp
 {
@@ -91,6 +93,8 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<DeleteMealCommand, Unit>, DeleteMealCommandHandler>();
             services.AddScoped<IRequestHandler<GetDayFormQuery, DayFormDTO>, GetDayFormQueryHandler>();
             services.AddScoped<IRequestHandler<GetMealsByTypeQuery, SelectList>, GetMealsByTypeQueryHandler>();
+            services.AddScoped<IRequestHandler<GetMealsBySearchQuery, SelectList>, GetMealsBySearchQueryHandler>();
+            services.AddScoped<IRequestHandler<GetProductsBySearchQuery, SelectList>, GetProductsBySearchQueryHandler>();
 
             #endregion
 
