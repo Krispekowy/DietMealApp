@@ -5,7 +5,7 @@
 }
 <h1>Edycja posiłku</h1>
 
-<form method="post" class="mt-3">
+<form method="post" class="mt-3" id="mealForm">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input id="mealId" type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="UserId" />
@@ -43,14 +43,15 @@
         <tr>
             <th style="width:70%" class="col">Nazwa produktu</th>
             <th style="width:30%" class="col">Ilość (w gramach)</th>
+            <th style="width:10%" class="col"></th>
         </tr>
         @if (Model.MealProducts != null)
         {
             @for (int i = 0; i < Model.MealProducts.Count; i++)
             {
-                <tr onclick="getIndex(this)">
+                <tr class="d-table-row">
                     <td style="width:70%">
-                        <select class="form-control" id="selectedProduct_@i" name="@Model.MealProducts[i].ProductId">
+                        <select class="select-normal" id="selectedProduct_@i" name="@Model.MealProducts[i].ProductId">
                             @foreach (var product in Model.Products)
                             {
                                 if (product.Id == Model.MealProducts[i].ProductId)
@@ -64,6 +65,9 @@
                     <td style="width:30%">
                         <input id="quantity" class="form-control" name="@Model.MealProducts[i].Quantity" placeholder="Ilość" value="@Model.MealProducts[i].Quantity" />
                     </td>
+                    <td>
+                        <button type="button" onclick="DeleteRow(this)" style="color:red" class="btn"><i class="fa fa-close"></i></button>
+                    </td>
                     <input type="hidden" name="@Model.MealProducts[i].MealId" />
                 </tr>
             }
@@ -71,7 +75,7 @@
     </table>
     <div class="form-group row">
         <div class="col-sm-12">
-            <input type="button" value="+ Dodaj produkt " id="add-row" class="btn btn-link" style="margin-top:10px" />
+            <button type="button" id="add-row" class="btn btn-link"><i class="fa fa-plus"></i> Dodaj produkt</button>
         </div>
         <div class="col-sm-12" style="display:flex; justify-content:flex-end">
             <button style="margin-right:10px" type="submit" class="btn btn-primary">Aktualizuj</button>
@@ -95,6 +99,32 @@
             success: function (data) {
                 $("#productsTable").append(data);
             }
+        });
+    });
+
+    function DeleteRow(r) {
+        var i = r.parentNode.parentNode.rowIndex;
+        document.getElementById("productsTable").deleteRow(i);
+    };
+
+    $(document).ready(function () {
+        const mealForm = document.querySelector('#mealForm');
+        mealForm.addEventListener('submit', function resetFields() {
+
+            var count = 0;
+            var products = $("#productsTable .select-normal");
+            $.each(products, function () {
+                $(this).attr(`name`, `MealProducts[${count}].ProductId`);
+                count++;
+            });
+
+            var count = 0;
+            var quantity = $("#productsTable .form-control");
+            $.each(quantity, function () {
+                $(this).attr(`name`, `MealProducts[${count}].Quantity`);
+                count++;
+
+            });
         });
     });
 </script>

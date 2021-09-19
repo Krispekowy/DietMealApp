@@ -1,8 +1,8 @@
 ﻿@model DietMealApp.Core.ViewModels.ProductRow
 
-<tr onclick="getIndex(this)">
+<tr class="d-table-row">
     <td style="width:70%">
-        <select class="form-control" id="selectedProduct_@Model.Index" name="MealProducts[@Model.Index].ProductId">
+        <select class="select-normal" id="selectedProduct_@Model.Index" name="MealProducts[@Model.Index].ProductId">
             <option selected> --Wybierz produkt-- </option>
             @foreach (var product in Model.Products)
             {
@@ -12,6 +12,9 @@
     </td>
     <td style="width:30%">
         <input id="quantity" class="form-control" name="MealProducts[@Model.Index].Quantity" placeholder="Ilość" />
+    </td>
+    <td>
+        <button type="button" style="color:red" onclick="DeleteRow(this)" class="btn"><i class="fa fa-close"></i></button>
     </td>
     <input type="hidden" name="MealProducts[@Model.Index].MealId" />
 </tr>
