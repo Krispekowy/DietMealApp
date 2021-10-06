@@ -9,7 +9,7 @@ namespace DietMealApp.Core.Enums
     {
         [Display(Name = "-")]
         Brak = 0,
-        [Display(Name="Śniadanie")]
+        [Display(Name="I śniadanie")]
         Breakfast = 1,
         [Display(Name = "II śniadanie")]
         Brunch = 2,

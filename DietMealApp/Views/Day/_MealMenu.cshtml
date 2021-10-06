@@ -1,0 +1,141 @@
+﻿@model DietMealApp.Core.ViewModels.MealMenu
+@using DietMealApp.Core.Enums;
+
+@if (Model.MealsCount == 3)
+{
+    <div class="form-group row">
+        <div class="col-sm-6">
+            <label for="MealItems[0].AssignedMealTimeType" value="1">Śniadanie</label>
+            <input type="hidden" value="1" name="MealItems[0].AssignedMealTimeType" />
+        </div>
+        <div class="col-sm-6">
+            <select class="form-control" name="MealItems[0].SelectedMeal">
+                <option selected value="0">-- Wybierz posiłek --</option>
+                @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Breakfast))
+                {
+                    <option value="@meal.Id">@meal.MealName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6">
+            <label for="MealItems[1].AssignedMealTimeType" value="2">Obiad</label>
+            <input type="hidden" value="2" name="MealItems[1].AssignedMealTimeType" />
+        </div>
+
+        <div class="col-sm-6">
+            <select class="form-control" name="MealItems[1].SelectedMeal">
+                <option selected value="0">-- Wybierz posiłek --</option>
+                @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Lunch))
+                {
+                    <option value="@meal.Id">@meal.MealName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6">
+            <label for="MealItems[2].AssignedMealTimeType" value="3">Kolacja</label>
+            <input type="hidden" value="3" name="MealItems[2].AssignedMealTimeType" />
+        </div>
+
+        <div class="col-sm-6">
+            <select class="form-control" name="MealItems[2].SelectedMeal">
+                <option selected value="0">-- Wybierz posiłek --</option>
+                @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Dinner))
+                {
+                    <option value="@meal.Id">@meal.MealName</option>
+                }
+            </select>
+        </div>
+    </div>
+}
+
+@if (Model.MealsCount == 4)
+{
+    <div class="form-group row">
+        <div class="col-sm-6">
+            <label for="MealItems[0].AssignedMealTimeType" value="1">I śniadanie</label>
+            <input type="hidden" value="1" name="MealItems[0].AssignedMealTimeType" />
+        </div>
+        <div class="col-sm-6">
+            <select class="form-control" name="MealItems[0].SelectedMeal">
+                <option selected value="0">-- Wybierz posiłek --</option>
+                @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Breakfast))
+                {
+                    <option value="@meal.Id">@meal.MealName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6">
+            <label for="MealItems[1].AssignedMealTimeType" value="2">II śniadanie</label>
+            <input type="hidden" value="2" name="MealItems[1].AssignedMealTimeType" />
+        </div>
+        <div class="col-sm-6">
+            <select class="form-control" name="MealItems[1].SelectedMeal">
+                <option selected value="0">-- Wybierz posiłek --</option>
+                @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Brunch))
+                {
+                    <option value="@meal.Id">@meal.MealName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6">
+            <label for="MealItems[2].AssignedMealTimeType" value="3">Obiad</label>
+            <input type="hidden" value="3" name="MealItems[2].AssignedMealTimeType" />
+        </div>
+
+        <div class="col-sm-6">
+            <select class="form-control" name="MealItems[2].SelectedMeal">
+                <option selected value="0">-- Wybierz posiłek --</option>
+                @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Lunch))
+                {
+                    <option value="@meal.Id">@meal.MealName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-6">
+            <label for="MealItems[3].AssignedMealTimeType" value="4">Kolacja</label>
+            <input type="hidden" value="4" name="MealItems[3].AssignedMealTimeType" />
+        </div>
+
+        <div class="col-sm-6">
+            <select class="form-control" name="MealItems[3].SelectedMeal">
+                <option selected value="0">-- Wybierz posiłek --</option>
+                @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Dinner))
+                {
+                    <option value="@meal.Id">@meal.MealName</option>
+                }
+            </select>
+        </div>
+    </div>
+}
+
+@if (Model.MealsCount == 5)
+{
+    @for (int i = 0; i < Model.MealsCount; i++)
+    {
+        <div class="form-group row">
+            <div class="col-sm-6">
+                <label for="MealItems[@i].AssignedMealTimeType" value="@(i+1)">@(EnumHelper<MealTimeType>.GetDisplayValue((MealTimeType)i+1))</label>
+                <input type="hidden" value="@(i+1)" name="MealItems[@i].AssignedMealTimeType" />
+            </div>
+            <div class="col-sm-6">
+                <select class="form-control" name="MealItems[@i].SelectedMeal">
+                    <option selected value="0">-- Wybierz posiłek --</option>
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == (MealTimeType)i + 1))
+                    {
+                        <option value="@meal.Id">@meal.MealName</option>
+                    }
+                </select>
+            </div>
+        </div>
+    }
+}

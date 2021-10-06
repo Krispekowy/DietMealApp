@@ -31,9 +31,7 @@ namespace DietMealApp.Application.Functions.Day.Query.GetDayForm
             {
                 UserId = request.UserId,
                 Kcal = 0,
-                Name = "",
-                MealMenu = new List<MealMenuItemDTO>() { new MealMenuItemDTO() },
-                Meals = new SelectList(meals, "Id", "MealName")
+                Name = ""
             };
             return response;
         }

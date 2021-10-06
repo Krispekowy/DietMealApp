@@ -20,6 +20,7 @@ namespace DietMealApp.Core.DTO.Days
         public string Name { get; set; }
         public float Kcal { get; set; }
         public SelectList Meals { get; set; }
-        public List<MealMenuItemDTO> MealMenu { get; set; }
+        public List<MealMenuItemDTO> MealItems { get; set; }
+        public int MealsCount { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using DietMealApp.Application.Functions.Day.Query.GetDayForm;
 using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
 using DietMealApp.Core.DTO.Days;
+using DietMealApp.Core.ViewModels;
 using DietMealApp.Service.Functions.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +49,37 @@ namespace DietMealApp.WebClient.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(DayFormDTO model)
+        {
+            InitId();
+            try
+            {
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ReleoadMenu(int mealCount)
+        {
+            InitId();
+            try
+            {
+                var meals = await _mediator.Send(new GetMealsByUserQuery() { UserId = _senderId });
+                return PartialView("_MenuMenu", model: new MealMenu { MealsCount = mealCount, Meals = meals, MealItems = new List<MealMenuItemDTO>( new MealMenuItemDTO[mealCount]) });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
                 throw;
             }
         }

@@ -19,29 +19,23 @@
         </div>
     </div>
     <div class="form-group row">
-        <div class="form-group col">
-            <label class="col-sm-12 col-form-label">
-                Rodzaj posiłku
-            </label>
-            <div class="col-sm-12">
-                <select id="selectMealType" class="form-control" asp-for="MealMenu[0].AssignedMealTimeType"
-                        asp-items="Html.GetEnumSelectList<MealTimeType>()">
-                </select>
-                <span asp-validation-for="MealMenu[0].AssignedMealTimeType" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group col">
-            <label class="col-sm-12 col-form-label">
-                Posiłek
-            </label>
-            <div class="col-sm-12">
-                <select id="selectMeal" class="form-control" asp-for="MealMenu[0].SelectedMeal"
-                        asp-items="@Model.Meals">
-                </select>
-            </div>
+        <label asp-for="MealsCount" class="col-sm-2 col-form-label">Ilość posiłków</label>
+        <div class="col-sm-4">
+            <select class="form-control" asp-for="MealsCount" id="mealsCounter">
+                <option selected>-- Ilość posiłków --</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
         </div>
     </div>
+    <div class="form-group col" id="menu">
+
+    </div>
     <div class="form-group row">
+        <div class="col-sm-12">
+            <button type="button" id="add-row" class="btn btn-link"><i class="fa fa-plus"></i> Dodaj produkt</button>
+        </div>
         <div class="col-sm-10">
             <button type="submit" class="btn btn-primary">Dodaj</button>
             <a asp-action="Index" class="btn btn-danger">Anuluj</a>
@@ -53,29 +47,24 @@
     <partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
 }
 <script type="text/javascript">
-    $('#selectMealType').change(function () {
-        var m = document.getElementById("selectMealType");
-        var selectedMeal = m.value;
-        $.ajax({
-            url: `/Meal/GetMealsByType?type=`+ selectedMeal,
-            type: "GET", //send it through get method
-            dataType: "json",
-            success: function (data) {
-                let mealDropdown = $('#selectMeal');
-                mealDropdown.find('option').remove().end();
-                if (data.length == 0) {
-                    mealDropdown.append('<option value=0>Brak posiłków tego typu</option>');
+
+    $(document).ready(function () {
+        const mealCounter = document.querySelector('#mealsCounter');
+        mealCounter.addEventListener('change', function resetFields() {
+            var mealCount = mealCounter.value;
+            $.ajax({
+                url: `/Day/ReleoadMenu?mealCount=` + mealCount,
+                type: "GET", 
+                dataType: "html",
+                success: function (data) {
+                    var menu = document.querySelector('#menu');
+                    menu.innerHTML='';
+                    $('#menu').append(data);
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
                 }
-                else {
-                    mealDropdown.append('<option value=0>-- Wybierz --</option>');
-                    $.each(data, function (dataIndex, item) {
-                        mealDropdown.append($('<option></option>').attr('value', item.value).text(item.text));
-                    });
-                }
-            },
-            error: function (xhr) {
-                //Do Something to handle error
-            }
+            });
         });
     });
 </script>

@@ -11,7 +11,7 @@ namespace DietMealApp.Core.DTO.Days
 {
     public sealed class MealMenuItemDTO
     {
-        public MealDTO SelectedMeal { get; set; }
+        public Guid SelectedMeal { get; set; }
         public MealTimeType AssignedMealTimeType { get; set; }
     }
 }
