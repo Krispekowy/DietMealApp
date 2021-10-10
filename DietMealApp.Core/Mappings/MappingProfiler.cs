@@ -4,6 +4,7 @@ using DietMealApp.Core.DTO.Days;
 using DietMealApp.Core.DTO.Meals;
 using DietMealApp.Core.DTO.Products;
 using DietMealApp.Core.Entities;
+using DietMealApp.Core.Intersections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +46,15 @@ namespace DietMealApp.Core.Mappings
                 .ForMember(a=>a.Id, b=>b.MapFrom(c=>c.Id))
                 .ForMember(a=>a.Description, b=>b.MapFrom(c=>c.Description))
                 .ForAllOtherMembers(a => a.Ignore());
-
+            CreateMap<MealMenuItemDTO, DayMeals>()
+                .ForMember(a => a.MealId, b => b.MapFrom(c => c.SelectedMeal))
+                .ForMember(a => a.Type, b => b.MapFrom(c => c.AssignedMealTimeType))
+                .ForAllOtherMembers(a => a.Ignore());
+            CreateMap<DayFormDTO, Day>()
+                .ForMember(a => a.DayMeals, b => b.MapFrom(c => c.MealItems))
+                .ForMember(a=>a.NumberOfMeals, b=>b.MapFrom(c=>c.MealsCount))
+                .ForMember(a=>a.Name, b=>b.MapFrom(c=>c.Name))
+                .ForAllOtherMembers(a => a.Ignore());
         }
     }
 }

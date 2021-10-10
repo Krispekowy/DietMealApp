@@ -1,4 +1,5 @@
-﻿using DietMealApp.Application.Functions.Day.Query.GetDayForm;
+﻿using DietMealApp.Application.Functions.Day.Command.InsertDay;
+using DietMealApp.Application.Functions.Day.Query.GetDayForm;
 using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
 using DietMealApp.Core.DTO.Days;
 using DietMealApp.Core.ViewModels;
@@ -59,7 +60,8 @@ namespace DietMealApp.WebClient.Controllers
             InitId();
             try
             {
-                return null;
+                await _mediator.Send(new InsertDayCommand() { DayForm = model });
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
@@ -75,7 +77,7 @@ namespace DietMealApp.WebClient.Controllers
             try
             {
                 var meals = await _mediator.Send(new GetMealsByUserQuery() { UserId = _senderId });
-                return PartialView("_MenuMenu", model: new MealMenu { MealsCount = mealCount, Meals = meals, MealItems = new List<MealMenuItemDTO>( new MealMenuItemDTO[mealCount]) });
+                return PartialView("_MealMenu", model: new MealMenu { MealsCount = mealCount, Meals = meals, MealItems = new List<MealMenuItemDTO>( new MealMenuItemDTO[mealCount]) });
             }
             catch (Exception ex)
             {

@@ -35,6 +35,7 @@ using DietMealApp.Application.Functions.Meal.Query.GetMealsByType;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DietMealApp.Application.Functions.Meal.Query.GetMealsBySearch;
 using DietMealApp.Application.Functions.Product.Query.GetProductsBySearch;
+using DietMealApp.Application.Functions.Day.Command.InsertDay;
 
 namespace DietMealApp
 {
@@ -95,7 +96,7 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<GetMealsByTypeQuery, SelectList>, GetMealsByTypeQueryHandler>();
             services.AddScoped<IRequestHandler<GetMealsBySearchQuery, SelectList>, GetMealsBySearchQueryHandler>();
             services.AddScoped<IRequestHandler<GetProductsBySearchQuery, SelectList>, GetProductsBySearchQueryHandler>();
-
+            services.AddScoped<IRequestHandler<InsertDayCommand, Unit>, InsertDayCommandHandler>();
             #endregion
 
             #region MvcConfig
