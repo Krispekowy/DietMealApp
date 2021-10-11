@@ -42,18 +42,29 @@ namespace DietMealApp.Core.Mappings
                 .ForMember(a => a.TypeOfMeal, b => b.MapFrom(c => c.TypeOfMeal))
                 .ForMember(a => a.UserId, b => b.MapFrom(c => c.UserId))
                 .ForMember(a => a.MealName, b => b.MapFrom(c => c.MealName))
-                .ForMember(a=>a.MealProducts, b=>b.MapFrom(c=>c.MealProducts))
-                .ForMember(a=>a.Id, b=>b.MapFrom(c=>c.Id))
-                .ForMember(a=>a.Description, b=>b.MapFrom(c=>c.Description))
+                .ForMember(a => a.MealProducts, b => b.MapFrom(c => c.MealProducts))
+                .ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForMember(a => a.Description, b => b.MapFrom(c => c.Description))
                 .ForAllOtherMembers(a => a.Ignore());
             CreateMap<MealMenuItemDTO, DayMeals>()
                 .ForMember(a => a.MealId, b => b.MapFrom(c => c.SelectedMeal))
                 .ForMember(a => a.Type, b => b.MapFrom(c => c.AssignedMealTimeType))
                 .ForAllOtherMembers(a => a.Ignore());
+            CreateMap<DayMeals, MealMenuItemDTO>()
+                .ForMember(a => a.SelectedMeal, b => b.MapFrom(c => c.MealId))
+                .ForMember(a => a.AssignedMealTimeType, b => b.MapFrom(c => c.Type))
+                .ForAllOtherMembers(a => a.Ignore());
             CreateMap<DayFormDTO, Day>()
                 .ForMember(a => a.DayMeals, b => b.MapFrom(c => c.MealItems))
-                .ForMember(a=>a.NumberOfMeals, b=>b.MapFrom(c=>c.MealsCount))
-                .ForMember(a=>a.Name, b=>b.MapFrom(c=>c.Name))
+                .ForMember(a => a.NumberOfMeals, b => b.MapFrom(c => c.MealsCount))
+                .ForMember(a => a.Name, b => b.MapFrom(c => c.Name))
+                .ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
+                .ForAllOtherMembers(a => a.Ignore());
+            CreateMap<Day, DayFormDTO>()
+                .ForMember(a => a.MealItems, b => b.MapFrom(c => c.DayMeals))
+                .ForMember(a => a.MealsCount, b => b.MapFrom(c => c.NumberOfMeals))
+                .ForMember(a => a.Name, b => b.MapFrom(c => c.Name))
+                .ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForAllOtherMembers(a => a.Ignore());
         }
     }

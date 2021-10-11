@@ -25,11 +25,6 @@ namespace DietMealApp.Core.DTO
             }
             return null;
         }
-
-        [Required(ErrorMessage = "Pole nazwa dnia jest wymagane")]
-        [DisplayName("Nazwa dnia")]
-        [MinLength(3, ErrorMessage = "Nazwa musi mieć co najmniej 3 znaki")]
-        [MaxLength(50, ErrorMessage = "Nazwa może mieć maksymalnie 50 znaków")]
         public string Name { get; set; }
         public float Kcal { get; set; }
         public ICollection<DayMeals> DayMeals { get; set; }

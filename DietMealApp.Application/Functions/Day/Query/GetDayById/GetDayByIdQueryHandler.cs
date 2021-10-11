@@ -23,9 +23,11 @@ namespace DietMealApp.Application.Functions.Day.Query.GetDayById
             _dayRepository = dayRepository;
             _mapper = mapper;
         }
-        public Task<DayFormDTO> Handle(GetDayByIdQuery request, CancellationToken cancellationToken)
+        public async Task<DayFormDTO> Handle(GetDayByIdQuery request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var entity = await _dayRepository.GetByID(request.Id);
+            var dto = _mapper.Map<DayFormDTO>(entity);
+            return dto;
         }
     }
 }

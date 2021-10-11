@@ -12,6 +12,7 @@ namespace DietMealApp.Core.DTO.Days
 {
     public sealed class DayFormDTO
     {
+        public Guid Id { get; set; }
         public string UserId { get; set; }
         [Required(ErrorMessage = "Pole nazwa dnia jest wymagane")]
         [DisplayName("Nazwa dnia")]

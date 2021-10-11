@@ -62,13 +62,18 @@ namespace DietMealApp.DataAccessLayer.Repositories
             return await dbContext.Days
                 .AsNoTracking()
                 .Where(a => a.Id == id)
-                .Include(a=>a.DayMeals)
+                .Include(a => a.DayMeals)
                 .FirstOrDefaultAsync();
         }
 
         public async Task<List<Day>> GetDaysByUser(string user)
         {
-            return await dbContext.Days.AsNoTracking().Where(a => !a.IsDeleted).ToListAsync();
+            return await dbContext.Days.AsNoTracking()
+                .Include(a => a.DayMeals)
+                    .ThenInclude(a=>a.Meal)
+                .Include(a => a.DietDays)
+                .Where(a => !a.IsDeleted)
+                .ToListAsync();
         }
 
         public void Insert(Day entity)

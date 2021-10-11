@@ -1,4 +1,6 @@
-﻿using DietMealApp.Application.Functions.Day.Command.InsertDay;
+﻿using DietMealApp.Application.Functions.Day.Command.DeleteDay;
+using DietMealApp.Application.Functions.Day.Command.InsertDay;
+using DietMealApp.Application.Functions.Day.Query.GetDayById;
 using DietMealApp.Application.Functions.Day.Query.GetDayForm;
 using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
 using DietMealApp.Core.DTO.Days;
@@ -83,6 +85,37 @@ namespace DietMealApp.WebClient.Controllers
             {
                 return BadRequest(ex);
                 throw;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            InitId();
+            try
+            {
+                var model = await _mediator.Send(new GetDayByIdQuery() { Id = id });
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(DayFormDTO model)
+        {
+            InitId();
+            try
+            {
+                await _mediator.Send(new DeleteDayCommand() { DayId = model.Id });
+                return RedirectToAction("Index", "Day");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
             }
         }
     }

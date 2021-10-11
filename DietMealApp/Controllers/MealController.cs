@@ -129,7 +129,7 @@ namespace DietMealApp.WebClient.Controllers
             try
             {
                 await _mediator.Send(new DeleteMealCommand() { Id = model.Id });
-                return RedirectToAction("Index", "Meal");
+                return RedirectToAction("Index", "Day");
             }
             catch (Exception ex)
             {

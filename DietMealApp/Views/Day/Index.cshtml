@@ -19,8 +19,16 @@
                 <h5>@day.Name</h5>
             </div>
             <div class="card-body">
-                <h6>Ilość kalorii: @day.Kcal</h6>
-            </div>
+                <ul>
+                    @foreach (var meal in day.DayMeals)
+                    {
+
+                        <li>@meal.Meal.MealName</li>
+
+                    }
+                </ul>
+                    <h6>Ilość kalorii: @day.Kcal</h6>
+                </div>
             <div class="card-footer text-center">
                 <div class="row">
                     <a asp-action="Edit" asp-route-Id="@day.Id" class="btn btn-primary m-1">Edytuj</a>
