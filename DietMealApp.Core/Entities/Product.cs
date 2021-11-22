@@ -5,6 +5,7 @@ using DietMealApp.Core.Enums;
 using DietMealApp.Core.Intersections;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -26,7 +27,10 @@ namespace DietMealApp.Core.Entities
             };
         }
         public string ProductName { get; set; }
-        public int Kcal { get; set; }
+        public decimal Kcal { get; set; }
+        public decimal Protein { get; set; }
+        public decimal Carbohydrates { get; set; }
+        public decimal Fats { get; set; }
         public int QuantityUnit { get; set; }
         public Unit Unit { get; set; }
         public ProductCategories Category { get; set; }

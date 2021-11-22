@@ -16,11 +16,20 @@ namespace DietMealApp.Core.DTO.Products
         [MinLength(3, ErrorMessage = "Nazwa produktu nie może być krótsza niż 3 znaki")]
         public string ProductName { get; set; }
         [Required(ErrorMessage = "Podaj ilość kalorii")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "W tym polu możesz wpisać tylko cyfry")]
-        public int Kcal { get; set; }
+        [RegularExpression(@"^\d+\,?\d*$", ErrorMessage = "W tym polu możesz wpisać tylko cyfry")]
+        public decimal Kcal { get; set; }
         [Required(ErrorMessage = "Podaj ilość jednostek")]
-        [RegularExpression("^[0-9]*$", ErrorMessage = "W tym polu możesz wpisać tylko cyfry")]
+        [RegularExpression(@"^\d+\,?\d*$", ErrorMessage = "W tym polu możesz wpisać tylko cyfry")]
         public int QuantityUnit { get; set; }
+        [Required(ErrorMessage = "Podaj ilość białka")]
+        [RegularExpression(@"^\d+\,?\d*$", ErrorMessage = "W tym polu możesz wpisać tylko cyfry")]
+        public decimal Protein { get; set; }
+        [Required(ErrorMessage = "Podaj ilość węglowodanów")]
+        [RegularExpression(@"^\d+\,?\d*$", ErrorMessage = "W tym polu możesz wpisać tylko cyfry")]
+        public decimal Carbohydrates { get; set; }
+        [Required(ErrorMessage = "Podaj ilość tłuszczy")]
+        [RegularExpression(@"^\d+\,?\d*$", ErrorMessage = "W tym polu możesz wpisać tylko cyfry")]
+        public decimal Fats { get; set; }
         [Required(ErrorMessage = "Wybierz jednostkę miary produktu")]
         public Unit Unit { get; set; }
         public ProductCategories Category { get; set; }

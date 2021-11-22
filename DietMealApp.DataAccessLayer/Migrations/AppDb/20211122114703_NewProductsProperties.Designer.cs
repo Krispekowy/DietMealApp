@@ -4,6 +4,7 @@ using DietMealApp.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211122114703_NewProductsProperties")]
+    partial class NewProductsProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +62,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Days", (string)null);
+                    b.ToTable("Days");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Diet", b =>
@@ -94,7 +96,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Diets", (string)null);
+                    b.ToTable("Diets");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Meal", b =>
@@ -138,7 +140,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Meals", (string)null);
+                    b.ToTable("Meals");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Product", b =>
@@ -154,7 +156,6 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Category")
-                        .IsRequired(false)
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
@@ -195,7 +196,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Intersections.DayMeals", b =>
@@ -213,7 +214,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasIndex("MealId");
 
-                    b.ToTable("DayMeals", (string)null);
+                    b.ToTable("DayMeals");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Intersections.DietDay", b =>
@@ -228,7 +229,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasIndex("DietId");
 
-                    b.ToTable("DietDays", (string)null);
+                    b.ToTable("DietDays");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Intersections.MealProduct", b =>
@@ -252,7 +253,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("MealProducts", (string)null);
+                    b.ToTable("MealProducts");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Intersections.DayMeals", b =>

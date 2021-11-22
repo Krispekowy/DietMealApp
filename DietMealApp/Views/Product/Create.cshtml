@@ -43,6 +43,33 @@
             <span asp-validation-for="Kcal" class="text-danger"></span>
         </div>
     </div>
+        <div class="form-group row">
+        <label asp-for="Protein" class="col-sm-2 col-form-label">
+            Białka
+        </label>
+        <div class="col-sm-4">
+            <input type="text" asp-for="Protein" class="form-control" placeholder="Ilość białka">
+            <span asp-validation-for="Protein" class="text-danger"></span>
+        </div>
+    </div>
+        <div class="form-group row">
+        <label asp-for="Carbohydrates" class="col-sm-2 col-form-label">
+            Węglowodany
+        </label>
+        <div class="col-sm-4">
+            <input type="text" asp-for="Carbohydrates" class="form-control" placeholder="Ilość węglowodanów">
+            <span asp-validation-for="Carbohydrates" class="text-danger"></span>
+        </div>
+    </div>
+        <div class="form-group row">
+        <label asp-for="Fats" class="col-sm-2 col-form-label">
+            Tłuszcze
+        </label>
+        <div class="col-sm-4">
+            <input type="text" asp-for="Fats" class="form-control" placeholder="Ilość tłuszczy">
+            <span asp-validation-for="Fats" class="text-danger"></span>
+        </div>
+    </div>
     <div class="form-group row">
         <label asp-for="Unit" class="col-sm-2 col-form-label">
             Jednostka
