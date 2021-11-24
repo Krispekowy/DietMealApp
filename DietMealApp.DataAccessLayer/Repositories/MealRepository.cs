@@ -51,7 +51,7 @@ namespace DietMealApp.DataAccessLayer.Repositories
 
         public IQueryable<Meal> Get()
         {
-            return dbContext.Meals.AsNoTracking().Where(a => a.IsDeleted != true);
+            return dbContext.Meals.Include(a=>a.MealProducts).ThenInclude(a=>a.Product).AsNoTracking().Where(a => a.IsDeleted != true);
         }
 
         public IQueryable<Meal> Get(Func<Meal, bool> filterCondition)
