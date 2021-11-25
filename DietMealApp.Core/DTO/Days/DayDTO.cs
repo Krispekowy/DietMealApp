@@ -19,14 +19,21 @@ namespace DietMealApp.Core.DTO
                 var dto = new DayDTO()
                 {
                     Id = entity.Id,
-                    Kcal = entity.Kcal
+                    Kcal = entity.Kcal,
+                    Carbohydrates = entity.Carbohydrates,
+                    Fats = entity.Fats,
+                    Name = entity.Name,
+                    Protein = entity.Protein,
                 };
                 return dto;
             }
             return null;
         }
         public string Name { get; set; }
-        public float Kcal { get; set; }
+        public decimal Kcal { get; set; }
+        public decimal Protein { get; set; }
+        public decimal Carbohydrates { get; set; }
+        public decimal Fats { get; set; }
         public ICollection<DayMeals> DayMeals { get; set; }
         public ICollection<DietDay> DietDays { get; set; }
     }

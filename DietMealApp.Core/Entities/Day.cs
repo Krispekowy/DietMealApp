@@ -13,7 +13,10 @@ namespace DietMealApp.Core.Entities
         public virtual List<DietDay> DietDays { get; set; }
         public virtual List<DayMeals> DayMeals { get; set; }
         public int NumberOfMeals { get; set; }
-        public float Kcal { get; set; }
+        public decimal Kcal { get; set; }
+        public decimal Protein { get; set; }
+        public decimal Carbohydrates { get; set; }
+        public decimal Fats { get; set; }
         public string UserId { get; set; }
     }
 }
