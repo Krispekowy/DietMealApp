@@ -92,6 +92,37 @@ namespace DietMealApp.WebClient.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Copy(Guid id)
+        {
+            InitId();
+            try
+            {
+                var model = await _mediator.Send(new GetMealFormByIdQuery() { Id = id });
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Copy(MealFormDTO model)
+        {
+            InitId();
+            try
+            {
+                model.Id = Guid.Empty;
+                await _mediator.Send(new InsertMealCommand() { MealForm = model });
+                return RedirectToAction("Index", "Meal");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> Edit(MealFormDTO model)
         {
