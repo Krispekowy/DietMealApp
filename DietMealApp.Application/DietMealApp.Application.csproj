@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Functions\Day\Command\UpdateDay\" />
+    <Folder Include="Functions\Diet\Command\" />
     <Folder Include="Mappings\" />
   </ItemGroup>
 

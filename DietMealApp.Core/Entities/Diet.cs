@@ -12,6 +12,7 @@ namespace DietMealApp.Core.Entities
     {
         public string DietName { get; set; }
         public string Description { get; set; }
+        public Guid UserId { get; set; }
         public List<DietDay> DietDays { get; set; }
 
     }

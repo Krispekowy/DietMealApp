@@ -38,6 +38,7 @@ using DietMealApp.Application.Functions.Product.Query.GetProductsBySearch;
 using DietMealApp.Application.Functions.Day.Command.InsertDay;
 using DietMealApp.Application.Functions.Day.Command.DeleteDay;
 using DietMealApp.Application.Functions.Day.Query.GetDayById;
+using DietMealApp.Application.Functions.Diet.Query.GetDietsByUser;
 
 namespace DietMealApp
 {
@@ -84,6 +85,7 @@ namespace DietMealApp
             services.AddScoped<IDietRepository, DietRepository>();
 
             services.AddScoped<IRequestHandler<GetAllProductsQuery, List<ProductDTO>>, GetAllProductsQueryHandler>();
+            services.AddScoped<IRequestHandler<GetDietsByUserQuery, List<DietDTO>>, GetDietsByUserQueryHandler>();
             services.AddScoped<IRequestHandler<GetProductByIdQuery, ProductDTO>, GetProductByIdQueryHandler>();
             services.AddScoped<IRequestHandler<GetDaysByUserQuery, List<DayDTO>>, GetDaysByUserQueryHandler>();
             services.AddScoped<IRequestHandler<InsertProductCommand, Unit>, InsertProductCommandHandler> ();
