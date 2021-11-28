@@ -1,0 +1,33 @@
+﻿@model List<DietMealApp.Core.DTO.DietDTO>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Twoje diety</h1>
+
+<div class="form-group row">
+    <div class="col-sm-10">
+        <a asp-action="Create" class="btn btn-primary">Ułóż nowy plan dietetyczny</a>
+    </div>
+</div>
+<div class="card-deck">
+    @foreach (var diet in Model)
+    {
+        <input type="hidden" asp-for="@diet.Id" />
+        <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+            <div class="card-header">
+                <h5>@diet.DietName</h5>
+            </div>
+            <div class="card-body">
+                <ul>
+                    <p>@diet.Description</p>
+                </div>
+            <div class="card-footer text-center">
+                <div class="row">
+                    <a asp-action="Edit" asp-route-Id="@diet.Id" class="btn btn-primary m-1">Edytuj</a>
+                    <a asp-action="Delete" asp-route-Id="@diet.Id" class="btn btn-danger m-1">Usuń</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

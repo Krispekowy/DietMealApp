@@ -13,14 +13,15 @@ namespace DietMealApp.Core.DTO
         public DietDTO() : base() { }
         public static DietDTO DietEntityToDTO(Diet entity)
         {
-            if (entity!=null)
+            if (entity != null)
             {
                 var dto = new DietDTO()
                 {
                     Id = entity.Id,
                     Days = entity.DietDays,
                     Description = entity.Description,
-                    DietName = entity.DietName
+                    DietName = entity.DietName,
+                    UserId = entity.UserId,
                 };
                 return dto;
             }
@@ -32,6 +33,7 @@ namespace DietMealApp.Core.DTO
         public string DietName { get; set; }
         [MaxLength(500, ErrorMessage = "Opis diety nie może być dłuższy niż 500 znaków")]
         public string Description { get; set; }
+        public Guid UserId { get; set; }
         public IEnumerable<DietDay> Days { get; set; }
     }
 }
