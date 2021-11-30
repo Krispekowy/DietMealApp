@@ -47,7 +47,7 @@ namespace DietMealApp.WebClient.Controllers
             InitId();
             try
             {
-                var products = await _mediator.Send(new GetAllProductsQuery());
+                var products = await _mediator.Send(new GetAllProductsQuery() { OrderBy = OrderByProductOptions.ByName});
                 var model = new MealFormDTO()
                 {
                     Products = products,
@@ -160,7 +160,7 @@ namespace DietMealApp.WebClient.Controllers
             try
             {
                 await _mediator.Send(new DeleteMealCommand() { Id = model.Id });
-                return RedirectToAction("Index", "Day");
+                return RedirectToAction("Index", "Meal");
             }
             catch (Exception ex)
             {
@@ -204,7 +204,7 @@ namespace DietMealApp.WebClient.Controllers
             InitId();
             try
             {
-                var products = await _mediator.Send(new GetAllProductsQuery());
+                var products = await _mediator.Send(new GetAllProductsQuery() { OrderBy = OrderByProductOptions.ByName});
                 return PartialView("_ProductRow", model: new ProductRow { Index = index, Products = products });
             }
             catch (Exception ex)
