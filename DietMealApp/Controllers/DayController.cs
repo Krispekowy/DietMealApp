@@ -1,5 +1,6 @@
 ﻿using DietMealApp.Application.Functions.Day.Command.DeleteDay;
 using DietMealApp.Application.Functions.Day.Command.InsertDay;
+using DietMealApp.Application.Functions.Day.Command.UpdateDay;
 using DietMealApp.Application.Functions.Day.Query.GetDayById;
 using DietMealApp.Application.Functions.Day.Query.GetDayForm;
 using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
@@ -73,12 +74,49 @@ namespace DietMealApp.WebClient.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ReleoadMenu(int mealCount)
+        public async Task<IActionResult> Edit(Guid id)
         {
             InitId();
             try
             {
+                var model = await _mediator.Send(new GetDayByIdQuery() { Id = id });
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+                throw;
+            }
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Edit(DayFormDTO model)
+        {
+            InitId();
+            try
+            {
+                await _mediator.Send(new UpdateDayCommand() { DayForm = model });
+                return RedirectToAction("Index", "Day");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ReleoadMenu(int mealCount, Guid dayId = new Guid())
+        {
+            InitId();
+            try
+            {
+                var day = await _mediator.Send(new GetDayByIdQuery() { Id= dayId });
                 var meals = await _mediator.Send(new GetMealsByUserQuery() { UserId = _senderId });
+                if (day != null)
+                {
+                    return PartialView("_MealMenu", model: new MealMenu { MealsCount = mealCount, Meals = meals, MealItems = day.MealItems });
+                }
                 return PartialView("_MealMenu", model: new MealMenu { MealsCount = mealCount, Meals = meals, MealItems = new List<MealMenuItemDTO>( new MealMenuItemDTO[mealCount]) });
             }
             catch (Exception ex)

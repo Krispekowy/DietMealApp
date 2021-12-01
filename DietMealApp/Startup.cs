@@ -40,6 +40,7 @@ using DietMealApp.Application.Functions.Day.Command.DeleteDay;
 using DietMealApp.Application.Functions.Day.Query.GetDayById;
 using DietMealApp.Application.Functions.Diet.Query.GetDietsByUser;
 using DietMealApp.Application.Functions.Diet.Command;
+using DietMealApp.Application.Functions.Day.Command.UpdateDay;
 
 namespace DietMealApp
 {
@@ -105,6 +106,7 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<DeleteDayCommand, Unit>, DeleteDayCommandHandler>();
             services.AddScoped<IRequestHandler<GetDayByIdQuery, DayFormDTO>, GetDayByIdQueryHandler>();
             services.AddScoped<IRequestHandler<InsertDietCommand, Unit>, InsertDietCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateDayCommand, Unit>, UpdateDayCommandHandler>();
             #endregion
 
             #region MvcConfig
