@@ -4,9 +4,9 @@ using System.Text;
 
 namespace DietMealApp.Core.DTO
 {
-    public class ShoppingDayDTO
+    public class ShoppingDaysDTO
     {
-        public int DayId { get; set; }
+        public DayDTO Day { get; set; }
         public int Quantity { get; set; }
     }
 }

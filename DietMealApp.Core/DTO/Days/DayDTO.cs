@@ -24,6 +24,8 @@ namespace DietMealApp.Core.DTO
                     Fats = entity.Fats,
                     Name = entity.Name,
                     Protein = entity.Protein,
+                    DayMeals = entity.DayMeals,
+                    DietDays = entity.DietDays,
                 };
                 return dto;
             }

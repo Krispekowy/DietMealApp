@@ -71,6 +71,8 @@ namespace DietMealApp.DataAccessLayer.Repositories
             return await dbContext.Days.AsNoTracking()
                 .Include(a => a.DayMeals)
                     .ThenInclude(a=>a.Meal)
+                        .ThenInclude(a=>a.MealProducts)
+                            .ThenInclude(a=>a.Product)
                 .Include(a => a.DietDays)
                 .Where(a => !a.IsDeleted)
                 .ToListAsync();

@@ -1,0 +1,26 @@
+﻿@model ShoppingListDTO
+@using DietMealApp.Core.DTO
+@using DietMealApp.Core.Enums;
+@{
+
+}
+
+@foreach (var item in Model.Products)
+{
+    <h3>Mięsa i wędliny</h3>
+    @if (item.Category == ProductCategories.MiesoWedliny)
+    {
+        <div class="row">
+            <div class="col">
+                <label>
+                    @item.Product
+                </label>
+            </div>
+            <div class="col">
+                <label>
+                    @item.Quantity
+                </label>
+            </div>
+        </div>
+    }
+}
