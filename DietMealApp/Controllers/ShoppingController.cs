@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
+using DietMealApp.Application.Functions.Shopping.Query;
 using DietMealApp.Core.DTO;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -44,9 +45,8 @@ namespace DietMealApp.WebClient.Controllers
             InitId();
             try
             {
-                var products = new List<ProductsToBuyDTO>();
-                products.Add(new ProductsToBuyDTO() { Category = Core.Enums.ProductCategories.MiesoWedliny, Product = "Szynka", Quantity = 100 });
-                return PartialView("_ShoppingList", new ShoppingListDTO() { Products = products });
+                var shoppingList = await _mediator.Send(new GetShoppingListQuery() {Days = model });
+                return PartialView("_ShoppingList", shoppingList);
             }
             catch (Exception ex)
             {

@@ -11,7 +11,7 @@ namespace DietMealApp.Core.Intersections
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public int? Quantity { get; set; }
+        public int Quantity { get; set; }
         public Guid MealId { get; set; }
         public Meal Meal { get; set; }
         public Guid ProductId { get; set; }

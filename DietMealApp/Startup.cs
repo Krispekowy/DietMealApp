@@ -41,6 +41,7 @@ using DietMealApp.Application.Functions.Day.Query.GetDayById;
 using DietMealApp.Application.Functions.Diet.Query.GetDietsByUser;
 using DietMealApp.Application.Functions.Diet.Command;
 using DietMealApp.Application.Functions.Day.Command.UpdateDay;
+using DietMealApp.Application.Functions.Shopping.Query;
 
 namespace DietMealApp
 {
@@ -107,6 +108,7 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<GetDayByIdQuery, DayFormDTO>, GetDayByIdQueryHandler>();
             services.AddScoped<IRequestHandler<InsertDietCommand, Unit>, InsertDietCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateDayCommand, Unit>, UpdateDayCommandHandler>();
+            services.AddScoped<IRequestHandler<GetShoppingListQuery, List<ProductsToBuyDTO>>, GetShoppingListQueryHandler>();
             #endregion
 
             #region MvcConfig

@@ -63,6 +63,9 @@ namespace DietMealApp.DataAccessLayer.Repositories
                 .AsNoTracking()
                 .Where(a => a.Id == id)
                 .Include(a => a.DayMeals)
+                    .ThenInclude(a=>a.Meal)
+                        .ThenInclude(a=>a.MealProducts)
+                            .ThenInclude(a=>a.Product)
                 .FirstOrDefaultAsync();
         }
 

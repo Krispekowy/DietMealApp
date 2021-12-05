@@ -1,26 +1,34 @@
-﻿@model ShoppingListDTO
+﻿@model List<ProductsToBuyDTO>
 @using DietMealApp.Core.DTO
 @using DietMealApp.Core.Enums;
+@using DietMealApp.Core.Extensions;
 @{
 
 }
 
-@foreach (var item in Model.Products)
+@foreach (ProductCategories category in (ProductCategories[])Enum.GetValues(typeof(ProductCategories)))
 {
-    <h3>Mięsa i wędliny</h3>
-    @if (item.Category == ProductCategories.MiesoWedliny)
-    {
-        <div class="row">
-            <div class="col">
-                <label>
-                    @item.Product
-                </label>
+    <div class="card-deck">
+        <div class="card" style="min-width: 18rem; max-width:75%;">
+            <div class="card-header">
+                <h6>@category.GetDisplayName()</h6>
             </div>
-            <div class="col">
-                <label>
-                    @item.Quantity
-                </label>
+            <div class="card-body">
+                <ol>
+                    @foreach (var item in Model)
+                    {
+                        @if (item.Category == category)
+                        {
+                            <li>@(item.Product + " (" + item.Quantity + " g/ml)") </li>
+                        }
+                    }
+                    
+                        @if (Model.All(a=>a.Category != category))
+                        {
+                            <p>Brak</p>
+                        }
+                </ol>
             </div>
         </div>
-    }
+    </div>
 }

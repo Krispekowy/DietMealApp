@@ -4,6 +4,9 @@
 
 }
 <h1>Generuj Listę zakupów</h1>
+<div class="row">
+    <button id="btnsubmit" class="btn btn-primary">Generuj listę</button>
+</div>
 <form id="shoppingList" method="post" class="mt-3">
     <table id="daysTable">
         <tr>
@@ -15,10 +18,10 @@
             <tr class="d-table-row">
                 <td style="width:70%">
                     @Html.HiddenFor(a=>a[i].Day.Id)
-                    @Html.TextBoxFor(a=>a[i].Day.Name)
+                    <label class="col-form-label">@(Model[i].Day.Name + " (" + Model[i].Day.DayMeals.Where(a=>a.Meal.TypeOfMeal == MealTimeType.Lunch).Select(a=>a.Meal.MealName).FirstOrDefault()+ ")") </label>
                 </td>
                 <td style="width:30%">
-                    @Html.TextBoxFor(a=>a[i].Quantity)
+                    @Html.TextBoxFor(a=>a[i].Quantity, htmlAttributes: new { @class = "form-control"})
                 </td>
             </tr>
         }
@@ -29,7 +32,8 @@
     </div>
 </form>
 
-<button id="btnsubmit" class="btn-primary">Generuj listę</button>
+
+
 <script type="text/javascript">
     $(document).ready(function () {
         $("#btnsubmit").click(function () {
@@ -41,15 +45,11 @@
                 cache: false,
                 url: "/Shopping/Generate",
                 data: data,
-                success: function (htmlResponse, textStatus, jqXHR) {
-                    console.log(data);
-                    $("#shoppingProductsList").html(htmlResponse);
+                success: function (data, textStatus, jqXHR) {
+                    $("#shoppingProductsList").html(data);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(data);
-                    console.log("dupa czyli: " + jqXHR );
-                    console.log("dupa czyli: " + textStatus );
-                    console.log("dupa czyli: " + errorThrown );
+                    console.log("Error: " + textStatus + ". ErrorThrown: " + errorThrown );
                 }
             });
         });
