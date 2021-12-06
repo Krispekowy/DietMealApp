@@ -42,6 +42,7 @@ using DietMealApp.Application.Functions.Diet.Query.GetDietsByUser;
 using DietMealApp.Application.Functions.Diet.Command;
 using DietMealApp.Application.Functions.Day.Command.UpdateDay;
 using DietMealApp.Application.Functions.Shopping.Query;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace DietMealApp
 {
@@ -168,7 +169,8 @@ namespace DietMealApp
             {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+                options.Cookie.Name = "MealAppCookie";
+                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
 
                 options.LoginPath = "/Identity/Account/Login";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
