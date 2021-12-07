@@ -206,5 +206,34 @@ namespace DietMealApp.WebClient.Controllers
             }
             return BadRequest();
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            InitId();
+            string returnUrl = Url.Content("~/");
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByIdAsync(_senderId);
+                var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+
+                if (result.Succeeded)
+                {
+                    return LocalRedirect("/");
+                }
+                else
+                {
+                    ModelState.AddModelError("Password", "Zmiana hasła nie powiodła się");
+                    return LocalRedirect(returnUrl);
+                }
+            }
+            return BadRequest();
+        }
     }
 }

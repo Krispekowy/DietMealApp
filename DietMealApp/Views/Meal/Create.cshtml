@@ -89,7 +89,7 @@
 <script type="text/javascript">
 
     $(document).on("click", "#add-row", function () {
-        var indexProductTable = document.getElementById("productsTable").rows.length - 1;
+        var indexProductTable = document.getElementById("productsTable").rows.length;
         $.ajax({
             method: "GET",
             url: "/Meal/AddProductRow?index=" + indexProductTable,

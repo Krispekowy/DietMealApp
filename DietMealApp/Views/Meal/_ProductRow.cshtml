@@ -2,7 +2,7 @@
 
 <tr class="d-table-row">
     <td style="width:70%">
-        <select class="select-normal" id="selectedProduct_@Model.Index" name="MealProducts[@Model.Index].ProductId">
+        <select class="form-control" id="selectedProduct_@Model.Index" name="MealProducts[@Model.Index].ProductId">
             <option selected> --Wybierz produkt-- </option>
             @foreach (var product in Model.Products)
             {
