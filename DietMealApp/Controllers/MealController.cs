@@ -1,4 +1,5 @@
-﻿using DietMealApp.Application.Functions.Meal.Command.DeleteMeal;
+﻿using DietMealApp.Application.Commons.Services;
+using DietMealApp.Application.Functions.Meal.Command.DeleteMeal;
 using DietMealApp.Application.Functions.Meal.Command.InsertMeal;
 using DietMealApp.Application.Functions.Meal.Command.UpdateMeal;
 using DietMealApp.Application.Functions.Meal.Query.GetMealById;
@@ -19,9 +20,8 @@ namespace DietMealApp.WebClient.Controllers
     public class MealController : _ParentController
     {
         public MealController(
-            IConfiguration configuration,
             IMediator mediator
-            ) : base(configuration, mediator)
+            ) : base(mediator)
         {
         }
 

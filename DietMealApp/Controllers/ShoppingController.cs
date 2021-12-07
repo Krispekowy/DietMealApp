@@ -1,4 +1,5 @@
-﻿using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
+﻿using DietMealApp.Application.Commons.Services;
+using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
 using DietMealApp.Application.Functions.Shopping.Query;
 using DietMealApp.Core.DTO;
 using MediatR;
@@ -13,9 +14,8 @@ namespace DietMealApp.WebClient.Controllers
     public class ShoppingController : _ParentController
     {
         public ShoppingController(
-            IConfiguration configuration,
             IMediator mediator
-            ) : base(configuration, mediator)
+            ) : base(mediator)
         {
         }
 

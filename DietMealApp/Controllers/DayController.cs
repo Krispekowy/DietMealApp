@@ -1,4 +1,5 @@
-﻿using DietMealApp.Application.Functions.Day.Command.DeleteDay;
+﻿using DietMealApp.Application.Commons.Services;
+using DietMealApp.Application.Functions.Day.Command.DeleteDay;
 using DietMealApp.Application.Functions.Day.Command.InsertDay;
 using DietMealApp.Application.Functions.Day.Command.UpdateDay;
 using DietMealApp.Application.Functions.Day.Query.GetDayById;
@@ -20,9 +21,8 @@ namespace DietMealApp.WebClient.Controllers
     public class DayController : _ParentController
     {
         public DayController(
-            IConfiguration configuration,
             IMediator mediator
-            ) : base(configuration, mediator)
+            ) : base(mediator)
         {
         }
 

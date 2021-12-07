@@ -1,5 +1,8 @@
-﻿using DietMealApp.Core.DTO;
+﻿using DietMealApp.Application.Commons.Services;
+using DietMealApp.Core.Abstract;
+using DietMealApp.Core.DTO;
 using DietMealApp.Core.Entities;
+using DietMealApp.Core.Extensions;
 using DietMealApp.Core.ViewModels.Identity;
 using DietMealApp.DataAccessLayer;
 using DietMealApp.Service;
@@ -21,26 +24,23 @@ namespace DietMealApp.WebClient.Controllers
 {
     public class AccountController : _ParentController
     {
-        private readonly IConfiguration _configuration;
-        private readonly AppUsersDbContext _appUsersDbContext;
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<AppUserDTO> _logger;
+        private readonly IMailService _mailService;
 
         public AccountController(
-            IConfiguration configuration,
-            AppUsersDbContext appUsersDbContext,
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             ILogger<AppUserDTO> logger,
-            IMediator mediator) 
-            : base(configuration, mediator)
+            IMediator mediator,
+            IMailService mailService) 
+            : base(mediator)
         {
-            _configuration = configuration;
-            _appUsersDbContext = appUsersDbContext;
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _mailService = mailService;
         }
 
         [HttpGet]
@@ -71,19 +71,27 @@ namespace DietMealApp.WebClient.Controllers
                 {
                     user = await _userManager.FindByEmailAsync(user.Email);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                    
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
                         values: new { area = "Identity", userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    //await _emailSender.SendEmailAsync(appUser.Email, "Potwierdź adres e-mail",
-                    //    $"Potwierdź swój adres e-mail klikając <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>tutaj</a>.");
+                    var link = Url.Action(nameof(VerifyEmail), "Account", new { userId = user.Id, code }, Request.Scheme, Request.Host.ToString());
+
+                    code = code.Base64ForUrlEncode();
+                    var mail = new MailRequest()
+                    {
+                        ToEmail = appUser.Email,
+                        Subject = "Potwierdzenie rejestracji",
+                        Body = $"Cześć {user.FirstName}! Cieszymy się, że zarejestrowałaś się w naszej aplikacji. Aby w pełni z niej korzystać kliknij ten link: <a href=\"{link}\">tutaj</a>."
+                    };
+                    await _mailService.SendEmailAsync(mail);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = appUser.Email, returnUrl = returnUrl });
+                        return RedirectToAction("RegisterConfirmation", new { email = appUser.Email, returnUrl = returnUrl });
                     }
                     else
                     {
@@ -99,6 +107,12 @@ namespace DietMealApp.WebClient.Controllers
 
             // If we got this far, something failed, redisplay form
             return RedirectToAction("Index","Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RegisterConfirmation(string email, string returnUrl = null)
+        {
+            return View();
         }
 
         [HttpGet]
@@ -177,6 +191,20 @@ namespace DietMealApp.WebClient.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> VerifyEmail(string userId, string code)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return BadRequest();
+
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            if (result.Succeeded)
+            {
+                return View();
+            }
+            return BadRequest();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿
+using DietMealApp.Application.Commons.Services;
 using DietMealApp.Application.Functions.Product.Query.GetProductsBySearch;
 using DietMealApp.Core.DTO.Products;
 using DietMealApp.Service.Functions.Command;
@@ -14,9 +15,8 @@ namespace DietMealApp.WebClient.Controllers
     public class ProductController : _ParentController
     {
         public ProductController(
-            IConfiguration configuration,
-            IMediator mediator)
-            : base(configuration, mediator)
+            IMediator mediator
+            ) : base(mediator)
         {
         }
         [HttpGet]

@@ -43,6 +43,8 @@ using DietMealApp.Application.Functions.Diet.Command;
 using DietMealApp.Application.Functions.Day.Command.UpdateDay;
 using DietMealApp.Application.Functions.Shopping.Query;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using DietMealApp.Application.Commons.Settings;
+using DietMealApp.Application.Commons.Services;
 
 namespace DietMealApp
 {
@@ -82,6 +84,8 @@ namespace DietMealApp
 
             #endregion
 
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+
             #region DependencyInjection
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IMealRepository, MealRepository>();
@@ -110,6 +114,8 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<InsertDietCommand, Unit>, InsertDietCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateDayCommand, Unit>, UpdateDayCommandHandler>();
             services.AddScoped<IRequestHandler<GetShoppingListQuery, List<ProductsToBuyDTO>>, GetShoppingListQueryHandler>();
+
+            services.AddTransient<IMailService, MailService>();
             #endregion
 
             #region MvcConfig
@@ -138,8 +144,8 @@ namespace DietMealApp
             services.AddIdentity<AppUser, IdentityRole<Guid>>(
                 options =>
                 {
-                    options.SignIn.RequireConfirmedEmail = false;
-                    options.SignIn.RequireConfirmedAccount = false;
+                    options.SignIn.RequireConfirmedEmail = true;
+                    options.SignIn.RequireConfirmedAccount = true;
                     options.User.AllowedUserNameCharacters = "QqWwEeRrTtYyUuIiOoPpLlKkJjHhGgFfDdSsAaZzXxCcVvBbNnMm1234567890-._";
                     options.User.RequireUniqueEmail = true;
                     options.Password.RequireUppercase = true;
@@ -165,6 +171,9 @@ namespace DietMealApp
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
+            
+            
+
             services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings
@@ -177,6 +186,13 @@ namespace DietMealApp
                 options.SlidingExpiration = true;
             });
             services.AddControllersWithViews();
+
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+                });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
