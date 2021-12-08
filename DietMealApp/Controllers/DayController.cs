@@ -117,7 +117,7 @@ namespace DietMealApp.WebClient.Controllers
                 {
                     return PartialView("_MealMenu", model: new MealMenu { MealsCount = mealCount, Meals = meals, MealItems = day.MealItems });
                 }
-                return PartialView("_MealMenu", model: new MealMenu { MealsCount = mealCount, Meals = meals, MealItems = new List<MealMenuItemDTO>( new MealMenuItemDTO[mealCount]) });
+                return PartialView("_MealMenu", model: new MealMenu { MealsCount = mealCount, Meals = meals, MealItems = new List<MealMenuItemDTO>() });
             }
             catch (Exception ex)
             {

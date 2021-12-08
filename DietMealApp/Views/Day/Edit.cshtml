@@ -22,7 +22,7 @@
     <div class="form-group row">
         <label asp-for="MealsCount" class="col-sm-2 col-form-label">Ilość posiłków</label>
         <div class="col-sm-4">
-            <select class="form-control" asp-for="MealsCount" id="mealsCounter">
+            <select disabled="true" class="form-control" asp-for="MealsCount" id="mealsCounter">
                 <option selected>-- Ilość posiłków --</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
@@ -33,25 +33,17 @@
     <div class="form-group col" id="menu">
     </div>
     <div class="form-group row">
-        <div class="col-sm-12">
-            <button type="button" id="add-row" class="btn btn-link"><i class="fa fa-plus"></i> Dodaj produkt</button>
-        </div>
-        <div class="col-sm-10">
-            <button type="submit" class="btn btn-primary">Dodaj</button>
+            <button type="submit" class="btn btn-primary">Aktualizuj</button>
             <a asp-action="Index" class="btn btn-danger">Anuluj</a>
-        </div>
     </div>
 </form>
 
-@section Scripts {
-<partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
-}
 <script type="text/javascript">
-const functionName = () => {
     $(document).ready(function () {
       const mealCounter = document.querySelector('#mealsCounter');
       var count = mealCounter.value;
       var dayGuid = document.querySelector('#dayId').value;
+      console.log(count + " oraz " + dayGuid);
       $.ajax({
         url: `/Day/ReleoadMenu`,
         type: "GET",
@@ -63,6 +55,30 @@ const functionName = () => {
           $('#menu').append(data);
         },
         error: function (xhr, status, error) {
+            console.log("dupa");
+          console.log(error);
+        }
+      });
+    });
+
+const functionName = () => {
+    $(document).ready(function () {
+      const mealCounter = document.querySelector('#mealsCounter');
+      var count = mealCounter.value;
+      var dayGuid = document.querySelector('#dayId').value;
+      console.log(count + " oraz " + dayGuid);
+      $.ajax({
+        url: `/Day/ReleoadMenu`,
+        type: "GET",
+        data: { mealCount: count, dayId: dayGuid},
+        dataType: "html",
+        success: function (data) {
+          var menu = document.querySelector('#menu');
+          menu.innerHTML='';
+          $('#menu').append(data);
+        },
+        error: function (xhr, status, error) {
+            console.log("dupa");
           console.log(error);
         }
       });

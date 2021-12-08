@@ -10,17 +10,28 @@
         </div>
         <div class="col-sm-6">
             <select class="form-control" name="MealItems[0].SelectedMeal">
-                @if (Model.MealItems[0].SelectedMeal == Guid.Empty)
+                @if (Model.MealItems.Count > 0)
+                {
+                    @if (Model.MealItems[0].SelectedMeal == Guid.Empty)
+                    {
+                        <option selected value="0">-- Wybierz posiłek --</option>
+                    }
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Breakfast))
+                    {
+                        if (Model.MealItems[0].SelectedMeal == meal.Id)
+                        {
+                            <option selected value="@meal.Id">@meal.MealName</option>
+                        }
+                        else
+                        {
+                            <option value="@meal.Id">@meal.MealName</option>
+                        }
+                    }
+                }
+                else
                 {
                     <option selected value="0">-- Wybierz posiłek --</option>
-                }
-                @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Breakfast))
-                {
-                    if (Model.MealItems[0].SelectedMeal == meal.Id)
-                    {
-                        <option selected value="@meal.Id">@meal.MealName</option>
-                    }
-                    else
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Breakfast))
                     {
                         <option value="@meal.Id">@meal.MealName</option>
                     }
@@ -36,17 +47,28 @@
 
         <div class="col-sm-6">
             <select class="form-control" name="MealItems[1].SelectedMeal">
-                @if (Model.MealItems[1].SelectedMeal == Guid.Empty)
+                @if (Model.MealItems.Count > 0)
+                {
+                    @if (Model.MealItems[1].SelectedMeal == Guid.Empty)
+                    {
+                        <option selected value="0">-- Wybierz posiłek --</option>
+                    }
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Lunch))
+                    {
+                        if (Model.MealItems[1].SelectedMeal == meal.Id)
+                        {
+                            <option selected value="@meal.Id">@meal.MealName</option>
+                        }
+                        else
+                        {
+                            <option value="@meal.Id">@meal.MealName</option>
+                        }
+                    }
+                }
+                else
                 {
                     <option selected value="0">-- Wybierz posiłek --</option>
-                }
-                @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Lunch))
-                {
-                    if (Model.MealItems[1].SelectedMeal == meal.Id)
-                    {
-                        <option selected value="@meal.Id">@meal.MealName</option>
-                    }
-                    else
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Lunch))
                     {
                         <option value="@meal.Id">@meal.MealName</option>
                     }
@@ -62,17 +84,28 @@
 
         <div class="col-sm-6">
             <select class="form-control" name="MealItems[1].SelectedMeal">
-                @if (Model.MealItems[2].SelectedMeal == Guid.Empty)
+                @if (Model.MealItems.Count > 0)
+                {
+                    @if (Model.MealItems[2].SelectedMeal == Guid.Empty)
+                    {
+                        <option selected value="0">-- Wybierz posiłek --</option>
+                    }
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Dinner))
+                    {
+                        if (Model.MealItems[2].SelectedMeal == meal.Id)
+                        {
+                            <option selected value="@meal.Id">@meal.MealName</option>
+                        }
+                        else
+                        {
+                            <option value="@meal.Id">@meal.MealName</option>
+                        }
+                    }
+                }
+                else
                 {
                     <option selected value="0">-- Wybierz posiłek --</option>
-                }
-                @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Dinner))
-                {
-                    if (Model.MealItems[2].SelectedMeal == meal.Id)
-                    {
-                        <option selected value="@meal.Id">@meal.MealName</option>
-                    }
-                    else
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Dinner))
                     {
                         <option value="@meal.Id">@meal.MealName</option>
                     }
@@ -91,17 +124,28 @@
         </div>
         <div class="col-sm-6">
             <select class="form-control" name="MealItems[0].SelectedMeal">
-                @if (Model.MealItems[0].SelectedMeal == Guid.Empty)
+                @if (Model.MealItems.Count > 0)
+                {
+                    @if (Model.MealItems[0].SelectedMeal == Guid.Empty)
+                    {
+                        <option selected value="0">-- Wybierz posiłek --</option>
+                    }
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Breakfast))
+                    {
+                        if (Model.MealItems[0].SelectedMeal == meal.Id)
+                        {
+                            <option selected value="@meal.Id">@meal.MealName</option>
+                        }
+                        else
+                        {
+                            <option value="@meal.Id">@meal.MealName</option>
+                        }
+                    }
+                }
+                else
                 {
                     <option selected value="0">-- Wybierz posiłek --</option>
-                }
-                @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Breakfast))
-                {
-                    if (Model.MealItems[0].SelectedMeal == meal.Id)
-                    {
-                        <option selected value="@meal.Id">@meal.MealName</option>
-                    }
-                    else
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Breakfast))
                     {
                         <option value="@meal.Id">@meal.MealName</option>
                     }
@@ -116,17 +160,28 @@
         </div>
         <div class="col-sm-6">
             <select class="form-control" name="MealItems[1].SelectedMeal">
-                @if (Model.MealItems[1].SelectedMeal == Guid.Empty)
+                @if (Model.MealItems.Count > 0)
+                {
+                    @if (Model.MealItems[1].SelectedMeal == Guid.Empty)
+                    {
+                        <option selected value="0">-- Wybierz posiłek --</option>
+                    }
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Brunch))
+                    {
+                        if (Model.MealItems[1].SelectedMeal == meal.Id)
+                        {
+                            <option selected value="@meal.Id">@meal.MealName</option>
+                        }
+                        else
+                        {
+                            <option value="@meal.Id">@meal.MealName</option>
+                        }
+                    }
+                }
+                else
                 {
                     <option selected value="0">-- Wybierz posiłek --</option>
-                }
-                @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Brunch))
-                {
-                    if (Model.MealItems[1].SelectedMeal == meal.Id)
-                    {
-                        <option selected value="@meal.Id">@meal.MealName</option>
-                    }
-                    else
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Brunch))
                     {
                         <option value="@meal.Id">@meal.MealName</option>
                     }
@@ -142,17 +197,28 @@
 
         <div class="col-sm-6">
             <select class="form-control" name="MealItems[2].SelectedMeal">
-                @if (Model.MealItems[2].SelectedMeal == Guid.Empty)
+                @if (Model.MealItems.Count > 0)
+                {
+                    @if (Model.MealItems[2].SelectedMeal == Guid.Empty)
+                    {
+                        <option selected value="0">-- Wybierz posiłek --</option>
+                    }
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Lunch))
+                    {
+                        if (Model.MealItems[2].SelectedMeal == meal.Id)
+                        {
+                            <option selected value="@meal.Id">@meal.MealName</option>
+                        }
+                        else
+                        {
+                            <option value="@meal.Id">@meal.MealName</option>
+                        }
+                    }
+                }
+                else
                 {
                     <option selected value="0">-- Wybierz posiłek --</option>
-                }
-                @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Lunch))
-                {
-                    if (Model.MealItems[2].SelectedMeal == meal.Id)
-                    {
-                        <option selected value="@meal.Id">@meal.MealName</option>
-                    }
-                    else
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Lunch))
                     {
                         <option value="@meal.Id">@meal.MealName</option>
                     }
@@ -168,17 +234,28 @@
 
         <div class="col-sm-6">
             <select class="form-control" name="MealItems[3].SelectedMeal">
-                @if (Model.MealItems[3].SelectedMeal == Guid.Empty)
+                @if (Model.MealItems.Count > 0)
+                {
+                    @if (Model.MealItems[3].SelectedMeal == Guid.Empty)
+                    {
+                        <option selected value="0">-- Wybierz posiłek --</option>
+                    }
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Dinner))
+                    {
+                        if (Model.MealItems[3].SelectedMeal == meal.Id)
+                        {
+                            <option selected value="@meal.Id">@meal.MealName</option>
+                        }
+                        else
+                        {
+                            <option value="@meal.Id">@meal.MealName</option>
+                        }
+                    }
+                }
+                else
                 {
                     <option selected value="0">-- Wybierz posiłek --</option>
-                }
-                @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Dinner))
-                {
-                    if (Model.MealItems[3].SelectedMeal == meal.Id)
-                    {
-                        <option selected value="@meal.Id">@meal.MealName</option>
-                    }
-                    else
+                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Dinner))
                     {
                         <option value="@meal.Id">@meal.MealName</option>
                     }
@@ -199,17 +276,28 @@
             </div>
             <div class="col-sm-6">
                 <select class="form-control" name="MealItems[@i].SelectedMeal">
-                    @if (Model.MealItems[@i].SelectedMeal == Guid.Empty)
+                    @if (Model.MealItems.Count > 0)
+                    {
+                        @if (Model.MealItems[@i].SelectedMeal == Guid.Empty)
+                        {
+                            <option selected value="0">-- Wybierz posiłek --</option>
+                        }
+                        @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == (MealTimeType)i + 1))
+                        {
+                            if (Model.MealItems[@i].SelectedMeal == meal.Id)
+                            {
+                                <option selected value="@meal.Id">@meal.MealName</option>
+                            }
+                            else
+                            {
+                                <option value="@meal.Id">@meal.MealName</option>
+                            }
+                        }
+                    }
+                    else
                     {
                         <option selected value="0">-- Wybierz posiłek --</option>
-                    }
-                    @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == (MealTimeType)i + 1))
-                    {
-                        if (Model.MealItems[@i].SelectedMeal == meal.Id)
-                        {
-                            <option selected value="@meal.Id">@meal.MealName</option>
-                        }
-                        else
+                        @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == (MealTimeType)i + 1))
                         {
                             <option value="@meal.Id">@meal.MealName</option>
                         }
