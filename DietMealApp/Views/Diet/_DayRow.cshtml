@@ -5,7 +5,7 @@
         <label>@(Model.Index + 1)</label>
     </td>
     <td style="width:60%">
-        <select class="select-normal" id="selectedDay_@Model.Index" name="Days[@Model.Index].DayId">
+        <select class="form-control" id="selectedDay_@Model.Index" name="Days[@Model.Index].DayId">
             <option selected> --Wybierz dzień-- </option>
             @foreach (var day in Model.Days)
             {

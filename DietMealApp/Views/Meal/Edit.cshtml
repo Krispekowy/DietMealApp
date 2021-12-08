@@ -51,7 +51,7 @@
             {
                 <tr class="d-table-row">
                     <td style="width:70%">
-                        <select class="select-normal" id="selectedProduct_@i" name="@Model.MealProducts[i].ProductId">
+                        <select class="form-control select-class" id="selectedProduct_@i" name="@Model.MealProducts[i].ProductId">
                             @foreach (var product in Model.Products)
                             {
                                 if (product.Id == Model.MealProducts[i].ProductId)
@@ -63,7 +63,7 @@
                         </select>
                     </td>
                     <td style="width:30%">
-                        <input id="quantity" class="form-control" name="@Model.MealProducts[i].Quantity" placeholder="Ilość" value="@Model.MealProducts[i].Quantity" />
+                        <input id="quantity" class="form-control quantity-class" name="@Model.MealProducts[i].Quantity" placeholder="Ilość" value="@Model.MealProducts[i].Quantity" />
                     </td>
                     <td>
                         <button type="button" onclick="DeleteRow(this)" style="color:red" class="btn"><i class="fa fa-close"></i></button>
@@ -112,14 +112,14 @@
         mealForm.addEventListener('submit', function resetFields() {
 
             var count = 0;
-            var products = $("#productsTable .select-normal");
+            var products = $("#productsTable .select-class");
             $.each(products, function () {
                 $(this).attr(`name`, `MealProducts[${count}].ProductId`);
                 count++;
             });
 
             var count = 0;
-            var quantity = $("#productsTable .form-control");
+            var quantity = $("#productsTable .quantity-class");
             $.each(quantity, function () {
                 $(this).attr(`name`, `MealProducts[${count}].Quantity`);
                 count++;

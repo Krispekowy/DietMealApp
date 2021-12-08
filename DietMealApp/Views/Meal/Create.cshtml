@@ -52,7 +52,7 @@
             {
                 <tr class="d-table-row">
                     <td style="width:70%">
-                        <select class="select-normal" id="selectedProduct_@i" name="MealProducts[@i].ProductId">
+                        <select class="form-control select-class" id="selectedProduct_@i" name="MealProducts[@i].ProductId">
                             <option selected> --Wybierz produkt-- </option>
                             @foreach (var product in Model.Products)
                             {
@@ -62,7 +62,7 @@
                         </select>
                     </td>
                     <td style="width:30%">
-                        <input id="quantity" class="form-control" name="MealProducts[@i].Quantity" placeholder="Ilość" />
+                        <input id="quantity" class="form-control quantity-class" name="MealProducts[@i].Quantity" placeholder="Ilość" />
                     </td>
                     <td>
                         <input type="button" onclick="DeleteRow(this)" class="btn btn-link" style="margin-top:10px" />
@@ -89,7 +89,7 @@
 <script type="text/javascript">
 
     $(document).on("click", "#add-row", function () {
-        var indexProductTable = document.getElementById("productsTable").rows.length;
+        var indexProductTable = document.getElementById("productsTable").rows.length-1;
         $.ajax({
             method: "GET",
             url: "/Meal/AddProductRow?index=" + indexProductTable,
@@ -109,14 +109,14 @@
         mealForm.addEventListener('submit', function resetFields() {
 
             var count = 0;
-            var products = $("#productsTable .select-normal");
+            var products = $("#productsTable .select-class");
             $.each(products, function () {
                 $(this).attr(`name`, `MealProducts[${count}].ProductId`);
                 count++;
             });
 
             var count = 0;
-            var quantity = $("#productsTable .form-control");
+            var quantity = $("#productsTable .quantity-class");
             $.each(quantity, function () {
                 $(this).attr(`name`, `MealProducts[${count}].Quantity`);
                 count++;
