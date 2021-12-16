@@ -2,6 +2,8 @@
 using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
 using DietMealApp.Application.Functions.Shopping.Query;
 using DietMealApp.Core.DTO;
+using DietMealApp.Core.ViewModels;
+using DietMealApp.Service.Functions.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -26,10 +28,15 @@ namespace DietMealApp.WebClient.Controllers
             try
             {
                 var days = await _mediator.Send(new GetDaysByUserQuery() { UserId = _senderId });
-                List<ShoppingDaysDTO> model = new List<ShoppingDaysDTO>();
+                var meals = await _mediator.Send(new GetMealsByUserQuery() { UserId= _senderId });
+                GenerateShoppingListViewModel model = new GenerateShoppingListViewModel() { ListByDay = new List<ShoppingDaysDTO>(), ListByMeal = new List<ShoppingMealsDTO>()};
                 foreach (var day in days)
                 {
-                    model.Add(new ShoppingDaysDTO() { Day = day, Quantity = 0 });
+                    model.ListByDay.Add(new ShoppingDaysDTO() { Day = day, Quantity = 0 });
+                }
+                foreach (var meal in meals)
+                {
+                    model.ListByMeal.Add(new ShoppingMealsDTO() { Meal = meal, Quantity = 0 });
                 }
                 return View(model);
             }
@@ -40,12 +47,12 @@ namespace DietMealApp.WebClient.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Generate(List<ShoppingDaysDTO> model)
+        public async Task<IActionResult> Generate(GenerateShoppingListViewModel model)
         {
             InitId();
             try
             {
-                var shoppingList = await _mediator.Send(new GetShoppingListQuery() {Days = model });
+                var shoppingList = await _mediator.Send(new GetShoppingListQuery() {ShoppingListModel = model });
                 return PartialView("_ShoppingList", shoppingList);
             }
             catch (Exception ex)

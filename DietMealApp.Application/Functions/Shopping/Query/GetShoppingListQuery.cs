@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Core.DTO;
+using DietMealApp.Core.ViewModels;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,6 @@ namespace DietMealApp.Application.Functions.Shopping.Query
 {
     public class GetShoppingListQuery : IRequest<List<ProductsToBuyDTO>>
     {
-        public List<ShoppingDaysDTO> Days { get; set; }
+        public GenerateShoppingListViewModel ShoppingListModel { get; set; }
     }
 }

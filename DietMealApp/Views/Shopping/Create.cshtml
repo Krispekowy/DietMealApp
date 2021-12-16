@@ -1,51 +1,78 @@
-﻿@model List<DietMealApp.Core.DTO.ShoppingDaysDTO>
+﻿@model DietMealApp.Core.ViewModels.GenerateShoppingListViewModel
 @using DietMealApp.Core.Enums;
 @{
 
 }
 <h1>Generuj Listę zakupów</h1>
-<div class="row">
-    <button id="btnsubmit" class="btn btn-primary">Generuj listę</button>
-</div>
 
-<div class="row">
-    <a asp-action="SendEmail">Wyślij mail</a>
-</div>
+<ul class="nav nav-tabs" id="shoppingTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="day-tab" data-bs-toggle="tab" data-bs-target="#day" type="button" role="tab" aria-controls="day" aria-selected="true">Dni</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="meal-tab" data-bs-toggle="tab" data-bs-target="#meal" type="button" role="tab" aria-controls="meal" aria-selected="false">Posiłki</button>
+    </li>
+</ul>
 
 <form id="shoppingList" method="post" class="mt-3">
-    <table id="daysTable">
-        <tr>
-            <th style="width:30%" class="col">Dzień</th>
-            <th style="width:20%" class="col">Liczba dni</th>
-        </tr>
-        @for (int i = 0; i < @Model.Count; i++)
-        {
-            <tr class="d-table-row">
-                <td style="width:70%">
-                    @Html.HiddenFor(a=>a[i].Day.Id)
-                    <label class="col-form-label">@(Model[i].Day.Name + " (" + Model[i].Day.DayMeals.Where(a=>a.Meal.TypeOfMeal == MealTimeType.Lunch).Select(a=>a.Meal.MealName).FirstOrDefault()+ ")") </label>
-                </td>
-                <td style="width:30%">
-                    @Html.TextBoxFor(a=>a[i].Quantity, htmlAttributes: new { @class = "form-control"})
-                </td>
-            </tr>
-        }
-    </table>
-
-    <div id="shoppingProductsList">
+    <input type="hidden" name="ListType" id="ListType" />
+    <div class="tab-content" id="shoppingTabsContent">
+        <div class="tab-pane fade show active" id="day" role="tabpanel" aria-labelledby="day-tab">
+            <table id="daysTable">
+                <tr>
+                    <th style="width:30%" class="col">Dzień</th>
+                    <th style="width:20%" class="col">Liczba dni</th>
+                </tr>
+                @for (int i = 0; i < @Model.ListByDay.Count; i++)
+                {
+                    <tr class="d-table-row">
+                        <td style="width:70%">
+                            @Html.HiddenFor(a=>a.ListByDay[i].Day.Id)
+                            <label class="col-form-label">@(Model.ListByDay[i].Day.Name + " (" + Model.ListByDay[i].Day.DayMeals.Where(a=>a.Meal.TypeOfMeal == MealTimeType.Lunch).Select(a=>a.Meal.MealName).FirstOrDefault()+ ")") </label>
+                        </td>
+                        <td style="width:30%">
+                            @Html.TextBoxFor(a=>a.ListByDay[i].Quantity, htmlAttributes: new { @class = "form-control"})
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="tab-pane fade" id="meal" role="tabpanel" aria-labelledby="meal-tab">
+            <table id="daysTable">
+                <tr>
+                    <th style="width:30%" class="col">Posiłek</th>
+                    <th style="width:20%" class="col">Liczba posiłków</th>
+                </tr>
+                @for (int i = 0; i < @Model.ListByMeal.Count; i++)
+                {
+                    <tr class="d-table-row">
+                        <td style="width:70%">
+                            @Html.HiddenFor(a=>a.ListByMeal[i].Meal.Id)
+                            <label class="col-form-label">@(Model.ListByMeal[i].Meal.MealName) </label>
+                        </td>
+                        <td style="width:30%">
+                            @Html.TextBoxFor(a=>a.ListByMeal[i].Quantity, htmlAttributes: new { @class = "form-control"})
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
 
     </div>
 </form>
+<div class="row">
+    <button type="submit" name="submit" value="days" id="btnsubmit" class="btn btn-primary">Generuj listę</button>
+</div>
 
-
+<div id="shoppingProductsList">
+</div>
 
 <script type="text/javascript">
     $(document).ready(function () {
         $("#btnsubmit").click(function () {
-            var data = $('#shoppingList').serialize(); 
+            var data = $('#shoppingList').serialize();
             $.ajax({
                 type: 'post',
-                //dataType: 'json', 
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                 cache: false,
                 url: "/Shopping/Generate",
@@ -58,5 +85,11 @@
                 }
             });
         });
+        const buttons = document.querySelectorAll('.nav-link');
+        buttons.forEach(function (button){
+            button.addEventListener('click', function TabContent(){
+                document.getElementById('ListType').value = button.getAttribute("aria-controls");
+        });
     });
+        });
 </script>
