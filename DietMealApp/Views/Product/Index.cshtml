@@ -1,5 +1,6 @@
-﻿
-@model List<DietMealApp.Core.DTO.Products.ProductDTO>
+﻿@model List<DietMealApp.Core.DTO.Products.ProductDTO>
+@using DietMealApp.Core.Enums;
+@using DietMealApp.Core.Extensions;
 @{
     ViewData["Title"] = "Lista produktów";
 }
@@ -21,58 +22,55 @@
     </div>
 </div>
 
-<div class="card-deck">
+  <div class="row row-cols-1 row-cols-md-4 g-2">
     @foreach (var item in Model)
     {
-        <div class="card m-3" style="padding: 10px; min-width: 25rem; max-width:50%">
-            <div class="media align-items-lg-start text-center text-lg-left flex-column flex-lg-row">
-                <div class="mr-2 mb-3 mb-lg-0"> <img src="@("images/"+(item.PhotoPath ?? "noimage.jpg") )" width="150" height="150" alt=""> </div>
-                <div class="media-body">
-                    <h6 class="media-title font-weight-semibold"> <a asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id">@item.ProductName</a></h6>
-                    <ul class="list-inline list-inline-dotted mb-3 mb-lg-2">
-                        <li class="list-inline-item"><a href="#" class="text-muted" data-abc="true">@item.Category</a></li>
-                    </ul>
-                    <p class="mb-3">@item.Kcal kcal w @item.QuantityUnit @item.Unit </p>
-                </div>
-                <div class="mt-3 mt-lg-0 ml-lg-3 text-center">
-                    <a asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger m-1">Usuń</a>
-                </div>
+        <div class="col">
+        <div class="card">
+            <img src="@("images/"+(item.PhotoPath ?? "noimage.jpg") )" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title"> <a asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id">@item.ProductName</a></h5>
+                <p class="card-text">@item.Category.GetDisplayName()</p>
+                <p class="card-text">@item.Kcal kcal w @item.QuantityUnit @item.Unit </p>
+            </div>
+            <div class="card-footer">
+                <a asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger m-1">Usuń</a>
             </div>
         </div>
+        </div>
     }
-</div>
-
+      </div>
 @*
-        // SKRYPT DO WYKORZYSTANIA JEŻELI WYSZUKIWANIE MIAŁOBY BYĆ WYWOŁYWANE PRZEZ AJAX - DO POPRAWY ODŚWIEŻANIE TABELI //
+    // SKRYPT DO WYKORZYSTANIA JEŻELI WYSZUKIWANIE MIAŁOBY BYĆ WYWOŁYWANE PRZEZ AJAX - DO POPRAWY ODŚWIEŻANIE TABELI //
 
     <script type="text/javascript">
     var searchRequest = null;
 
     $(function () {
-        var minlength = 3;
+    var minlength = 3;
 
-        $("#searchBox").keyup(function () {
-            var that = this,
-            value = $(this).val();
-            if (value.length >= minlength ) {
-                if (searchRequest != null)
-                    searchRequest.abort();
-                searchRequest = $.ajax({
-                    type: "GET",
-                    url: "/Products/",
-                    data: {
-                        'SearchTerm' : value
-                    },
-                    dataType: "text",
-                    success: function(msg){
-                        //we need to check if the value is the same
-                        if (value == $(that).val()) {
-                            console.log(data);
-                        //Receiving the result of search here
-                        }
-                    }
-                });
-            }
-        });
+    $("#searchBox").keyup(function () {
+    var that = this,
+    value = $(this).val();
+    if (value.length >= minlength ) {
+    if (searchRequest != null)
+    searchRequest.abort();
+    searchRequest = $.ajax({
+    type: "GET",
+    url: "/Products/",
+    data: {
+    'SearchTerm' : value
+    },
+    dataType: "text",
+    success: function(msg){
+    //we need to check if the value is the same
+    if (value == $(that).val()) {
+    console.log(data);
+    //Receiving the result of search here
+    }
+    }
+    });
+    }
+    });
     });
     </script>*@
