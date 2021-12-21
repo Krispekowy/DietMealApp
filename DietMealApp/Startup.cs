@@ -45,6 +45,7 @@ using DietMealApp.Application.Functions.Shopping.Query;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using DietMealApp.Application.Commons.Settings;
 using DietMealApp.Application.Commons.Services;
+using DietMealApp.Application.Commons.Services.FileManager;
 
 namespace DietMealApp
 {
@@ -96,8 +97,8 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<GetDietsByUserQuery, List<DietDTO>>, GetDietsByUserQueryHandler>();
             services.AddScoped<IRequestHandler<GetProductByIdQuery, ProductDTO>, GetProductByIdQueryHandler>();
             services.AddScoped<IRequestHandler<GetDaysByUserQuery, List<DayDTO>>, GetDaysByUserQueryHandler>();
-            services.AddScoped<IRequestHandler<InsertProductCommand, Unit>, InsertProductCommandHandler> ();
-            services.AddScoped<IRequestHandler<DeleteProductCommand, Unit>, DeleteProductCommandHandler> ();
+            services.AddScoped<IRequestHandler<InsertProductCommand, Unit>, InsertProductCommandHandler>();
+            services.AddScoped<IRequestHandler<DeleteProductCommand, Unit>, DeleteProductCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateProductCommand, Unit>, UpdateProductCommandHandler>();
             services.AddScoped<IRequestHandler<GetMealsByUserQuery, List<MealDTO>>, GetMealsByUserQueryHandler>();
             services.AddScoped<IRequestHandler<InsertMealCommand, Unit>, InsertMealCommandHandler>();
@@ -114,7 +115,12 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<InsertDietCommand, Unit>, InsertDietCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateDayCommand, Unit>, UpdateDayCommandHandler>();
             services.AddScoped<IRequestHandler<GetShoppingListQuery, List<ProductsToBuyDTO>>, GetShoppingListQueryHandler>();
-
+            services.AddScoped<IFileManager> (a=> new FileManager(
+               Configuration["FileManager:Host"],
+               Configuration["FileManager:User"],
+               Configuration["FileManager:Password"],
+               Configuration["FileManager:Port"],
+               a.GetService<IWebHostEnvironment>()));
             services.AddTransient<IMailService, MailService>();
             #endregion
 
@@ -171,8 +177,8 @@ namespace DietMealApp
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            
-            
+
+
 
             services.ConfigureApplicationCookie(options =>
             {
@@ -190,7 +196,7 @@ namespace DietMealApp
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
-                });
+            });
 
 
         }

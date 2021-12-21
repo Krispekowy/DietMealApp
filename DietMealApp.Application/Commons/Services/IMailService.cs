@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Application.Commons.Services
 {
-    public  interface IMailService
+    public interface IMailService
     {
         Task SendEmailAsync(MailRequest mailRequest);
     }
