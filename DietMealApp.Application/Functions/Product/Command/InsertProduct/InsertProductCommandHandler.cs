@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DietMealApp.Application.Commons.Abstract;
 using DietMealApp.Application.Commons.Services.FileManager;
 using DietMealApp.Core.Entities;
 using DietMealApp.Core.Interfaces;
@@ -12,28 +13,31 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Service.Functions.Command
 {
-    public class InsertProductCommandHandler : IRequestHandler<InsertProductCommand, Unit>
+    public class InsertProductCommandHandler : BaseRequestHandler<InsertProductCommand, Unit>
     {
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
         private readonly IFileManager _fileManager;
 
         public InsertProductCommandHandler(
             IProductRepository productRepository,
             IMapper mapper,
-            IFileManager fileManager)
+            IMediator mediator,
+            IFileManager fileManager) : base (mediator,mapper,fileManager) 
         {
             _productRepository = productRepository;
             _mapper = mapper;
+            _mediator = mediator;
             _fileManager = fileManager;
         }
-        public Task<Unit> Handle(InsertProductCommand request, CancellationToken cancellationToken)
+        public override async Task<Unit> Handle(InsertProductCommand request, CancellationToken cancellationToken)
         {
-            _fileManager.UploadFileToFtp();
+            request.Product.PhotoPath = await _fileManager.SendFileToFtp(request.Product.Photo, FtpPathRepository.FtpProductFull);
             var product = _mapper.Map<Product>(request.Product);
             _productRepository.Insert(product);
-            _productRepository.CommitAsync();
-            return Task.FromResult(Unit.Value);
+            await _productRepository.CommitAsync();
+            return Unit.Value;
         }
     }
 }

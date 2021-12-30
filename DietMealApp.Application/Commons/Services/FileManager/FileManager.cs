@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DietMealApp.Application.Commons.Services.FileManager
 {
@@ -16,16 +17,14 @@ namespace DietMealApp.Application.Commons.Services.FileManager
         private readonly string _host;
         private readonly string _user;
         private readonly string _password;
-        private readonly string _port;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly NetworkCredential _credential;
 
-        public FileManager(string host, string user, string password, string port, IWebHostEnvironment webHostEnvironment)
+        public FileManager(string host, string user, string password, IWebHostEnvironment webHostEnvironment)
         {
             _host = host;
             _user = user;
             _password = password;
-            _port = port;
             _webHostEnvironment = webHostEnvironment;
 
             if (string.IsNullOrWhiteSpace(_webHostEnvironment.WebRootPath))
@@ -39,27 +38,50 @@ namespace DietMealApp.Application.Commons.Services.FileManager
             };
         }
 
-        public string UploadFileToFtp()
+        public string GetFileFromFtp(string path)
+        {
+            return $"http://{_host}/{path}";
+        }
+
+        public async Task<string> SendFileToFtp(IFormFile file, string directoryTo)
         {
             try
             {
-                using (WebClient client = new WebClient())
-                {
-                    client.Credentials = _credential;
-                    client.UploadFile("ftp://127.0.0.1:21/testfile.txt", "D:\\Repozytoria\\DietMealApp\\DietMealApp\\testfile.txt");
-                }
-
-                return "OKI";
+                return await UploadFileToFtp(file, directoryTo);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                if (e.InnerException != null)
-                {
-                    Console.WriteLine(e.InnerException);
-                }
-                return "";
+                return e.Message;
             }
         }
+
+        private async Task<string> UploadFileToFtp(IFormFile file, string directoryTo)
+        {
+            string fileName = GenerateNewFileName(file.FileName);
+            string fileFtpPath = $"ftp://{_host}/dietmealapp.cba.pl/{directoryTo}/{fileName}";
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(fileFtpPath);
+            request.Credentials = _credential;
+            request.Method = WebRequestMethods.Ftp.UploadFile;
+
+            try
+            {
+                using Stream ftpStream = await request.GetRequestStreamAsync();
+                file.CopyTo(ftpStream);
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+            return $"http://{_host}/{directoryTo}/{fileName}";
+        }
+
+        private string GenerateNewFileName(string fileName)
+        {
+            var extension = Path.GetExtension(fileName);
+            fileName = Guid.NewGuid().ToString() + extension;
+            return fileName;
+        }
+
     }
 }

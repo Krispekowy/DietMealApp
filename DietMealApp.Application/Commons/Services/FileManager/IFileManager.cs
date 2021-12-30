@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace DietMealApp.Application.Commons.Services.FileManager
 {
     public interface IFileManager
     {
-        string UploadFileToFtp();
+        Task<string> SendFileToFtp(IFormFile file, string ftpPath);
+        string GetFileFromFtp(string fileName);
     }
 }

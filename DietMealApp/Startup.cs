@@ -119,7 +119,6 @@ namespace DietMealApp
                Configuration["FileManager:Host"],
                Configuration["FileManager:User"],
                Configuration["FileManager:Password"],
-               Configuration["FileManager:Port"],
                a.GetService<IWebHostEnvironment>()));
             services.AddTransient<IMailService, MailService>();
             #endregion
