@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DietMealApp.Core.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,6 @@ namespace DietMealApp.Application.Commons.Services.FileManager
 {
     public interface IFileManager
     {
-        Task<string> SendFileToFtp(IFormFile file, string ftpPath);
-        string GetFileFromFtp(string fileName);
+        Task<(string,string)> SendFileToFtp(IFormFile file, ImageType imageType);
     }
 }

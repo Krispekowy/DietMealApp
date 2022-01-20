@@ -18,27 +18,27 @@ namespace DietMealApp.UnitTests.Products.Queries
 {
     public class GetAllProductsQueryTest
     {
-        private readonly IMapper _mapper;
-        private readonly Mock<IProductRepository> _mockProductRepository;
-        public GetAllProductsQueryTest()
-        {
-            _mockProductRepository = ProductRepositoryMock.GetProductRepository();
-            var configurationProvider = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<MappingProfiler>();
-            });
-            _mapper = configurationProvider.CreateMapper();
-        }
-        [Fact]
-        public async Task GetAllProductsListTest()
-        {
-            var handler = new GetAllProductsQueryHandler(_mockProductRepository.Object, _mapper);
+        //private readonly IMapper _mapper;
+        //private readonly Mock<IProductRepository> _mockProductRepository;
+        //public GetAllProductsQueryTest()
+        //{
+        //    _mockProductRepository = ProductRepositoryMock.GetProductRepository();
+        //    var configurationProvider = new MapperConfiguration(cfg =>
+        //    {
+        //        cfg.AddProfile<MappingProfiler>();
+        //    });
+        //    _mapper = configurationProvider.CreateMapper();
+        //}
+        //[Fact]
+        //public async Task GetAllProductsListTest()
+        //{
+        //    var handler = new GetAllProductsQueryHandler(_mockProductRepository.Object, _mapper);
 
-            var result = await handler.Handle(new GetAllProductsQuery(), CancellationToken.None);
+        //    var result = await handler.Handle(new GetAllProductsQuery(), CancellationToken.None);
 
-            result.ShouldBeOfType<List<ProductDTO>>();
+        //    result.ShouldBeOfType<List<ProductDTO>>();
 
-            result.Count.ShouldBe(5);
-        }
+        //    result.Count.ShouldBe(5);
+        //}
     }
 }

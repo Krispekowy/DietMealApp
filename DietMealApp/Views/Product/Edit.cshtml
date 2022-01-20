@@ -1,7 +1,7 @@
 ﻿@model DietMealApp.Core.DTO.Products.ProductDTO
 @using DietMealApp.Core.Enums
 @{
-    var photoPath = "~/images/" + (Model.PhotoPath ?? "noimage.jpg");
+
 }
 <h1>Edytuj produkt</h1>
 
@@ -96,8 +96,8 @@
                 </div>
             </div>
             <div class="col-sm">
-                <label asp-for="PhotoPath" class="col-sm-4 col-form-label">
-                    <img class="card-img-top" style="width:256px; height:256px" src="@photoPath" asp-append-version="true" />
+                <label asp-for="Photo150x150Path" class="col-sm-4 col-form-label">
+                    <img class="card-img-top" style="width:256px; height:256px" src="@Model.Photo150x150Path" asp-append-version="true" />
                 </label>
                 <div class="col-sm-8 custom-file" lang="pl">
                     <input asp-for="Photo" type="file" class="form-control-file">

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Application.Commons.Services.FileManager
 {
-    internal static class FtpPathRepository
+    internal static class FtpPathsRepository
     {
         internal static readonly string FtpProductFull = "products/full";
         internal static readonly string FtpProduct150x150 = "products/150x150";

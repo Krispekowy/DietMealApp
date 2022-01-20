@@ -20,7 +20,8 @@ namespace DietMealApp.Core.Entities
                 Id = dto.Id,
                 Category = dto.Category,
                 Kcal = dto.Kcal,
-                PhotoPath = dto.PhotoPath,
+                PhotoFullPath = dto.PhotoFullPath,
+                Photo150x150Path = dto.Photo150x150Path,
                 ProductName = dto.ProductName,
                 QuantityUnit = dto.QuantityUnit,
                 Unit = dto.Unit
@@ -36,6 +37,7 @@ namespace DietMealApp.Core.Entities
         public ProductCategories Category { get; set; }
         [ForeignKey("ProductId")]
         public virtual List<MealProduct> MealProducts { get; set; }
-        public string PhotoPath { get; set; }
+        public string PhotoFullPath { get; set; }
+        public string Photo150x150Path { get; set; }
     }
 }

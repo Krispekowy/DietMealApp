@@ -22,12 +22,19 @@
     </div>
 </div>
 
-  <div class="row row-cols-1 row-cols-md-4 g-2">
+  <div class="row row-cols-1 row-cols-md-6 g-2">
     @foreach (var item in Model)
     {
         <div class="col">
         <div class="card">
-            <img src="@item.PhotoPath" class="card-img-top">
+                @if(item.Photo150x150Path == null)
+                {
+                    <div style="margin:auto"><img src="http://dietmealapp.cba.pl/products/full/a9be73f2-728c-411d-ae34-df1be4420e52.png" width="150" height="150"></div>
+                }
+                else
+                {
+                    <div style="margin:auto"><img src="@item.Photo150x150Path" width="150" height="150"></div>
+                }
             <div class="card-body">
                 <h5 class="card-title"> <a asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id">@item.ProductName</a></h5>
                 <p class="card-text">@item.Category.GetDisplayName()</p>

@@ -35,6 +35,7 @@ namespace DietMealApp.Core.DTO.Products
         public Unit Unit { get; set; }
         public ProductCategories Category { get; set; }
         public IFormFile Photo { get; set; }
-        public string PhotoPath { get; set; }
+        public string PhotoFullPath { get; set; }
+        public string Photo150x150Path { get; set; }
     }
 }

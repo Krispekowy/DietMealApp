@@ -20,7 +20,11 @@ namespace DietMealApp.Core.DTO.Products
                     Category = x.Category,
                     Kcal = x.Kcal,
                     ProductName = x.ProductName,
-                    PhotoPath = x.PhotoPath,
+                    Photo150x150Path = x.Photo150x150Path,
+                    PhotoFullPath = x.PhotoFullPath,
+                    Carbohydrates = x.Carbohydrates,
+                    Fats = x.Fats,
+                    Protein = x.Protein,
                     Unit = x.Unit,
                     QuantityUnit = x.QuantityUnit
                 }).ToList();
