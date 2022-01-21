@@ -33,9 +33,10 @@ namespace DietMealApp.Service.Functions.Command
         }
         public override async Task<Unit> Handle(InsertProductCommand request, CancellationToken cancellationToken)
         {
-            var paths = await _fileManager.SendFileToFtp(request.Product.Photo, Core.Enums.ImageType.Product);
-            request.Product.PhotoFullPath = paths.Item1;
-            request.Product.Photo150x150Path = paths.Item2;
+            if (request.Product.Photo != null)
+            {
+                (request.Product.PhotoFullPath, request.Product.Photo150x150Path) = await _fileManager.SendFileToFtp(request.Product.Photo, Core.Enums.ImageType.Product);
+            }
             var product = _mapper.Map<Product>(request.Product);
             _productRepository.Insert(product);
             await _productRepository.CommitAsync();

@@ -32,9 +32,7 @@ namespace DietMealApp.Service.Functions.Command
         {
             if (request.Product.Photo != null)
             {
-                var paths = await _fileManager.SendFileToFtp(request.Product.Photo, Core.Enums.ImageType.Product);
-                request.Product.PhotoFullPath = paths.Item1;
-                request.Product.Photo150x150Path = paths.Item2;
+                (request.Product.PhotoFullPath, request.Product.Photo150x150Path) = await _fileManager.SendFileToFtp(request.Product.Photo, Core.Enums.ImageType.Product);
             }
             var product = _mapper.Map<Product>(request.Product);
             _productRepository.Update(product);
