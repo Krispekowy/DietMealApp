@@ -236,7 +236,7 @@ namespace DietMealApp.WebClient.Controllers
                     return View(model);
                 }
             }
-            return BadRequest();
+            return View(model);
         }
     }
 }

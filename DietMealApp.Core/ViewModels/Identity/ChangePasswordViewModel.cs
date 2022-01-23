@@ -9,15 +9,15 @@ namespace DietMealApp.Core.ViewModels.Identity
 {
     public class ChangePasswordViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Pole 'Obecne hasło' jest wymagane")]
         [DataType(DataType.Password)]
         [Display(Name = "Obecne hasło")]
         public string CurrentPassword { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Pole 'Nowe hasło' jest wymagane")]
         [DataType(DataType.Password)]
         [Display(Name = "Nowe hasło")]
         public string NewPassword { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Pole 'Powtórz nowe hasło' jest wymagane")]
         [DataType(DataType.Password)]
         [Display(Name = "Powtórz nowe hasło")]
         [Compare("NewPassword", ErrorMessage = "Wprowadzone hasła różnią się.")]
