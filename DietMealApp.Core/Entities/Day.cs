@@ -1,4 +1,5 @@
-﻿using DietMealApp.Core.Entities;
+﻿using DietMealApp.Core.DTO.Days;
+using DietMealApp.Core.Entities;
 using DietMealApp.Core.Intersections;
 using System;
 using System.Collections.Generic;

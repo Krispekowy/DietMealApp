@@ -1,5 +1,6 @@
 ﻿using DietMealApp.Core.Entities;
 using DietMealApp.Core.Interfaces;
+using DietMealApp.Core.Intersections;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -88,7 +89,46 @@ namespace DietMealApp.DataAccessLayer.Repositories
 
         public void Update(Day entityToUpdate)
         {
-            dbContext.Days.Update(entityToUpdate);
+            var existingDay = dbContext.Days
+                .Where(x => x.Id == entityToUpdate.Id)
+                .Include(m => m.DayMeals)
+                .SingleOrDefault();
+
+            if (existingDay != null)
+            {
+                // Update parent
+                dbContext.Entry(existingDay).CurrentValues.SetValues(entityToUpdate);
+
+                // Delete children
+                foreach (var existingDayMeals in existingDay.DayMeals)
+                {
+                    if (!entityToUpdate.DayMeals.Any(c => c.MealId == existingDayMeals.MealId && c.DayId == existingDayMeals.DayId))
+                        dbContext.DayMeals.Remove(existingDayMeals);
+                }
+
+                // Update and Insert children
+                foreach (var newOrUpdateDayMeals in entityToUpdate.DayMeals)
+                {
+                    var existingDayMeal = existingDay.DayMeals
+                        .Where(c => c.MealId == newOrUpdateDayMeals.MealId && c.MealId != default(Guid) && c.DayId == newOrUpdateDayMeals.DayId && c.DayId != default(Guid))
+                        .SingleOrDefault();
+
+                    if (existingDayMeal != null)
+                        // Update child
+                        dbContext.Entry(existingDayMeal).CurrentValues.SetValues(newOrUpdateDayMeals);
+                    else
+                    {
+                        // Insert child
+                        var newDayMeal = new DayMeals
+                        {
+                            MealId = newOrUpdateDayMeals.MealId,
+                            DayId = newOrUpdateDayMeals.DayId,
+                            Type = newOrUpdateDayMeals.Type
+                        };
+                        existingDay.DayMeals.Add(newDayMeal);
+                    }
+                }
+            }
         }
     }
 }

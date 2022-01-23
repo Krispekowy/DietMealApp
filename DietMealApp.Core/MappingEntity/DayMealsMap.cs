@@ -16,11 +16,15 @@ namespace DietMealApp.Core.MappingEntity
             entityBuilder
                 .HasOne(t => t.Day)
                 .WithMany(a => a.DayMeals)
-                .HasForeignKey(t => t.DayId);
+                .HasForeignKey(t => t.DayId)
+                .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Cascade);
             entityBuilder
                 .HasOne(t => t.Meal)
                 .WithMany(a => a.DayMeals)
-                .HasForeignKey(t => t.MealId);
+                .HasForeignKey(t => t.MealId)
+                .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Cascade);
+            entityBuilder
+                .Property(t => t.Id).ValueGeneratedOnAdd();
         }
     }
 }

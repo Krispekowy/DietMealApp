@@ -89,7 +89,7 @@ namespace DietMealApp.WebClient.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> Edit(DayFormDTO model)
         {
             InitId();

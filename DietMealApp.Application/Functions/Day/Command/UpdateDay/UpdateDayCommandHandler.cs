@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using DietMealApp.Application.Factories.EntityFactories;
 using DietMealApp.Application.Functions.Meal.Query.GetMealById;
 using DietMealApp.Core.Interfaces;
+using DietMealApp.Core.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +33,7 @@ namespace DietMealApp.Application.Functions.Day.Command.UpdateDay
         public async Task<Unit> Handle(UpdateDayCommand request, CancellationToken cancellationToken)
         {
             await CalculateNutritionalValues(request);
-            var entity = _mapper.Map<Core.Entities.Day>(request.DayForm);
+            var entity = DayFactory.CreateDayFromFormDto(request.DayForm);
             _dayRepository.Update(entity);
             await _dayRepository.CommitAsync();
             return Unit.Value;

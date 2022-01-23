@@ -96,9 +96,18 @@
                 </div>
             </div>
             <div class="col-sm">
-                <label asp-for="Photo150x150Path" class="col-sm-4 col-form-label">
-                    <img class="card-img-top" style="width:256px; height:256px" src="@Model.Photo150x150Path" asp-append-version="true" />
-                </label>
+                @if (Model.Photo150x150Path == null)
+                {
+                    <label asp-for="Photo150x150Path" class="col-sm-4 col-form-label">
+                    <img class="card-img-top" style="width:256px; height:256px" src="http://dietmealapp.cba.pl/products/full/a9be73f2-728c-411d-ae34-df1be4420e52.png" asp-append-version="true" />
+                    </label>
+                }
+                else
+                {
+                    <label asp-for="Photo150x150Path" class="col-sm-4 col-form-label">
+                        <img class="card-img-top" style="width:256px; height:256px" src="@Model.Photo150x150Path" />
+                    </label>
+                }
                 <div class="col-sm-8 custom-file" lang="pl">
                     <input asp-for="Photo" type="file" class="form-control-file">
                     <span asp-validation-for="Photo" class="text-danger"></span>
