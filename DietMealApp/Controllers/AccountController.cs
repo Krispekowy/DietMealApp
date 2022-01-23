@@ -167,12 +167,12 @@ namespace DietMealApp.WebClient.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "Proszę zweryfikować adres e-mail.");
                     hasErrorAlready = true;
-                    return LocalRedirect(returnUrl);
+                    return View(model);
                 }
                 if (hasErrorAlready == false)
                 {
                     ModelState.AddModelError(string.Empty, "Logowanie nie powiodło się.");
-                    return LocalRedirect(returnUrl);
+                    return View(model);
                 }
             }
 
@@ -229,8 +229,11 @@ namespace DietMealApp.WebClient.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("Password", "Zmiana hasła nie powiodła się");
-                    return LocalRedirect(returnUrl);
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("Password", error.Description);
+                    }
+                    return View(model);
                 }
             }
             return BadRequest();
