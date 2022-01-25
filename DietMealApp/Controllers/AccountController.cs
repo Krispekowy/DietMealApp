@@ -225,7 +225,8 @@ namespace DietMealApp.WebClient.Controllers
 
                 if (result.Succeeded)
                 {
-                    return LocalRedirect("/");
+                    ViewData["Success"] = "Twoje hasło zostało zmienione!";
+                    return View();
                 }
                 else
                 {
