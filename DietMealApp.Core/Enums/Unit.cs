@@ -14,6 +14,12 @@ namespace DietMealApp.Core.Enums
         [Display(Name = "ml")]
         mililitr = 2,
         [Display(Name = "szt")]
-        sztuka = 3
+        sztuka = 3,
+        [Display(Name = "łyżka")]
+        lyzka = 4,
+        [Display(Name = "łyżeczka")]
+        lyzeczka = 5,
+        [Display(Name = "szklanka")]
+        szklanka = 6
     }
 }
