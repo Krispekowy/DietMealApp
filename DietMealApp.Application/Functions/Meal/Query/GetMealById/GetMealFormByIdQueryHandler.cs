@@ -46,7 +46,8 @@ namespace DietMealApp.Application.Functions.Meal.Query.GetMealById
                 Products = productDTO,
                 TypeOfMeal = meal.TypeOfMeal,
                 UserId = meal.UserId,
-                MealProducts = meal.MealProducts
+                MealProducts = meal.MealProducts,
+                NumberOfServings = meal.NumberOfServings
             };
             return _mapper.Map<MealFormDTO>(result);
         }

@@ -27,6 +27,6 @@ namespace DietMealApp.Core.DTO.Meals
         public decimal Protein { get; set; }
         public decimal Carbohydrates { get; set; }
         public decimal Fats { get; set; }
-
+        public int NumberOfServings { get; set; }
     }
 }

@@ -115,12 +115,12 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<InsertDietCommand, Unit>, InsertDietCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateDayCommand, Unit>, UpdateDayCommandHandler>();
             services.AddScoped<IRequestHandler<GetShoppingListQuery, List<ProductsToBuyDTO>>, GetShoppingListQueryHandler>();
-            services.AddScoped<IFileManager> (a=> new FileManager(
+            services.AddSingleton<IFileManager> (a=> new FileManager(
                Configuration["FileManager:Host"],
                Configuration["FileManager:User"],
                Configuration["FileManager:Password"],
                a.GetService<IWebHostEnvironment>()));
-            services.AddTransient<IMailService, MailService>();
+            services.AddSingleton<IMailService, MailService>();
             #endregion
 
             #region MvcConfig
