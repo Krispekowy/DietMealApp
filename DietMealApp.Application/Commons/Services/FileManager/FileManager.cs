@@ -41,20 +41,32 @@ namespace DietMealApp.Application.Commons.Services.FileManager
             switch (imageType)
             {
                 case ImageType.Product:
-                    string fileName = GenerateNewFileName(file.FileName);
-                    var localPath = await UploadFileLocal(file, Path.Combine(_webHostEnvironment.WebRootPath, LocalPathsRepository.LocalProductFull), fileName);
-                    var ftpFullPath = UploadFileToFtp(localPath, FtpPathsRepository.FtpProductFull, fileName);
-                    var localPathResizedImg = Path.Combine(_webHostEnvironment.WebRootPath, LocalPathsRepository.LocalProduct150x150);
-                    CheckIfLocationExists(localPathResizedImg);
-                    var localFullPathResizedImg = ResizeImage(localPath, Path.Combine(localPathResizedImg, fileName), 150, 150);
-                    var ftpResizedPath = UploadFileToFtp(localFullPathResizedImg, FtpPathsRepository.FtpProduct150x150, fileName);
-                    DeleteLocalFiles(new string[] { localPath, localFullPathResizedImg });
-                    return (ftpFullPath, ftpResizedPath);
+                    return await UploadFile(file, LocalPathsRepository.LocalProductFull, FtpPathsRepository.FtpProductFull, LocalPathsRepository.LocalProduct150x150, FtpPathsRepository.FtpProduct150x150);
                 case ImageType.Meal:
-                    //return await FileToFtp(file, FtpPathsRepository.FtpMealFull, FtpPathsRepository.FtpMeal150x150);
+                    return await UploadFile(file, LocalPathsRepository.LocalMealFull, FtpPathsRepository.FtpMealFull, LocalPathsRepository.LocalMeal150x150, FtpPathsRepository.FtpMeal150x150);
                 default:
                     return ("", "");
             }
+        }
+
+        private async Task<(string, string)> UploadFile(IFormFile file, string localFullPath, string ftpFullPath, string local150x150path, string ftp150x150path)
+        {
+            string fileName = GenerateNewFileName(file.FileName);
+
+            var localPath = await UploadFileLocal(file, Path.Combine(_webHostEnvironment.WebRootPath, localFullPath), fileName);
+
+            var ftpPath = UploadFileToFtp(localPath, ftpFullPath, fileName);
+
+            var localPathResizedImg = Path.Combine(_webHostEnvironment.WebRootPath, local150x150path);
+            CheckIfLocationExists(localPathResizedImg);
+
+            var localFullPathResizedImg = ResizeImage(localPath, Path.Combine(localPathResizedImg, fileName), 150, 150);
+
+            var ftpResizedPath = UploadFileToFtp(localFullPathResizedImg, ftp150x150path, fileName);
+
+            DeleteLocalFiles(new string[] { localPath, localFullPathResizedImg });
+
+            return (ftpPath, ftpResizedPath);
         }
 
         private void CheckIfLocationExists(string path)

@@ -49,6 +49,7 @@ namespace DietMealApp.Application.Functions.Meal.Query.GetMealById
                 MealProducts = meal.MealProducts,
                 NumberOfServings = meal.NumberOfServings,
                 Photo150x150Path = meal.Photo150x150Path,
+                PhotoFullPath = meal.PhotoFullPath
             };
             return _mapper.Map<MealFormDTO>(result);
         }

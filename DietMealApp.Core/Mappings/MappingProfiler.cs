@@ -32,13 +32,6 @@ namespace DietMealApp.Core.Mappings
             CreateMap<Day, DayDTO>()
                 .ReverseMap();
             CreateMap<MealFormDTO, Meal>()
-                //.AfterMap((src, dest) =>
-                //{
-                //    foreach (var product in src.MealProducts)
-                //    {
-                //        dest.MealProducts.Add(new MealProduct() { ProductId = product.ProductId, Quantity = product.Quantity });
-                //    }
-                //})
                 .ForMember(a => a.TypeOfMeal, b => b.MapFrom(c => c.TypeOfMeal))
                 .ForMember(a => a.UserId, b => b.MapFrom(c => c.UserId))
                 .ForMember(a => a.MealName, b => b.MapFrom(c => c.MealName))
@@ -51,6 +44,7 @@ namespace DietMealApp.Core.Mappings
                 .ForMember(a => a.Carbohydrates, b => b.MapFrom(c => c.Carbohydrates))
                 .ForMember(a=>a.NumberOfServings, b=>b.MapFrom(c=>c.NumberOfServings))
                 .ForMember(a=>a.Photo150x150Path, b=>b.MapFrom(c=>c.Photo150x150Path))
+                .ForMember(a=>a.PhotoFullPath, b=>b.MapFrom(c=>c.PhotoFullPath))
                 .ForAllOtherMembers(a => a.Ignore());
             CreateMap<MealMenuItemDTO, DayMeals>()
                 .ForMember(a => a.MealId, b => b.MapFrom(c => c.SelectedMeal))

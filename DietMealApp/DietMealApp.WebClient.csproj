@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\objects\" />
+    <Folder Include="wwwroot\objects\meals\full\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

@@ -3,6 +3,7 @@ using DietMealApp.Core.DTO.Products;
 using DietMealApp.Core.Entities;
 using DietMealApp.Core.Enums;
 using DietMealApp.Core.Intersections;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,8 +29,10 @@ namespace DietMealApp.Core.DTO.Meals
         public decimal Carbohydrates { get; set; }
         public decimal Fats { get; set; }
         public int NumberOfServings { get; set; }
+        public string PhotoFullPath { get; set; }
         public string Photo150x150Path { get; set; }
         public IEnumerable<ProductDTO> Products { get; set; }
         public List<MealProduct> MealProducts { get; set; }
+        public IFormFile Photo { get; set; }
     }
 }
