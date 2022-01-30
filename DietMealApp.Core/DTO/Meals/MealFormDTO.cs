@@ -28,6 +28,7 @@ namespace DietMealApp.Core.DTO.Meals
         public decimal Carbohydrates { get; set; }
         public decimal Fats { get; set; }
         public int NumberOfServings { get; set; }
+        public string Photo150x150Path { get; set; }
         public IEnumerable<ProductDTO> Products { get; set; }
         public List<MealProduct> MealProducts { get; set; }
     }

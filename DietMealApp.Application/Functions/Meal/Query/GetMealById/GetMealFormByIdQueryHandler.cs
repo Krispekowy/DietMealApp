@@ -47,7 +47,8 @@ namespace DietMealApp.Application.Functions.Meal.Query.GetMealById
                 TypeOfMeal = meal.TypeOfMeal,
                 UserId = meal.UserId,
                 MealProducts = meal.MealProducts,
-                NumberOfServings = meal.NumberOfServings
+                NumberOfServings = meal.NumberOfServings,
+                Photo150x150Path = meal.Photo150x150Path,
             };
             return _mapper.Map<MealFormDTO>(result);
         }

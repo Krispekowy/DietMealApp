@@ -50,6 +50,7 @@ namespace DietMealApp.Core.Mappings
                 .ForMember(a => a.Protein, b => b.MapFrom(c => c.Protein))
                 .ForMember(a => a.Carbohydrates, b => b.MapFrom(c => c.Carbohydrates))
                 .ForMember(a=>a.NumberOfServings, b=>b.MapFrom(c=>c.NumberOfServings))
+                .ForMember(a=>a.Photo150x150Path, b=>b.MapFrom(c=>c.Photo150x150Path))
                 .ForAllOtherMembers(a => a.Ignore());
             CreateMap<MealMenuItemDTO, DayMeals>()
                 .ForMember(a => a.MealId, b => b.MapFrom(c => c.SelectedMeal))

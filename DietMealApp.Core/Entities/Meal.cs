@@ -20,6 +20,7 @@ namespace DietMealApp.Core.Entities
         public decimal Carbohydrates { get; set; }
         public decimal Fats { get; set; }
         public int NumberOfServings { get; set; }
+        public string Photo150x150Path { get; set; }
         [ForeignKey("MealId")]
         public virtual List<MealProduct> MealProducts { get; set; } = new List<MealProduct>();
         public virtual List<DayMeals> DayMeals { get; set; }

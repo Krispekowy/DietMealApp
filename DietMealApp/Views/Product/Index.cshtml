@@ -22,12 +22,12 @@
     </div>
 </div>
 
-  <div class="row row-cols-1 row-cols-md-6 g-2">
+<div class="row row-cols-1 row-cols-md-6 g-2">
     @foreach (var item in Model)
     {
         <div class="col">
-        <div class="card">
-                @if(item.Photo150x150Path == null)
+            <div class="card">
+                @if (item.Photo150x150Path == null)
                 {
                     <div style="margin:auto"><img src="http://dietmealapp.cba.pl/products/full/a9be73f2-728c-411d-ae34-df1be4420e52.png" width="150" height="150"></div>
                 }
@@ -35,18 +35,18 @@
                 {
                     <div style="margin:auto"><img src="@item.Photo150x150Path" width="150" height="150"></div>
                 }
-            <div class="card-body">
-                <h5 class="card-title"> <a asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id">@item.ProductName</a></h5>
-                <p class="card-text">@item.Category.GetDisplayName()</p>
-                <p class="card-text">@item.Kcal kcal w @item.QuantityUnit @item.Unit </p>
+                <div class="card-body">
+                    <h5 class="card-title"> <a asp-controller="Product" asp-action="Edit" asp-route-id="@item.Id">@item.ProductName</a></h5>
+                    <p class="card-text">@item.Category.GetDisplayName()</p>
+                    <p class="card-text">@item.Kcal kcal w @item.QuantityUnit @item.Unit </p>
+                </div>
+                <div class="card-footer">
+                    <a asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger m-1">Usuń</a>
+                </div>
             </div>
-            <div class="card-footer">
-                <a asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger m-1">Usuń</a>
-            </div>
-        </div>
         </div>
     }
-      </div>
+</div>
 @*
     // SKRYPT DO WYKORZYSTANIA JEŻELI WYSZUKIWANIE MIAŁOBY BYĆ WYWOŁYWANE PRZEZ AJAX - DO POPRAWY ODŚWIEŻANIE TABELI //
 

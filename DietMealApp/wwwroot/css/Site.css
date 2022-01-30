@@ -29,9 +29,27 @@ section {
         font-size: 12px;
     }
 
-.card-body {
+.container-center {
+    text-align: center;
+}
+
+.mealContent{
     position:relative
 }
+
+.desc {
+    text-align: justify;
+}
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.card-body {
+    position: relative
+}
+
 .bot-right-corner {
     position: absolute;
     bottom: 0;
