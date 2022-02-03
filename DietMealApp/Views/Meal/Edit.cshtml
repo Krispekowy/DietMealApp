@@ -98,6 +98,8 @@
                     <label asp-for="Photo150x150Path" class="col-form-label">
                         <img class="card-img-top" style="width:256px; height:256px" src="@Model.Photo150x150Path" />
                     </label>
+                    <input asp-for="Photo150x150Path" type="hidden">
+                    <input asp-for="PhotoFullPath" type="hidden">
                 }
                 <div class="col custom-file" lang="pl">
                     <input asp-for="Photo" type="file" class="form-control-file">
