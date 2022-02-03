@@ -45,7 +45,7 @@ namespace DietMealApp.Application.Commons.Services.FileManager
                 case ImageType.Meal:
                     return await UploadFile(file, LocalPathsRepository.LocalMealFull, FtpPathsRepository.FtpMealFull, LocalPathsRepository.LocalMeal150x150, FtpPathsRepository.FtpMeal150x150);
                 default:
-                    return ("", "");
+                    return await UploadFile(file, LocalPathsRepository.LocalGlobalFull, FtpPathsRepository.FtpGlobalFull, LocalPathsRepository.LocalGlobal150x150, FtpPathsRepository.FtpGlobal150x150);
             }
         }
 

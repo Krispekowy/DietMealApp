@@ -8,6 +8,9 @@ namespace DietMealApp.Application.Commons.Services.FileManager
 {
     internal static class LocalPathsRepository
     {
+        internal static readonly string LocalGlobalFull = "objects/global/full";
+        internal static readonly string LocalGlobal150x150 = "objects/global/150x150";
+
         internal static readonly string LocalProductFull = "objects/products/full";
         internal static readonly string LocalProduct150x150 = "objects/products/150x150";
 

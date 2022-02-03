@@ -22,7 +22,7 @@ namespace DietMealApp.Core.DTO.Meals
         [MinLength(5, ErrorMessage = "Nazwa posiłku musi składać się z minimum 5 znaków")]
         [MaxLength(50, ErrorMessage = "Nazwa posiłku może składać się z maksimum 50 znaków")]
         public string MealName { get; set; }
-        [MaxLength(1000, ErrorMessage = "Maksymalna długość opisu to 1000 znaków")]
+        [MaxLength(10000, ErrorMessage = "Maksymalna długość przepisu to 10000 znaków")]
         public string Description { get; set; }
         public decimal Kcal { get; set; }
         public decimal Protein { get; set; }
