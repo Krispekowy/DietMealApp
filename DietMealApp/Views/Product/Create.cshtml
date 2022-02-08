@@ -6,10 +6,10 @@
 <h1>Dodaj Produkt</h1>
 
 <form id="createProduct" enctype="multipart/form-data" method="post" class="mt-3">
-    <div class="row">
-        <div class="col">
-            <div class="form-group row">
-                <label asp-for="ProductName" class="col-3 col-form-label">
+    <div class="row mb-3">
+               <div class="col">
+            <div class="form-group row mb-3">
+                <label asp-for="ProductName" class="col-sm-4 col-form-label fw-bold">
                     Nazwa
                 </label>
                 <div class="col">
@@ -17,8 +17,8 @@
                     <span asp-validation-for="ProductName" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group row">
-                <label asp-for="Category" class="col-3 col-form-label">
+            <div class="form-group row mb-3">
+                <label asp-for="Category" class="col-sm-4 col-form-label fw-bold">
                     Kategoria
                 </label>
                 <div class="col">
@@ -28,8 +28,8 @@
                     <span asp-validation-for="Category" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group row">
-                <label asp-for="Kcal" class="col-3 col-form-label">
+            <div class="form-group row mb-3">
+                <label asp-for="Kcal" class="col-sm-4 col-form-label fw-bold">
                     Kalorie
                 </label>
                 <div class="col">
@@ -37,8 +37,8 @@
                     <span asp-validation-for="Kcal" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group row">
-                <label asp-for="Protein" class="col-3 col-form-label">
+            <div class="form-group row mb-3">
+                <label asp-for="Protein" class="col-sm-4 col-form-label fw-bold">
                     Białka
                 </label>
                 <div class="col">
@@ -46,17 +46,17 @@
                     <span asp-validation-for="Protein" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group row">
-                <label asp-for="Carbohydrates" class="col-3 col-form-label">
+            <div class="form-group row mb-3">
+                <label asp-for="Carbohydrates" class="col-sm-4 col-form-label fw-bold">
                     Węglowodany
                 </label>
                 <div class="col">
                     <input type="text" asp-for="Carbohydrates" class="form-control" placeholder="Ilość węglowodanów">
-                <span asp-validation-for="Carbohydrates" class="text-danger"></span>
+                    <span asp-validation-for="Carbohydrates" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group row">
-                <label asp-for="Fats" class="col-3 col-form-label">
+            <div class="form-group row mb-3">
+                <label asp-for="Fats" class="col-sm-4 col-form-label fw-bold">
                     Tłuszcze
                 </label>
                 <div class="col">
@@ -64,8 +64,8 @@
                     <span asp-validation-for="Fats" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group row">
-                <label asp-for="Unit" class="col-3 col-form-label">
+            <div class="form-group row mb-3">
+                <label asp-for="Unit" class="col-sm-4 col-form-label fw-bold">
                     Jednostka
                 </label>
                 <div class="col">
@@ -75,8 +75,8 @@
                     <span asp-validation-for="Unit" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group row">
-                <label asp-for="QuantityUnit" class="col-3 col-form-label">
+            <div class="form-group row mb-3">
+                <label asp-for="QuantityUnit" class="col-sm-4 col-form-label fw-bold">
                     Ilość jednostek
                 </label>
                 <div class="col">
@@ -84,10 +84,10 @@
                     <span asp-validation-for="QuantityUnit" class="text-danger"></span>
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <div class="col">
-                    <button type="submit" class="btn btn-primary">Dodaj</button>
-                    <a asp-action="Index" class="btn btn-danger">Wróć</a>
+                    <button type="submit" class="btn btn-primary btn-block ">Aktualizuj</button>
+                    <a asp-action="Index" class="btn btn-danger btn-block">Wróć</a>
                 </div>
             </div>
         </div>
@@ -95,7 +95,7 @@
             <div class="form-group row">
                 <div class="col" lang="pl">
                     <img style="display:none" id="PhotoPreview" src="#" alt="image" />
-                    <input asp-for="Photo" type="file" onchange="readURL(this);" class="form-control form-control-sm">
+                    <input asp-for="Photo" type="file" onchange="readURL(this);" class="form-control form-control-sm fw-bold">
                     <span asp-validation-for="Photo" class="text-danger"></span>
                 </div>
             </div>
