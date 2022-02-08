@@ -70,7 +70,7 @@
                     Jednostka
                 </label>
                 <div class="col">
-                    <select class="form-control" asp-for="Unit"
+                    <select class="form-select" asp-for="Unit"
                             asp-items="Html.GetEnumSelectList<Unit>()">
                     </select>
                     <span asp-validation-for="Unit" class="text-danger"></span>
@@ -81,7 +81,7 @@
                     Ilość jednostek
                 </label>
                 <div class="col">
-                    <input type="text" asp-for="QuantityUnit" class="form-control" placeholder="Ilość jednostek">
+                    <input type="text" asp-for="QuantityUnit" class="form-control" placeholder="Ilość jednostek" readonly>
                     <span asp-validation-for="QuantityUnit" class="text-danger"></span>
                 </div>
             </div>
@@ -128,7 +128,6 @@
                     if (input.files && input.files[0]) {
                         var reader = new FileReader();
                         reader.onload = function (e) {
-                            console.log("dupa");
                             $('#PhotoPreview')
                                 .attr('src', e.target.result)
                                 .width(300)

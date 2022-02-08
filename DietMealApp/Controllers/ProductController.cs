@@ -35,7 +35,7 @@ namespace DietMealApp.WebClient.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            return View();
+            return View(new ProductDTO());
         }
         [HttpPost]
         public async Task<IActionResult> Create(ProductDTO model)

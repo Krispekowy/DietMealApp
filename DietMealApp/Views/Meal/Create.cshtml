@@ -9,85 +9,92 @@
 <form method="post" class="mt-3" id="mealForm">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="UserId" />
-    <div class="form-group row">
-        <label asp-for="MealName" class="col-sm-2 col-form-label">
-            Nazwa
-        </label>
-        <div class="col-sm-4">
-            <input asp-for="MealName" class="form-control" placeholder="Wprowadź nazwę">
-            <span asp-validation-for="MealName" class="text-danger"></span>
-        </div>
-        <label asp-for="Photo" class="col-sm-2 col-form-label">
-            Zdjęcie posiłku
-        </label>
-        <div class="col-sm-4 custom-file" lang="pl">
-            <input asp-for="Photo" type="file" class="form-control-file">
-            <span asp-validation-for="Photo" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="TypeOfMeal" class="col-sm-2 col-form-label">
-            Typ
-        </label>
-        <div class="col-sm-4">
-            <select class="form-control" asp-for="TypeOfMeal"
-                    asp-items="Html.GetEnumSelectList<MealTimeType>()">
-            </select>
-            <span asp-validation-for="TypeOfMeal" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="NumberOfServings" class="col-sm-2 col-form-label">
-            Ilość porcji
-        </label>
-        <div class="col-sm-4">
-            <input asp-for="NumberOfServings" class="form-control" placeholder="Ilość porcji">
-            <span asp-validation-for="NumberOfServings" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label asp-for="Description" class="col-sm-2 col-form-label">
-            Opis
-        </label>
-        <div class="col-sm-6">
-            <textarea rows="5" asp-for="Description" class="form-control" placeholder="Maksymalnie 1000 znaków"></textarea>
-            <span asp-validation-for="Description" class="text-danger"></span>
-        </div>
-    </div>
-    <hr class="dashed">
-    <table id="productsTable" style="width:100%">
-        <tr>
-            <th style="width:60%" class="col">Nazwa produktu</th>
-            <th style="width:30%" class="col">Ilość (w gramach)</th>
-            <th style="width:10%" class="col"></th>
-        </tr>
-        @if (Model.MealProducts != null)
-        {
-            @for (int i = 0; i < Model.MealProducts.Count; i++)
-            {
-                <tr class="d-table-row">
-                    <td style="width:70%">
-                        <select class="form-control select-class" id="selectedProduct_@i" name="MealProducts[@i].ProductId">
-                            <option selected> --Wybierz produkt-- </option>
-                            @foreach (var product in Model.Products)
-                            {
-                                <option value="@product.Id">@product.ProductName</option>
-
-                            }
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-9">
+                <div class="form-group row mb-3">
+                    <label asp-for="MealName" class="col-sm-2 col-form-label fw-bold">
+                        Nazwa
+                    </label>
+                    <div class="col">
+                        <input asp-for="MealName" class="form-control" placeholder="Wprowadź nazwę">
+                        <span asp-validation-for="MealName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <label asp-for="TypeOfMeal" class="col-sm-2 col-form-label fw-bold">
+                        Typ
+                    </label>
+                    <div class="col">
+                        <select class="form-control" asp-for="TypeOfMeal"
+                                asp-items="Html.GetEnumSelectList<MealTimeType>()">
                         </select>
-                    </td>
-                    <td style="width:30%">
-                        <input id="quantity" class="form-control quantity-class" name="MealProducts[@i].Quantity" placeholder="Ilość" />
-                    </td>
-                    <td>
-                        <input type="button" onclick="DeleteRow(this)" class="btn btn-link" style="margin-top:10px" />
-                    </td>
-                    <input type="hidden" name="MealProducts[@i].MealId" />
-                </tr>
-            }
-        }
+                        <span asp-validation-for="TypeOfMeal" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <label asp-for="NumberOfServings" class="col-sm-2 col-form-label fw-bold">
+                        Ilość porcji
+                    </label>
+                    <div class="col">
+                        <input asp-for="NumberOfServings" class="form-control" placeholder="Ilość porcji">
+                        <span asp-validation-for="NumberOfServings" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row mb-3">
+                    <label asp-for="Description" class="col-sm-2 col-form-label fw-bold">
+                        Opis
+                    </label>
+                    <div class="col">
+                        <textarea asp-for="Description" class="form-control" rows="6" placeholder="Opis"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+                <hr class="dashed">
+                <table id="productsTable" style="width:100%">
+                    <tr>
+                        <th style="width:60%" class="col mb-3">Nazwa produktu</th>
+                        <th style="width:30%" class="col mb-3">Ilość (w gramach)</th>
+                        <th style="width:10%" class="col mb-3"></th>
+                    </tr>
+                    @if (Model.MealProducts != null)
+                    {
+                        @for (int i = 0; i < Model.MealProducts.Count; i++)
+                        {
+                            <tr class="d-table-row mb-3">
+                                <td style="width:70%">
+                                    <select class="form-control select-class" id="selectedProduct_@i" name="MealProducts[@i].ProductId">
+                                        <option selected> --Wybierz produkt-- </option>
+                                        @foreach (var product in Model.Products)
+                                        {
+                                            <option value="@product.Id">@product.ProductName</option>
 
-    </table>
+                                        }
+                                    </select>
+                                </td>
+                                <td style="width:30%">
+                                    <input id="quantity" class="form-control quantity-class" name="MealProducts[@i].Quantity" placeholder="Ilość" />
+                                </td>
+                                <td>
+                                    <input type="button" onclick="DeleteRow(this)" class="btn btn-link" style="margin-top:10px" />
+                                </td>
+                                <input type="hidden" name="MealProducts[@i].MealId" />
+                            </tr>
+                        }
+                    }
+                </table>
+            </div>
+            <div class="col-3">
+                <div class="form-group row">
+                    <div class="col" lang="pl">
+                        <img style="display:none" id="PhotoPreview" src="#" alt="image" class="mb-3" />
+                        <input asp-for="Photo" type="file" onchange="readURL(this);" class="form-control form-control-sm fw-bold">
+                        <span asp-validation-for="Photo" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="form-group row">
         <div class="col-sm-12">
             <button type="button" id="add-row" class="btn btn-link"><i class="fa fa-plus"></i> Dodaj produkt</button>
@@ -140,6 +147,18 @@
         });
     });
 
-
+        function readURL(input) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $('#PhotoPreview')
+                                .attr('src', e.target.result)
+                                .width(300)
+                                .height(300);
+                            $('#PhotoPreview').show();
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                    }
 
 </script>

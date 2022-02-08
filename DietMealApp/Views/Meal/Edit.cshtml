@@ -10,10 +10,10 @@
     <input id="mealId" type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="UserId" />
     <div class="container">
-        <div class="row">
+        <div class="row mb-3">
             <div class="col-9">
-                <div class="form-group row">
-                    <label asp-for="MealName" class="col-sm-2 col-form-label">
+                <div class="form-group row mb-3">
+                    <label asp-for="MealName" class="col-sm-2 col-form-label fw-bold">
                         Nazwa
                     </label>
                     <div class="col">
@@ -21,8 +21,8 @@
                         <span asp-validation-for="MealName" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label asp-for="TypeOfMeal" class="col-sm-2 col-form-label">
+                <div class="form-group row mb-3">
+                    <label asp-for="TypeOfMeal" class="col-sm-2 col-form-label fw-bold">
                         Typ
                     </label>
                     <div class="col">
@@ -32,8 +32,8 @@
                         <span asp-validation-for="TypeOfMeal" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label asp-for="NumberOfServings" class="col-sm-2 col-form-label">
+                <div class="form-group row mb-3">
+                    <label asp-for="NumberOfServings" class="col-sm-2 col-form-label fw-bold">
                         Ilość porcji
                     </label>
                     <div class="col">
@@ -41,8 +41,8 @@
                         <span asp-validation-for="NumberOfServings" class="text-danger"></span>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label asp-for="Description" class="col-sm-2 col-form-label">
+                <div class="form-group row mb-3">
+                    <label asp-for="Description" class="col-sm-2 col-form-label fw-bold">
                         Opis
                     </label>
                     <div class="col">
@@ -90,19 +90,19 @@
                 @if (Model.Photo150x150Path == null)
                 {
                     <label asp-for="Photo150x150Path" class="col-form-label">
-                        <img class="card-img-top" style="width:256px; height:256px" src="http://dietmealapp.cba.pl/products/full/a9be73f2-728c-411d-ae34-df1be4420e52.png" asp-append-version="true" />
+                        <img id="PhotoPreview" class="card-img-top" style="width:256px; height:256px" src="http://dietmealapp.cba.pl/products/full/a9be73f2-728c-411d-ae34-df1be4420e52.png" asp-append-version="true" />
                     </label>
                 }
                 else
                 {
                     <label asp-for="Photo150x150Path" class="col-form-label">
-                        <img class="card-img-top" style="width:256px; height:256px" src="@Model.Photo150x150Path" />
+                        <img id="PhotoPreview" class="card-img-top" style="width:256px; height:256px" src="@Model.Photo150x150Path" />
                     </label>
                     <input asp-for="Photo150x150Path" type="hidden">
                     <input asp-for="PhotoFullPath" type="hidden">
                 }
                 <div class="col custom-file" lang="pl">
-                    <input asp-for="Photo" type="file" class="form-control-file">
+                    <input asp-for="Photo" type="file" onchange="readURL(this);" class="form-control form-control-sm fw-bold">
                     <span asp-validation-for="Photo" class="text-danger"></span>
                 </div>
             </div>
@@ -161,4 +161,18 @@
             });
         });
     });
+
+    function readURL(input) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $('#PhotoPreview')
+                                .attr('src', e.target.result)
+                                .width(300)
+                                .height(300);
+                            $('#PhotoPreview').show();
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                    }
 </script>

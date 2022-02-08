@@ -20,7 +20,7 @@ namespace DietMealApp.Core.DTO.Products
         public decimal Kcal { get; set; }
         [Required(ErrorMessage = "Podaj ilość jednostek")]
         [RegularExpression(@"^\d+\,?\d*$", ErrorMessage = "W tym polu możesz wpisać tylko cyfry")]
-        public int QuantityUnit { get; set; }
+        public int QuantityUnit { get; set; } = 100;
         [Required(ErrorMessage = "Podaj ilość białka")]
         [RegularExpression(@"^\d+\,?\d*$", ErrorMessage = "W tym polu możesz wpisać tylko cyfry")]
         public decimal Protein { get; set; }
