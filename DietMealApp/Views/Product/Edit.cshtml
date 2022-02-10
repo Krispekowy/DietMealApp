@@ -109,7 +109,7 @@
                     <input asp-for="Photo150x150Path" type="hidden">
                     <input asp-for="PhotoFullPath" type="hidden">
                 }
-                    <input asp-for="Photo" type="file" onchange="readURL(this);" class="form-control form-control-sm fw-bold">
+                    <input asp-for="Photo" type="file"  accept="image/*" onchange="readURL(this);" class="form-control form-control-sm fw-bold">
                     <span asp-validation-for="Photo" class="text-danger"></span>
                 </div>
             </div>

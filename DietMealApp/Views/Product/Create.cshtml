@@ -95,7 +95,7 @@
             <div class="form-group row">
                 <div class="col" lang="pl">
                     <img style="display:none" id="PhotoPreview" src="#" alt="image" />
-                    <input asp-for="Photo" type="file" onchange="readURL(this);" class="form-control form-control-sm fw-bold">
+                    <input asp-for="Photo" type="file"  accept="image/*" onchange="readURL(this);" class="form-control form-control-sm fw-bold">
                     <span asp-validation-for="Photo" class="text-danger"></span>
                 </div>
             </div>

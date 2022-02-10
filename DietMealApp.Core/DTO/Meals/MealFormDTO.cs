@@ -2,6 +2,7 @@
 using DietMealApp.Core.DTO.Products;
 using DietMealApp.Core.Entities;
 using DietMealApp.Core.Enums;
+using DietMealApp.Core.Extensions;
 using DietMealApp.Core.Intersections;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -31,8 +32,13 @@ namespace DietMealApp.Core.DTO.Meals
         public int NumberOfServings { get; set; }
         public string PhotoFullPath { get; set; }
         public string Photo150x150Path { get; set; }
-        public IEnumerable<ProductDTO> Products { get; set; }
+        public List<ProductDTO> Products { get; set; }
         public List<MealProduct> MealProducts { get; set; }
+        [Required(ErrorMessage = "Wybierz plik")]
+        [MaxWidthHeight(3000, 3000)]
+        [MinWidthHeight(500, 500)]
+        [IsSquare]
+        [AllowedExtensions(new string[] { ".jpg", ".png" })]
         public IFormFile Photo { get; set; }
     }
 }

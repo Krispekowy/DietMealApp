@@ -1,6 +1,7 @@
 ﻿using DietMealApp.Core.Abstract;
 using DietMealApp.Core.Entities;
 using DietMealApp.Core.Enums;
+using DietMealApp.Core.Extensions;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,11 @@ namespace DietMealApp.Core.DTO.Products
         [Required(ErrorMessage = "Wybierz jednostkę miary produktu")]
         public Unit Unit { get; set; }
         public ProductCategories Category { get; set; }
+        [Required(ErrorMessage = "Wybierz plik")]
+        [MaxWidthHeight(3000, 3000)]
+        [MinWidthHeight(500, 500)]
+        [IsSquare]
+        [AllowedExtensions(new string[] { ".jpg", ".png" })]
         public IFormFile Photo { get; set; }
         public string PhotoFullPath { get; set; }
         public string Photo150x150Path { get; set; }

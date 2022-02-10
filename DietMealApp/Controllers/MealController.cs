@@ -66,14 +66,21 @@ namespace DietMealApp.WebClient.Controllers
         public async Task<IActionResult> Create(MealFormDTO model)
         {
             InitId();
-            try
+            if (ModelState.IsValid)
             {
-                await _mediator.Send(new InsertMealCommand() { MealForm = model });
-                return RedirectToAction("Index","Meal");
+                try
+                {
+                    await _mediator.Send(new InsertMealCommand() { MealForm = model });
+                    return RedirectToAction("Index", "Meal");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(ex.Message);
+                return View(model);
             }
         }
 
@@ -127,14 +134,22 @@ namespace DietMealApp.WebClient.Controllers
         public async Task<IActionResult> Edit(MealFormDTO model)
         {
             InitId();
-            try
+            if (ModelState.IsValid)
             {
-                await _mediator.Send(new UpdateMealCommand() { MealForm = model });
-                return RedirectToAction("Index", "Meal");
+                try
+                {
+                    await _mediator.Send(new UpdateMealCommand() { MealForm = model });
+                    return RedirectToAction("Index", "Meal");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(ex.Message);
+                model.Products = await _mediator.Send(new GetAllProductsQuery() { OrderBy = OrderByProductOptions.ByName });
+                return View(model);
             }
         }
 

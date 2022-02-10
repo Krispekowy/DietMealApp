@@ -40,14 +40,21 @@ namespace DietMealApp.WebClient.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ProductDTO model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                await _mediator.Send(new InsertProductCommand() { Product = model});
-                return RedirectToAction("Index");
+                try
+                {
+                    await _mediator.Send(new InsertProductCommand() { Product = model });
+                    return RedirectToAction("Index");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(ex.Message);
+                return View();
             }
         }
 
@@ -75,8 +82,15 @@ namespace DietMealApp.WebClient.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(ProductDTO productDTO)
         {
-            await _mediator.Send(new UpdateProductCommand() { Product = productDTO });
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                await _mediator.Send(new UpdateProductCommand() { Product = productDTO });
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(productDTO);
+            }
         }
 
         [HttpGet]
