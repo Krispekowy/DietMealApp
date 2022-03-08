@@ -35,7 +35,6 @@ namespace DietMealApp.Core.DTO.Products
         [Required(ErrorMessage = "Wybierz jednostkę miary produktu")]
         public Unit Unit { get; set; }
         public ProductCategories Category { get; set; }
-        [Required(ErrorMessage = "Wybierz plik")]
         [MaxWidthHeight(3000, 3000)]
         [MinWidthHeight(500, 500)]
         [IsSquare]

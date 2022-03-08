@@ -34,7 +34,6 @@ namespace DietMealApp.Core.DTO.Meals
         public string Photo150x150Path { get; set; }
         public List<ProductDTO> Products { get; set; }
         public List<MealProduct> MealProducts { get; set; }
-        [Required(ErrorMessage = "Wybierz plik")]
         [MaxWidthHeight(3000, 3000)]
         [MinWidthHeight(500, 500)]
         [IsSquare]
