@@ -16,7 +16,7 @@ namespace DietMealApp.Core.Mappings
                 cfg.AddProfile<MappingProfiler>();
             });
 
-            AssertConfigurationInDebug(config);
+            //AssertConfigurationInDebug(config);
             var mapper = config.CreateMapper();
             return mapper;
         }

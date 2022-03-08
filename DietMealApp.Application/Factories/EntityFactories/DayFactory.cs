@@ -16,13 +16,9 @@ namespace DietMealApp.Application.Factories.EntityFactories
             return new Day()
             {
                 CanBeEdited = true,
-                Carbohydrates = dto.Carbohydrates,
                 DayMeals = dto.MealItems.Select(a => new Core.Intersections.DayMeals() { MealId = a.SelectedMeal, Type = a.AssignedMealTimeType }).ToList(),
-                Fats = dto.Fats,
                 Id = dto.Id,
-                Kcal = dto.Kcal,
                 Name = dto.Name,
-                Protein = dto.Protein,
                 UserId = dto.UserId,
                 NumberOfMeals = dto.MealsCount,
                 ModifyDate = System.DateTime.Now

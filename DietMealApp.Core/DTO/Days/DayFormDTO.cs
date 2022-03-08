@@ -19,10 +19,6 @@ namespace DietMealApp.Core.DTO.Days
         [MinLength(3, ErrorMessage = "Nazwa musi mieć co najmniej 3 znaki")]
         [MaxLength(50, ErrorMessage = "Nazwa może mieć maksymalnie 50 znaków")]
         public string Name { get; set; }
-        public decimal Kcal { get; set; }
-        public decimal Protein { get; set; }
-        public decimal Carbohydrates { get; set; }
-        public decimal Fats { get; set; }
         public SelectList Meals { get; set; }
         public List<MealMenuItemDTO> MealItems { get; set; }
         public int MealsCount { get; set; }

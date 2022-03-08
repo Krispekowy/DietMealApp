@@ -19,11 +19,7 @@ namespace DietMealApp.Core.DTO
                 var dto = new DayDTO()
                 {
                     Id = entity.Id,
-                    Kcal = entity.Kcal,
-                    Carbohydrates = entity.Carbohydrates,
-                    Fats = entity.Fats,
                     Name = entity.Name,
-                    Protein = entity.Protein,
                     DayMeals = entity.DayMeals,
                     DietDays = entity.DietDays,
                 };

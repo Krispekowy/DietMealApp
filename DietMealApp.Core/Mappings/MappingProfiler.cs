@@ -58,10 +58,6 @@ namespace DietMealApp.Core.Mappings
                 .ForMember(a => a.DayMeals, b => b.MapFrom(c => c.MealItems))
                 .ForMember(a => a.NumberOfMeals, b => b.MapFrom(c => c.MealsCount))
                 .ForMember(a => a.Name, b => b.MapFrom(c => c.Name))
-                .ForMember(a => a.Fats, b => b.MapFrom(c => c.Fats))
-                .ForMember(a => a.Kcal, b => b.MapFrom(c => c.Kcal))
-                .ForMember(a => a.Protein, b => b.MapFrom(c => c.Protein))
-                .ForMember(a => a.Carbohydrates, b => b.MapFrom(c => c.Carbohydrates))
                 .ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
                 .ForAllOtherMembers(a => a.Ignore());
             CreateMap<Day, DayFormDTO>()
@@ -69,10 +65,6 @@ namespace DietMealApp.Core.Mappings
                 .ForMember(a => a.MealsCount, b => b.MapFrom(c => c.NumberOfMeals))
                 .ForMember(a => a.Name, b => b.MapFrom(c => c.Name))
                 .ForMember(a => a.Id, b => b.MapFrom(c => c.Id))
-                .ForMember(a => a.Fats, b => b.MapFrom(c => c.Fats))
-                .ForMember(a => a.Kcal, b => b.MapFrom(c => c.Kcal))
-                .ForMember(a => a.Protein, b => b.MapFrom(c => c.Protein))
-                .ForMember(a => a.Carbohydrates, b => b.MapFrom(c => c.Carbohydrates))
                 .ForAllOtherMembers(a => a.Ignore());
         }
     }

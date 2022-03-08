@@ -30,7 +30,6 @@ namespace DietMealApp.Application.Functions.Day.Query.GetDayForm
             var response = new DayFormDTO()
             {
                 UserId = request.UserId,
-                Kcal = 0,
                 Name = ""
             };
             return response;
