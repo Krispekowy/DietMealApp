@@ -26,6 +26,7 @@ namespace DietMealApp.Application.Functions.Day.Query.GetDayById
         public async Task<DayFormDTO> Handle(GetDayByIdQuery request, CancellationToken cancellationToken)
         {
             var entity = await _dayRepository.GetByID(request.Id);
+            entity.DayMeals = entity.DayMeals.OrderBy(a => a.Type).ToList();
             var dto = _mapper.Map<DayFormDTO>(entity);
             return dto;
         }

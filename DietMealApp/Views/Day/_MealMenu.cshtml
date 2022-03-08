@@ -278,13 +278,13 @@
                 <select class="form-control" name="MealItems[@i].SelectedMeal">
                     @if (Model.MealItems.Count > 0)
                     {
-                        @if (Model.MealItems[@i].SelectedMeal == Guid.Empty)
+                        @if (Model.MealItems[i].SelectedMeal == Guid.Empty)
                         {
                             <option selected value="0">-- Wybierz posiłek --</option>
                         }
                         @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == (MealTimeType)i + 1))
                         {
-                            if (Model.MealItems[@i].SelectedMeal == meal.Id)
+                            if (Model.MealItems[i].SelectedMeal == meal.Id)
                             {
                                 <option selected value="@meal.Id">@meal.MealName</option>
                             }
