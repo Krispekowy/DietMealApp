@@ -29,13 +29,13 @@ namespace DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser
         {
             var days = await _dietDayRepository.GetDaysByUser(request.UserId);
             var dto = _mapper.Map<List<DayDTO>>(days);
-            //foreach (var day in dto)
-            //{
-            //    day.Kcal = day.DayMeals.Sum(a=>a.Meal.Kcal);
-            //    day.Protein = day.DayMeals.Sum(a => a.Meal.Protein);
-            //    day.Carbohydrates = day.DayMeals.Sum(a => a.Meal.Carbohydrates);
-            //    day.Fats = day.DayMeals.Sum(a => a.Meal.Fats);
-            //}
+            foreach (var day in dto)
+            {
+                day.Kcal = day.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Kcal / a.Product.QuantityUnit) * a.Quantity), 2));
+                day.Protein = day.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Protein / a.Product.QuantityUnit) * a.Quantity), 2));
+                day.Carbohydrates = day.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Carbohydrates / a.Product.QuantityUnit) * a.Quantity), 2));
+                day.Fats = day.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Fats / a.Product.QuantityUnit) * a.Quantity), 2));
+            }
             return dto;
         }
     }
