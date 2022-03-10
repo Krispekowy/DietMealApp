@@ -14,11 +14,6 @@ namespace DietMealApp.Core.Entities
         public string MealName { get; set; }
         public string Description { get; set; }
         public string UserId { get; set; }
-
-        public decimal Kcal { get; set; }
-        public decimal Protein { get; set; }
-        public decimal Carbohydrates { get; set; }
-        public decimal Fats { get; set; }
         public int NumberOfServings { get; set; }
         public string Photo150x150Path { get; set; }
         public string PhotoFullPath { get; set; }

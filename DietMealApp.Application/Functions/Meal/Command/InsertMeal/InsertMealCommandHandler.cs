@@ -39,24 +39,11 @@ namespace DietMealApp.Application.Functions.Meal.Command.InsertMeal
             {
                 (request.MealForm.PhotoFullPath, request.MealForm.Photo150x150Path) = await _fileManager.SendFileToFtp(request.MealForm.Photo, Core.Enums.ImageType.Meal);
             }
-            await CalculateNutritionalValues(request);
             request.MealForm.MealProducts.RemoveAll(item => item.ProductId == Guid.Empty);
             var meal = _mapper.Map<DietMealApp.Core.Entities.Meal>(request.MealForm);
             _mealRepository.Insert(meal);
             await _mealRepository.CommitAsync();
             return Unit.Value;
-        }
-
-        private async Task CalculateNutritionalValues(InsertMealCommand request)
-        {
-            foreach (var product in request.MealForm.MealProducts)
-            {
-                var p = await _mediator.Send(new GetProductByIdQuery() { Id = product.ProductId });
-                request.MealForm.Kcal = p.Kcal * (Decimal.Divide(product.Quantity, 100)) + request.MealForm.Kcal;
-                request.MealForm.Protein = p.Protein * (Decimal.Divide(product.Quantity, 100)) + request.MealForm.Protein;
-                request.MealForm.Fats = p.Fats * (Decimal.Divide(product.Quantity, 100)) + request.MealForm.Fats;
-                request.MealForm.Carbohydrates = p.Carbohydrates * (Decimal.Divide(product.Quantity, 100)) + request.MealForm.Carbohydrates;
-            }
         }
     }
 }
