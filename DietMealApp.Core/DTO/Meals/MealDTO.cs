@@ -30,5 +30,6 @@ namespace DietMealApp.Core.DTO.Meals
         public int NumberOfServings { get; set; }
         public string Photo150x150Path { get; set; }
         public string PhotoFullPath { get; set; }
+        public List<MealProduct> MealProducts { get; set; }
     }
 }

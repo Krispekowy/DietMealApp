@@ -33,7 +33,15 @@ namespace DietMealApp.Service.Functions.Query
                 result = result.Where(a => a.TypeOfMeal == request.Type).ToList();
             }
             var ordered = result.OrderBy(a => a.MealName);
-            return _mapper.Map<List<MealDTO>>(ordered);
+            var dto = _mapper.Map<List<MealDTO>>(ordered);
+            foreach (var meal in dto)
+            {
+                meal.Kcal = Math.Round(meal.MealProducts.Sum(a=> (a.Product.Kcal / a.Product.QuantityUnit) * a.Quantity),2);
+                meal.Protein = Math.Round(meal.MealProducts.Sum(a => (a.Product.Protein / a.Product.QuantityUnit) * a.Quantity),2);
+                meal.Carbohydrates = Math.Round(meal.MealProducts.Sum(a => (a.Product.Carbohydrates / a.Product.QuantityUnit) * a.Quantity),2);
+                meal.Fats = Math.Round(meal.MealProducts.Sum(a => (a.Product.Fats / a.Product.QuantityUnit) * a.Quantity),2);
+            }
+            return dto;
         }
     }
 }

@@ -93,7 +93,10 @@ namespace DietMealApp.DataAccessLayer.Repositories
 
         public async Task<List<Meal>> GetMealsByUser(string user)
         {
-            return await dbContext.Meals.Where(x => x.UserId == user && !x.IsDeleted).ToListAsync();
+            return await dbContext.Meals
+                .Include(x=>x.MealProducts)
+                    .ThenInclude(x=>x.Product)
+                .Where(x => x.UserId == user && !x.IsDeleted).ToListAsync();
         }
 
         public void Insert(Meal entity)

@@ -38,10 +38,6 @@ namespace DietMealApp.Application.Functions.Meal.Query.GetMealById
             {
                 Id = meal.Id,
                 Description = meal.Description,
-                Carbohydrates = meal.Carbohydrates,
-                Protein = meal.Protein,
-                Fats = meal.Fats,
-                Kcal = meal.Kcal,
                 MealName = meal.MealName,
                 Products = productDTO,
                 TypeOfMeal = meal.TypeOfMeal,
