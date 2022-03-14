@@ -66,8 +66,8 @@ namespace DietMealApp.WebClient.Controllers
         public async Task<IActionResult> Create(MealFormDTO model)
         {
             InitId();
-            //if (ModelState.IsValid)
-            //{
+            if (ModelState.IsValid)
+            {
                 try
                 {
                     await _mediator.Send(new InsertMealCommand() { MealForm = model });
@@ -77,12 +77,12 @@ namespace DietMealApp.WebClient.Controllers
                 {
                     return BadRequest(ex.Message);
                 }
-            //}
-            //else
-            //{
-            //    return View(model);
-            //}
         }
+            else
+            {
+                return View(model);
+    }
+}
 
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)

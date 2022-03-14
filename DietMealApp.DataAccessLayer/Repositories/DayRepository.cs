@@ -42,7 +42,7 @@ namespace DietMealApp.DataAccessLayer.Repositories
 
         public async Task Delete(Guid id)
         {
-            var entityToDelete = Get(a=>a.Id == id).FirstOrDefault();
+            var entityToDelete = await GetByID(id);
             entityToDelete.IsDeleted = true;
             entityToDelete.DeleteDate = DateTime.Now;
             Update(entityToDelete);

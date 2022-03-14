@@ -29,6 +29,7 @@ namespace DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser
         {
             var days = await _dietDayRepository.GetDaysByUser(request.UserId);
             var dto = _mapper.Map<List<DayDTO>>(days);
+            dto.Select(a=>a.DayMeals.OrderBy(a=>a.Type)).ToList();
             foreach (var day in dto)
             {
                 day.Kcal = day.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Kcal / a.Product.QuantityUnit) * a.Quantity), 2));
