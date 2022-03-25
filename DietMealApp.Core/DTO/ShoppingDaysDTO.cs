@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DietMealApp.Core.DTO.Days;
+using System;
 using System.Collections.Generic;
 using System.Text;
 

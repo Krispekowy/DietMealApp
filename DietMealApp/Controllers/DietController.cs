@@ -1,11 +1,15 @@
 ﻿using DietMealApp.Application.Commons.Services;
+using DietMealApp.Application.Functions.Day.Query.GetDayById;
+using DietMealApp.Application.Functions.Day.Query.GetDaysByIds;
 using DietMealApp.Application.Functions.Diet.Command;
 using DietMealApp.Application.Functions.Diet.Query.GetDietsByUser;
 using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
 using DietMealApp.Core.DTO;
+using DietMealApp.Core.DTO.Days;
 using DietMealApp.Core.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -81,6 +85,50 @@ namespace DietMealApp.WebClient.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex);
+                throw;
+            }
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> GeneratePlan()
+        {
+            InitId();
+            try
+            {
+                var model = new List<DayPlanDTO>();
+                var days = await _mediator.Send(new GetDaysByUserQuery());
+                foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
+                {
+                    model.Add(new DayPlanDTO() { DayOfWeek = day, Days = days });
+                }
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GeneratePlan(List<DayPlanDTO> model)
+        {
+            InitId();
+            try
+            {
+                var plan = new List<DietPlanViewModel>();
+                foreach (var dayMenu in model)
+                {
+                    var day = await _mediator.Send(new GetDayByIdQuery() { Id = dayMenu.DayId});
+                    //plan.Add(new DietPlanViewModel() { Day = day, DayOfWeek = dayMenu.DayOfWeek });
+                }
+                
+                return PartialView("_Plan", plan);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
                 throw;
             }
         }

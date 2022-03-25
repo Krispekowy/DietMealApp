@@ -50,12 +50,25 @@ namespace DietMealApp.DataAccessLayer.Repositories
 
         public IQueryable<Day> Get()
         {
-            return dbContext.Days.AsNoTracking().Where(a => !a.IsDeleted);
+            return dbContext.Days
+                .AsNoTracking()
+                .Where(a => !a.IsDeleted)
+                .Include(dm=>dm.DayMeals)
+                    .ThenInclude(m => m.Meal)
+                        .ThenInclude(mp => mp.MealProducts)
+                            .ThenInclude(p => p.Product);
         }
 
         public IQueryable<Day> Get(Func<Day, bool> filterCondition)
         {
-            return dbContext.Days.AsNoTracking().Where(filterCondition).AsQueryable();
+            return dbContext.Days
+                .AsNoTracking()
+                .Include(dm => dm.DayMeals)
+                    .ThenInclude(m => m.Meal)
+                        .ThenInclude(mp => mp.MealProducts)
+                            .ThenInclude(p => p.Product)
+                .Where(filterCondition)
+                .AsQueryable();
         }
 
         public async Task<Day> GetByID(Guid id)

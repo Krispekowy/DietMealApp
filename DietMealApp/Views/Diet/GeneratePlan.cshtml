@@ -1,0 +1,54 @@
+﻿@model List<DietMealApp.Core.DTO.Days.DayPlanDTO>
+@{
+    var culture = new System.Globalization.CultureInfo("pl-PL");
+}
+
+<h1>Generowanie jadłospisu</h1>
+
+<form method="post" id="plan" class="mt-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @for (int i = 0; i < @Model.Count; i++)
+    {
+        <div class="form-group row">
+            @Html.HiddenFor(a=>a[i].DayOfWeek)
+            <label class="col-form-label">@(culture.DateTimeFormat.GetDayName((Model[i].DayOfWeek)))</label>
+            <div class="col">
+                <select class="form-control select-class" asp-for="@Model[i].DayId">
+                    @for (int j = 0; j < Model[i].Days.Count; j++)
+                    {
+                        <option value="@Model[i].Days[j].Id">@Model[i].Days[j].Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+    }
+   
+</form>
+ <button type="submit" name="submit" id="btnsubmit" class="btn btn-primary">Generuj</button>
+<div id="menuPlan">
+</div>
+
+@section Scripts {
+<partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnsubmit").click(function () {
+            var data = $('#plan').serialize();
+            $.ajax({
+                type: 'post',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                cache: false,
+                url: "/Diet/GeneratePlan",
+                data: data,
+                success: function (data, textStatus, jqXHR) {
+                    $("#menuPlan").html(data);
+                    console.log(data);
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log("Error: " + textStatus + ". ErrorThrown: " + errorThrown );
+                }
+            });
+        });
+    });
+</script>

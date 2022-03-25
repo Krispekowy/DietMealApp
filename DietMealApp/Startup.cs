@@ -46,6 +46,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using DietMealApp.Application.Commons.Settings;
 using DietMealApp.Application.Commons.Services;
 using DietMealApp.Application.Commons.Services.FileManager;
+using DietMealApp.Application.Functions.Day.Query.GetDaysByIds;
 
 namespace DietMealApp
 {
@@ -115,6 +116,7 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<InsertDietCommand, Unit>, InsertDietCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateDayCommand, Unit>, UpdateDayCommandHandler>();
             services.AddScoped<IRequestHandler<GetShoppingListQuery, List<ProductsToBuyDTO>>, GetShoppingListQueryHandler>();
+            services.AddScoped<IRequestHandler<GetDaysByIdsQuery, List<DayDTO>>, GetDaysByIdsQueryHandler>();
             services.AddSingleton<IFileManager> (a=> new FileManager(
                Configuration["FileManager:Host"],
                Configuration["FileManager:User"],
