@@ -27,7 +27,8 @@ namespace DietMealApp.Core.DTO.Days
                     Carbohydrates = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Carbohydrates / a.Product.QuantityUnit) * a.Quantity), 2)),
                     Protein = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Protein / a.Product.QuantityUnit) * a.Quantity), 2)),
                     Fats = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Fats / a.Product.QuantityUnit) * a.Quantity), 2)),
-                    NumberOfMeals = entity.NumberOfMeals
+                    NumberOfMeals = entity.NumberOfMeals,
+                    DayMeals = entity.DayMeals.Select(a=> DayMealsDTO.CreateFromEntity(a)).ToList()
                 };
                 return dto;
             }

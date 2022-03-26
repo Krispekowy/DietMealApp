@@ -14,7 +14,6 @@ namespace DietMealApp.Core.DTO.Meals
         {
             return new MealProductDTO()
             {
-                Meal = MealDTO.CreateFromEntity(entity.Meal),
                 MealId = entity.MealId,
                 Product = ProductDTO.CreateFromEntity(entity.Product),
                 ProductId = entity.ProductId,

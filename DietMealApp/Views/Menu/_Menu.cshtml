@@ -1,0 +1,23 @@
+﻿@using DietMealApp.Core.ViewModels
+@model List<DietPlanViewModel>
+@{
+
+}
+@foreach(var day in Model)
+{
+    <h3>@Enum.GetValues(typeof(DayOfWeek))@day.DayOfWeek @day.Day.Name</h3>
+    <h6><b>Kcal @day.Day.Kcal B @day.Day.Protein T @day.Day.Fats W @day.Day.Carbohydrates</b></h6>
+    @foreach(var meal in day.Day.DayMeals)
+    {
+        <h5>@meal.Type</h5>
+        <p>Składniki:</p>
+         <ul>
+        @foreach(var product in meal.Meal.MealProducts)
+        {
+           
+                <li>@product.Product.ProductName</li>
+            
+        }
+        </ul>
+    }
+}

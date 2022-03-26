@@ -88,49 +88,5 @@ namespace DietMealApp.WebClient.Controllers
                 throw;
             }
         }
-
-
-        [HttpGet]
-        public async Task<IActionResult> GeneratePlan()
-        {
-            InitId();
-            try
-            {
-                var model = new List<DayPlanDTO>();
-                var days = await _mediator.Send(new GetDaysByUserQuery());
-                foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
-                {
-                    model.Add(new DayPlanDTO() { DayOfWeek = day, Days = days });
-                }
-                return View(model);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-                throw;
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> GeneratePlan(List<DayPlanDTO> model)
-        {
-            InitId();
-            try
-            {
-                var plan = new List<DietPlanViewModel>();
-                foreach (var dayMenu in model)
-                {
-                    var day = await _mediator.Send(new GetDayByIdQuery() { Id = dayMenu.DayId});
-                    //plan.Add(new DietPlanViewModel() { Day = day, DayOfWeek = dayMenu.DayOfWeek });
-                }
-                
-                return PartialView("_Plan", plan);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-                throw;
-            }
-        }
     }
 }

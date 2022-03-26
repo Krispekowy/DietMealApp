@@ -9,13 +9,12 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Core.DTO.Days
 {
-    public  class DayMealsDTO
+    public class DayMealsDTO
     {
         public static DayMealsDTO CreateFromEntity(DayMeals entity)
         {
             return new DayMealsDTO()
             {
-                Day = DayDTO.CreateFromEntity(entity.Day),
                 DayId = entity.DayId,
                 Meal = MealDTO.CreateFromEntity(entity.Meal),
                 MealId = entity.MealId,

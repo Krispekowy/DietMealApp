@@ -1,13 +1,10 @@
-﻿using DietMealApp.Core.Intersections;
+﻿using DietMealApp.Core.DTO.Days;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DietMealApp.Core.DTO.Days
+namespace DietMealApp.Core.DTO.Menu
 {
-    public class DayPlanDTO
+    public class MenuDTO
     {
         public DayOfWeek DayOfWeek { get; set; }
         public Guid DayId { get; set; }
