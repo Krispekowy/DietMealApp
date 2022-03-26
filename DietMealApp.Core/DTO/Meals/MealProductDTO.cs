@@ -21,22 +21,6 @@ namespace DietMealApp.Core.DTO.Meals
                 Quantity = entity.Quantity
             };
         }
-        public static List<MealProductDTO> CreateFromEntity(List<MealProduct> entity)
-        {
-            List<MealProductDTO> listDto = new List<MealProductDTO>();
-            foreach (MealProduct entityItem in entity)
-            {
-                var dto = new MealProductDTO()
-                {
-                    MealId = entityItem.MealId,
-                    Product = ProductDTO.CreateFromEntity(entityItem.Product),
-                    ProductId = entityItem.ProductId,
-                    Quantity = entityItem.Quantity
-                };
-                listDto.Add(dto);
-            }
-            return listDto;
-        }
         public int Quantity { get; set; }
         public Guid MealId { get; set; }
         public MealDTO Meal { get; set; }

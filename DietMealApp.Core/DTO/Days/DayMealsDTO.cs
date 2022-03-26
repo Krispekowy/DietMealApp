@@ -22,23 +22,7 @@ namespace DietMealApp.Core.DTO.Days
                 Type = entity.Type
             };
         }
-        public static ICollection<DayMealsDTO> CreateFromEntity(ICollection<DayMeals> entity)
-        {
-            var listDto = new List<DayMealsDTO>();
-            foreach (var item in entity)
-            {
-                var dto = new DayMealsDTO()
-                {
-                    Day = DayDTO.CreateFromEntity(item.Day),
-                    DayId = item.DayId,
-                    Meal = MealDTO.CreateFromEntity(item.Meal),
-                    MealId = item.MealId,
-                    Type = item.Type
-                };
-                listDto.Add(dto);
-            }
-            return listDto;
-        }
+
         public Guid DayId { get; set; }
         public DayDTO Day { get; set; }
         public Guid MealId { get; set; }

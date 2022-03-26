@@ -25,7 +25,7 @@ namespace DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser
         public async Task<List<DayDTO>> Handle(GetDaysByUserQuery request, CancellationToken cancellationToken)
         {
             var days = await _dietDayRepository.GetDaysByUser(request.UserId);
-            var dto = DayDTO.CreateFromEntity(days);
+            var dto = days.Select(a=> DayDTO.CreateFromEntity(a)).ToList();
             dto.Select(a=>a.DayMeals.OrderBy(a=>a.Type)).ToList();
             return dto;
         }

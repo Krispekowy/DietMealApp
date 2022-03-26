@@ -16,16 +16,13 @@ namespace DietMealApp.Service.Functions.Command
     public class UpdateProductCommandHandler : BaseRequestHandler<UpdateProductCommand, Unit>
     {
         private readonly IProductRepository _productRepository;
-        private readonly IMapper _mapper;
 
         public UpdateProductCommandHandler(
             IProductRepository productRepository,
-            IMapper mapper,
             IMediator mediator,
-            IFileManager fileManager) : base(mediator, mapper, fileManager)
+            IFileManager fileManager) : base(mediator, fileManager)
         {
             _productRepository = productRepository;
-            _mapper = mapper;
         }
 
         public override async Task<Unit> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
@@ -34,7 +31,7 @@ namespace DietMealApp.Service.Functions.Command
             {
                 (request.Product.PhotoFullPath, request.Product.Photo150x150Path) = await _fileManager.SendFileToFtp(request.Product.Photo, Core.Enums.ImageType.Product);
             }
-            var product = _mapper.Map<Product>(request.Product);
+            var product = Product.CreateFromDto(request.Product);
             _productRepository.Update(product);
             await _productRepository.CommitAsync();
             return Unit.Value;

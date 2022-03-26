@@ -16,7 +16,25 @@ namespace DietMealApp.Core.DTO.Meals
 {
     public class MealFormDTO : _BaseDTO
     {
-        public string UserId { get; set; }
+        public static MealFormDTO CreateFromEntity(Meal entity)
+        {
+            return new MealFormDTO()
+            {
+                Id = entity.Id,
+                Description = entity.Description,
+                MealName = entity.MealName,
+                NumberOfServings = entity.NumberOfServings,
+                Photo150x150Path = entity.Photo150x150Path,
+                PhotoFullPath = entity.PhotoFullPath,
+                TypeOfMeal = entity.TypeOfMeal,
+                UserId = entity.UserId,
+                MealProducts = entity.MealProducts.Select(a=> MealProductDTO.CreateFromEntity(a)).ToList(),
+                Fats = Math.Round(entity.MealProducts.Sum(a => (a.Product.Fats / a.Product.QuantityUnit) * a.Quantity), 2),
+                Kcal = Math.Round(entity.MealProducts.Sum(a => (a.Product.Kcal / a.Product.QuantityUnit) * a.Quantity), 2),
+                Protein = Math.Round(entity.MealProducts.Sum(a => (a.Product.Protein / a.Product.QuantityUnit) * a.Quantity), 2),
+                Carbohydrates = Math.Round(entity.MealProducts.Sum(a => (a.Product.Carbohydrates / a.Product.QuantityUnit) * a.Quantity), 2)
+            };
+        }
         [Required(ErrorMessage = "Pole typ posiłku jest wymagane")]
         public MealTimeType TypeOfMeal { get; set; }
         [Required(ErrorMessage = "Pole nazwa posiłku jest wymagane")]
@@ -33,7 +51,7 @@ namespace DietMealApp.Core.DTO.Meals
         public string PhotoFullPath { get; set; }
         public string Photo150x150Path { get; set; }
         public List<ProductDTO> Products { get; set; }
-        public List<MealProduct> MealProducts { get; set; }
+        public List<MealProductDTO> MealProducts { get; set; }
         [MaxWidthHeight(3000, 3000)]
         [MinWidthHeight(500, 500)]
         [IsSquare]

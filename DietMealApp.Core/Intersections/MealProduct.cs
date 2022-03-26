@@ -1,4 +1,5 @@
-﻿using DietMealApp.Core.Entities;
+﻿using DietMealApp.Core.DTO.Meals;
+using DietMealApp.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,6 +10,16 @@ namespace DietMealApp.Core.Intersections
 {
     public class MealProduct
     {
+        public static MealProduct CreateFromDto(MealProductDTO dto)
+        {
+            return new MealProduct()
+            {
+                MealId = dto.MealId,
+                ProductId = dto.ProductId,
+                Quantity = dto.Quantity,
+                Product = Product.CreateFromDto(dto.Product)
+            };
+        }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int Quantity { get; set; }

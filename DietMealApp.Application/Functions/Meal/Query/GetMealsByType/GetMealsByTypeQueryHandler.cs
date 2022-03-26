@@ -14,17 +14,12 @@ namespace DietMealApp.Application.Functions.Meal.Query.GetMealsByType
 {
     public sealed class GetMealsByTypeQueryHandler : IRequestHandler<GetMealsByTypeQuery, SelectList>
     {
-        private readonly IMediator _mediator;
         private readonly IMealRepository _mealRepository;
-        private readonly IMapper _mapper;
 
-        public GetMealsByTypeQueryHandler(IMediator mediator, 
-            IMealRepository mealRepository,
-            IMapper mapper)
+        public GetMealsByTypeQueryHandler(
+            IMealRepository mealRepository)
         {
-            _mediator = mediator;
             _mealRepository = mealRepository;
-            _mapper = mapper;
         }
 
         public async Task<SelectList> Handle(GetMealsByTypeQuery request, CancellationToken cancellationToken)

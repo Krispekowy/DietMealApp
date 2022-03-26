@@ -29,7 +29,7 @@ namespace DietMealApp.Service.Functions.Query
             {
                 result = result.Where(a => a.TypeOfMeal == request.Type).OrderBy(a=>a.MealName).ToList();
             }
-            var dto = MealDTO.CreateFromEntity(result);
+            var dto = result.Select(a=> MealDTO.CreateFromEntity(a)).ToList();
             return dto;
         }
     }

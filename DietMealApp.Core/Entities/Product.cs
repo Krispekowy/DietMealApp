@@ -13,7 +13,7 @@ namespace DietMealApp.Core.Entities
 {
     public class Product : _BaseEntity
     {
-        public static Product GetProductFromDTO(ProductDTO dto)
+        public static Product CreateFromDto(ProductDTO dto)
         {
             return new Product()
             {

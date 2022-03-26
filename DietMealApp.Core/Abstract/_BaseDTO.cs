@@ -8,5 +8,6 @@ namespace DietMealApp.Core.Abstract
     {
         public _BaseDTO() { }
         public Guid Id { get; set; }
+        public string UserId { get; set; }
     }
 }

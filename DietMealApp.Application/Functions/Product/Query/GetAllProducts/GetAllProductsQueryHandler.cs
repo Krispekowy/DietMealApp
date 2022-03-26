@@ -16,14 +16,11 @@ namespace DietMealApp.Service.Functions.Query
     public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, List<ProductDTO>>
     {
         private readonly IProductRepository _productRepository;
-        private readonly IMapper _mapper;
 
         public GetAllProductsQueryHandler(
-            IProductRepository productRepository,
-            IMapper mapper)
+            IProductRepository productRepository)
         {
             _productRepository = productRepository;
-            _mapper = mapper;
         }
         public async Task<List<ProductDTO>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
@@ -46,7 +43,7 @@ namespace DietMealApp.Service.Functions.Query
                 result = await _productRepository.Get().ToListAsync();
             }
 
-            return _mapper.Map<List<ProductDTO>>(result);
+            return result.Select(x => ProductDTO.CreateFromEntity(x)).ToList();
         }
     }
 }

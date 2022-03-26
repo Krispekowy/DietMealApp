@@ -3,6 +3,7 @@ using DietMealApp.Core.DTO;
 using DietMealApp.Core.DTO.Meals;
 using DietMealApp.Core.DTO.Products;
 using DietMealApp.Core.Interfaces;
+using DietMealApp.Service.Functions.Query;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,38 +17,23 @@ namespace DietMealApp.Application.Functions.Meal.Query.GetMealById
 {
     public class GetMealFormByIdQueryHandler : IRequestHandler<GetMealFormByIdQuery, MealFormDTO>
     {
-        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
         private readonly IMealRepository _mealRepository;
-        private readonly IProductRepository _productRepository;
 
         public GetMealFormByIdQueryHandler(
-            IMapper mapper,
-            IMealRepository mealRepository,
-            IProductRepository productRepository)
+            IMediator mediator,
+            IMealRepository mealRepository)
         {
-            _mapper = mapper;
+            _mediator = mediator;
             _mealRepository = mealRepository;
-            _productRepository = productRepository;
         }
         public async Task<MealFormDTO> Handle(GetMealFormByIdQuery request, CancellationToken cancellationToken)
         {
             var meal = await _mealRepository.GetByID(request.Id);
-            var products = await _productRepository.Get().ToListAsync();
-            var productDTO = _mapper.Map<List<ProductDTO>>(products);
-            var result = new MealFormDTO()
-            {
-                Id = meal.Id,
-                Description = meal.Description,
-                MealName = meal.MealName,
-                Products = productDTO,
-                TypeOfMeal = meal.TypeOfMeal,
-                UserId = meal.UserId,
-                MealProducts = meal.MealProducts,
-                NumberOfServings = meal.NumberOfServings,
-                Photo150x150Path = meal.Photo150x150Path,
-                PhotoFullPath = meal.PhotoFullPath
-            };
-            return _mapper.Map<MealFormDTO>(result);
+            var products = await _mediator.Send(new GetAllProductsQuery() { OrderBy = Core.Enums.OrderByProductOptions.ByName });
+            var result = MealFormDTO.CreateFromEntity(meal);
+            result.Products = products;
+            return result;
         }
     }
 }

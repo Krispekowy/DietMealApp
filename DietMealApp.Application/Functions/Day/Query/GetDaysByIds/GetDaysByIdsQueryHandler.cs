@@ -29,7 +29,7 @@ namespace DietMealApp.Application.Functions.Day.Query.GetDaysByIds
             {
                 throw new NullReferenceException($"Days with Ids: { request.Ids} don't exist");
             }
-            var dto = DayDTO.CreateFromEntity(entities);
+            var dto = entities.Select(a=> DayDTO.CreateFromEntity(a)).ToList();
             return dto;
         }
     }
