@@ -12,6 +12,23 @@ namespace DietMealApp.Core.DTO.Products
 {
     public class ProductDTO : _BaseDTO
     {
+        public static ProductDTO CreateFromEntity(Product entity)
+        {
+            return new ProductDTO()
+            {
+                Carbohydrates = entity.Carbohydrates,
+                Category = entity.Category,
+                Fats = entity.Fats,
+                Id = entity.Id,
+                Kcal = entity.Kcal,
+                Photo150x150Path = entity.Photo150x150Path,
+                PhotoFullPath = entity.PhotoFullPath,
+                ProductName = entity.ProductName,
+                Protein = entity.Protein,
+                QuantityUnit = entity.QuantityUnit,
+                Unit = entity.Unit
+            };
+        }
         public ProductDTO() : base() { }
 
         [Required(ErrorMessage = "Nazwa produktu jest wymagana")]

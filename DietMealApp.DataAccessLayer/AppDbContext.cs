@@ -12,6 +12,7 @@ namespace DietMealApp.DataAccessLayer
         {
         }
 
+
         public DbSet<Meal> Meals { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<MealProduct> MealProducts { get; set; }

@@ -11,5 +11,6 @@ namespace DietMealApp.Application.Functions.Day.Query.GetDayById
     public class GetDayByIdQuery : IRequest<DayFormDTO>
     {
         public Guid Id { get; set; }
+        public string UserId { get; set; }
     }
 }

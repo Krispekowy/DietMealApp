@@ -16,24 +16,20 @@ namespace DietMealApp.Application.Functions.Day.Query.GetDaysByIds
     public class GetDaysByIdsQueryHandler : IRequestHandler<GetDaysByIdsQuery, List<DayDTO>>
     {
         private readonly IDayRepository _dayRepository;
-        private readonly IMapper _mapper;
 
         public GetDaysByIdsQueryHandler(
-            IDayRepository dayRepository,
-            IMapper mapper)
+            IDayRepository dayRepository)
         {
             _dayRepository = dayRepository;
-            _mapper = mapper;
         }
         public async Task<List<DayDTO>> Handle(GetDaysByIdsQuery request, CancellationToken cancellationToken)
         {
-            var entity = _dayRepository.Get(a => request.Ids.Contains(a.Id)).ToList();
-            if (entity == null)
+            var entities = _dayRepository.Get(a => request.Ids.Contains(a.Id)).ToList();
+            if (entities == null)
             {
-                var empty = _mapper.Map<List<DayDTO>>(entity);
-                return empty;
+                throw new NullReferenceException($"Days with Ids: { request.Ids} don't exist");
             }
-            var dto = _mapper.Map<List<DayDTO>>(entity);
+            var dto = DayDTO.CreateFromEntity(entities);
             return dto;
         }
     }

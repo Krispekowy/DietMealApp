@@ -20,7 +20,8 @@ namespace DietMealApp.Core.Mappings
             CreateMap<Product, ProductDTO>()
                 .ForMember(a => a.Photo, b => b.Ignore())
                 .ReverseMap();
-            CreateMap<Meal, MealDTO>().ReverseMap();
+            CreateMap<Meal, MealDTO>()
+                .ReverseMap();
             CreateMap<AppUser, AppUserDTO>()
                 .ForMember(a => a.ConfirmPassword, b => b.Ignore())
                 .ForMember(a => a.RememberMe, b => b.Ignore())
@@ -30,6 +31,7 @@ namespace DietMealApp.Core.Mappings
                 .ForMember(a => a.Days, b => b.MapFrom(c => c.DietDays))
                 .ReverseMap();
             CreateMap<Day, DayDTO>()
+                .ForMember(a=>a.DayMeals, b=>b.MapFrom(c=>c.DayMeals))
                 .ReverseMap();
             CreateMap<MealFormDTO, Meal>()
                 .ForMember(a => a.TypeOfMeal, b => b.MapFrom(c => c.TypeOfMeal))

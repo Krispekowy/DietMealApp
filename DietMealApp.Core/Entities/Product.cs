@@ -28,9 +28,13 @@ namespace DietMealApp.Core.Entities
             };
         }
         public string ProductName { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Kcal { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Protein { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Carbohydrates { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Fats { get; set; }
         public int QuantityUnit { get; set; }
         public Unit Unit { get; set; }

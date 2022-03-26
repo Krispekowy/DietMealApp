@@ -25,7 +25,7 @@ namespace DietMealApp.Application.Functions.Day.Command.InsertDay
         }
         public async Task<Unit> Handle(InsertDayCommand request, CancellationToken cancellationToken)
         {
-            var entity = _mapper.Map<DietMealApp.Core.Entities.Day>(request.DayForm);
+            var entity = DietMealApp.Core.Entities.Day.CreateFromDto(request.DayForm);
             _dayRepository.Insert(entity);
             await _dayRepository.CommitAsync();
             return Unit.Value;

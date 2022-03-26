@@ -20,7 +20,7 @@ namespace DietMealApp.Application.Factories.DtoFactories
                 Protein = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Protein / a.Product.QuantityUnit) * a.Quantity), 2)),
                 Id = entity.Id,
                 Name = entity.Name,
-                DayMeals = entity.DayMeals
+                DayMeals = entity.DayMeals.Select(a => new DayMealsDTO() { DayId = a.DayId, MealId = a.MealId, Type = a.Type }).ToList()
             };
         }
     }

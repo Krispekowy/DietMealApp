@@ -56,7 +56,8 @@ namespace DietMealApp.DataAccessLayer.Repositories
                 .Include(dm=>dm.DayMeals)
                     .ThenInclude(m => m.Meal)
                         .ThenInclude(mp => mp.MealProducts)
-                            .ThenInclude(p => p.Product);
+                            .ThenInclude(p => p.Product)
+                            .AsSplitQuery();
         }
 
         public IQueryable<Day> Get(Func<Day, bool> filterCondition)
@@ -67,6 +68,7 @@ namespace DietMealApp.DataAccessLayer.Repositories
                     .ThenInclude(m => m.Meal)
                         .ThenInclude(mp => mp.MealProducts)
                             .ThenInclude(p => p.Product)
+                                .AsSplitQuery()
                 .Where(filterCondition)
                 .AsQueryable();
         }
@@ -90,6 +92,7 @@ namespace DietMealApp.DataAccessLayer.Repositories
                     .ThenInclude(a=>a.Meal)
                         .ThenInclude(a=>a.MealProducts)
                             .ThenInclude(a=>a.Product)
+                            .AsSplitQuery()
                 .Include(a => a.DietDays)
                 .Where(a => !a.IsDeleted)
                 .ToListAsync();

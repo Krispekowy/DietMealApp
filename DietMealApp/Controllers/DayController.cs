@@ -79,7 +79,7 @@ namespace DietMealApp.WebClient.Controllers
             InitId();
             try
             {
-                var model = await _mediator.Send(new GetDayByIdQuery() { Id = id });
+                var model = await _mediator.Send(new GetDayByIdQuery() { Id = id, UserId = _senderId });
                 return View(model);
             }
             catch (Exception ex)

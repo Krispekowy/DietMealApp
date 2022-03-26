@@ -17,16 +17,13 @@ namespace DietMealApp.Application.Functions.Day.Command.UpdateDay
     public class UpdateDayCommandHandler : IRequestHandler<UpdateDayCommand, Unit>
     {
         private readonly IDayRepository _dayRepository;
-        private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
         public UpdateDayCommandHandler(
             IDayRepository dayRepository,
-            IMapper mapper,
             IMediator mediator)
         {
             _dayRepository = dayRepository;
-            _mapper = mapper;
             _mediator = mediator;
         }
 

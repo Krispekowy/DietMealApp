@@ -13,13 +13,11 @@ namespace DietMealApp.Application.Functions.Day.Command.DeleteDay
 {
     public class DeleteDayCommandHandler : IRequestHandler<DeleteDayCommand, Unit>
     {
-        private readonly IMapper _mapper;
         private readonly IDayRepository _dayRepository;
         private readonly IMediator _mediator;
 
-        public DeleteDayCommandHandler(IMapper mapper, IDayRepository dayRepository, IMediator mediator)
+        public DeleteDayCommandHandler(IDayRepository dayRepository, IMediator mediator)
         {
-            _mapper = mapper;
             _dayRepository = dayRepository;
             _mediator = mediator;
         }

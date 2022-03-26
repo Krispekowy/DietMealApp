@@ -57,7 +57,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Days");
+                    b.ToTable("Days", (string)null);
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Diet", b =>
@@ -94,7 +94,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Diets");
+                    b.ToTable("Diets", (string)null);
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Meal", b =>
@@ -144,7 +144,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Meals");
+                    b.ToTable("Meals", (string)null);
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Product", b =>
@@ -203,7 +203,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Intersections.DayMeals", b =>
@@ -227,7 +227,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasIndex("MealId");
 
-                    b.ToTable("DayMeals");
+                    b.ToTable("DayMeals", (string)null);
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Intersections.DietDay", b =>
@@ -242,7 +242,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasIndex("DietId");
 
-                    b.ToTable("DietDays");
+                    b.ToTable("DietDays", (string)null);
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Intersections.MealProduct", b =>
@@ -266,7 +266,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("MealProducts");
+                    b.ToTable("MealProducts", (string)null);
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Intersections.DayMeals", b =>
