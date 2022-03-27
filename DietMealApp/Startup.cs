@@ -49,6 +49,8 @@ using DietMealApp.Application.Commons.Services.FileManager;
 using DietMealApp.Application.Functions.Day.Query.GetDaysByIds;
 using DietMealApp.Core.DTO.Menu;
 using DietMealApp.Application.Functions.Menu.Query.GetMenuForm;
+using DietMealApp.Application.Functions.Menu.Query.GetMenuForWeek;
+using DietMealApp.Core.ViewModels;
 
 namespace DietMealApp
 {
@@ -120,6 +122,7 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<GetShoppingListQuery, List<ProductsToBuyDTO>>, GetShoppingListQueryHandler>();
             services.AddScoped<IRequestHandler<GetDaysByIdsQuery, List<DayDTO>>, GetDaysByIdsQueryHandler>();
             services.AddScoped<IRequestHandler<GetMenuFormQuery, List<MenuDTO>>, GetMenuFormQueryHandler>();
+            services.AddScoped<IRequestHandler<GetMenuForWeekQuery, List<MenuWeeklyViewModel>>, GetMenuForWeekQueryHandler>();
             services.AddSingleton<IFileManager> (a=> new FileManager(
                Configuration["FileManager:Host"],
                Configuration["FileManager:User"],

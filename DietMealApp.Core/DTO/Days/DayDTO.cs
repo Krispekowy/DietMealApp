@@ -34,6 +34,26 @@ namespace DietMealApp.Core.DTO.Days
             }
             return null;
         }
+        public static DayDTO CreateFromOtherDto(DayFormDTO dto)
+        {
+            if (dto != null)
+            {
+                var dayDto = new DayDTO()
+                {
+                    Id = dto.Id,
+                    Name = dto.Name,
+                    //DietDays = dto.DietDays,
+                    Kcal = dto.Kcal,
+                    Carbohydrates = dto.Carbohydrates,
+                    Protein = dto.Protein,
+                    Fats = dto.Fats,
+                    NumberOfMeals = dto.MealsCount,
+                    DayMeals = dto.Meals.Where(a=>dto.MealItems.Select(b=>b.SelectedMeal).ToList().Contains(a.Id)).Select(c=> new DayMealsDTO() { DayId = dto.Id, MealId = c.Id, Type = c.TypeOfMeal, Meal = c}).ToList()
+                };
+                return dayDto;
+            }
+            return null;
+        }
 
         public string Name { get; set; }
         public decimal Kcal { get; set; }

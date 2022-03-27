@@ -24,7 +24,11 @@ namespace DietMealApp.Core.DTO.Days
                     Name = entity.Name,
                     MealsCount = entity.NumberOfMeals,
                     MealItems = entity.DayMeals.Select(a => new MealMenuItemDTO() { AssignedMealTimeType = a.Type, SelectedMeal = a.MealId }).ToList(),
-                    UserId = entity.UserId
+                    UserId = entity.UserId,
+                    Kcal = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Kcal / a.Product.QuantityUnit) * a.Quantity), 2)),
+                    Carbohydrates = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Carbohydrates / a.Product.QuantityUnit) * a.Quantity), 2)),
+                    Protein = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Protein / a.Product.QuantityUnit) * a.Quantity), 2)),
+                    Fats = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Fats / a.Product.QuantityUnit) * a.Quantity), 2))
                 };
                 return dto;
             }
@@ -40,5 +44,9 @@ namespace DietMealApp.Core.DTO.Days
         public List<MealDTO> Meals { get; set; }
         public List<MealMenuItemDTO> MealItems { get; set; }
         public int MealsCount { get; set; }
+        public decimal Kcal { get; set; }
+        public decimal Protein { get; set; }
+        public decimal Carbohydrates { get; set; }
+        public decimal Fats { get; set; }
     }
 }

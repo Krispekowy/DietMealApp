@@ -23,10 +23,12 @@ namespace DietMealApp.Application.Functions.Menu.Query.GetMenuForm
         {
             var dto = new List<MenuDTO>();
             var days = await _mediator.Send(new GetDaysByUserQuery() { UserId = request.UserId});
+
             foreach (DayOfWeek day in Enum.GetValues(typeof(DayOfWeek)))
             {
                 dto.Add(new MenuDTO() { DayOfWeek = day, Days = days });
             }
+            dto = dto.OrderBy(a => ((int)a.DayOfWeek + 6) % 7).ToList();
             return dto;
         }
     }

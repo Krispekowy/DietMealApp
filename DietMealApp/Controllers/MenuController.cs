@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Application.Functions.Menu.Query.GetMenuForm;
+using DietMealApp.Application.Functions.Menu.Query.GetMenuForWeek;
 using DietMealApp.Core.DTO.Menu;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -32,26 +33,18 @@ namespace DietMealApp.WebClient.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> GeneratePlan(List<MenuDTO> model)
+        public async Task<IActionResult> Generate(List<MenuDTO> model)
         {
             InitId();
-            return null;
-            //try
-            //{
-            //    var plan = new List<DietPlanViewModel>();
-            //    foreach (var dayMenu in model)
-            //    {
-            //        var day = await _mediator.Send(new GetDayByIdQuery() { Id = dayMenu.DayId });
-            //        //plan.Add(new DietPlanViewModel() { Day = day, DayOfWeek = dayMenu.DayOfWeek });
-            //    }
-
-            //    return PartialView("_Plan", plan);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return BadRequest(ex.Message);
-            //    throw;
-            //}
+            try
+            {
+                return PartialView("_Menu", await _mediator.Send(new GetMenuForWeekQuery() { MenuDto = model, userId = _senderId}));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+                throw;
+            }
         }
     }
 }

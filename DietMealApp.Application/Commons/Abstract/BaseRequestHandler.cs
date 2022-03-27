@@ -13,12 +13,12 @@ namespace DietMealApp.Application.Commons.Abstract
     public abstract class BaseRequestHandler<TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
     {
-        protected readonly IMediator _Mediator;
+        protected readonly IMediator _mediator;
         protected readonly IFileManager _fileManager;
 
         protected BaseRequestHandler(IMediator mediator, IFileManager fileManager)
         {
-            _Mediator = mediator;
+            _mediator = mediator;
             _fileManager = fileManager;
         }
         public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
@@ -27,12 +27,12 @@ namespace DietMealApp.Application.Commons.Abstract
     public abstract class BaseRequestHandler<TRequest> : IRequestHandler<TRequest>
         where TRequest : IRequest
     {
-        protected readonly IMediator _Mediator;
+        protected readonly IMediator _mediator;
         protected readonly IFileManager _fileManager;
 
         protected BaseRequestHandler(IMediator mediator, IFileManager fileManager)
         {
-            _Mediator = mediator;
+            _mediator = mediator;
             _fileManager = fileManager;
         }
         public abstract Task<Unit> Handle(TRequest request, CancellationToken cancellationToken);
