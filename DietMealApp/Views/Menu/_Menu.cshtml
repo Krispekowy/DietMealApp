@@ -1,23 +1,45 @@
 ﻿@using DietMealApp.Core.ViewModels
+@using DietMealApp.Core.Extensions;
 @model List<MenuWeeklyViewModel>
 @{
     var culture = new System.Globalization.CultureInfo("pl-PL");
 }
-@foreach(var day in Model)
+@foreach (var day in Model)
 {
-    <h3>@(culture.DateTimeFormat.GetDayName(day.DayOfWeek)) @day.Day.Name</h3>
-    <h6><b>Kcal @day.Day.Kcal B @day.Day.Protein T @day.Day.Fats W @day.Day.Carbohydrates</b></h6>
-    @foreach(var meal in day.Day.DayMeals)
-    {
-        <h5>@meal.Type</h5>
-        <p>Składniki:</p>
-         <ul>
-        @foreach(var product in meal.Meal.MealProducts)
-        {
-           
-                <li>@product.Product.ProductName</li>
-            
-        }
-        </ul>
-    }
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width:10%" scope="col">#</th>
+                <th style="width:30%" scope="col">@(culture.DateTimeFormat.GetDayName(day.DayOfWeek))</th>
+                <th style="width:60%" scope="col">@day.Day.Name Kcal <b>@day.Day.Kcal</b> B <b>@day.Day.Protein</b> T <b>@day.Day.Fats</b> W <b>@day.Day.Carbohydrates</b></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th style="width:10%" scope="row"></th>
+                <td style="width:30%"></td>
+                <td style="width:60%"></td>
+            </tr>
+            @foreach (var meal in day.Day.DayMeals)
+            {
+                <tr>
+                    <th style="width:10%" scope="row">@meal.Type.GetDisplayName()</th>
+                    <td style="width:30%" colspan=3>Kcal <b>@meal.Meal.Kcal</b> B <b>@meal.Meal.Protein</b> T <b>@meal.Meal.Fats</b> W <b>@meal.Meal.Carbohydrates</b></td>
+                </tr>
+                <tr>
+                    <th style="width:10%" scope="row">Składniki:</th>
+                    <td style="width:30%">
+                        <ul>
+                            @foreach (var product in meal.Meal.MealProducts)
+                            {
+                                <li>@(product.Product.ProductName + " (" + product.Quantity + " " + product.Product.Unit +")")</li>
+                            }
+                        </ul>
+                    </td>
+                    <td style="width:60%">@meal.Meal.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
 }

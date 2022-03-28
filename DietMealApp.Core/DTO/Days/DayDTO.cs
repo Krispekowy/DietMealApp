@@ -48,7 +48,7 @@ namespace DietMealApp.Core.DTO.Days
                     Protein = dto.Protein,
                     Fats = dto.Fats,
                     NumberOfMeals = dto.MealsCount,
-                    DayMeals = dto.Meals.Where(a=>dto.MealItems.Select(b=>b.SelectedMeal).ToList().Contains(a.Id)).Select(c=> new DayMealsDTO() { DayId = dto.Id, MealId = c.Id, Type = c.TypeOfMeal, Meal = c}).ToList()
+                    DayMeals = dto.Meals.Where(a=>dto.MealItems.Select(b=>b.SelectedMeal).ToList().Contains(a.Id)).Select(c=> new DayMealsDTO() { DayId = dto.Id, MealId = c.Id, Type = c.TypeOfMeal, Meal = c}).OrderBy(a=>a.Meal.TypeOfMeal).ToList()
                 };
                 return dayDto;
             }
