@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DietMealApp.Application.Commons.Abstract;
 using DietMealApp.Application.Commons.Services.FileManager;
 using DietMealApp.Core.Interfaces;
 using DietMealApp.Service.Functions.Query;
@@ -12,20 +13,19 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Application.Functions.Meal.Command.UpdateMeal
 {
-    public class UpdateMealCommandHandler : IRequestHandler<UpdateMealCommand, Unit>
+    public class UpdateMealCommandHandler : BaseRequestHandler<UpdateMealCommand, Unit>
     {
         private readonly IMealRepository _mealRepository;
-        private readonly IFileManager _fileManager;
 
         public UpdateMealCommandHandler(
             IMealRepository mealRepository,
-            IFileManager fileManager)
+            IMediator mediator,
+            IFileManager fileManager) : base(mediator, fileManager)
         {
             _mealRepository = mealRepository;
-            _fileManager = fileManager;
         }
 
-        public async Task<Unit> Handle(UpdateMealCommand request, CancellationToken cancellationToken)
+        public override async Task<Unit> Handle(UpdateMealCommand request, CancellationToken cancellationToken)
         {
             if (request.MealForm.Photo != null)
             {

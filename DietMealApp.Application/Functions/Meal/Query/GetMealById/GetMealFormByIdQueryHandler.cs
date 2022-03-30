@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using DietMealApp.Application.Commons.Abstract;
+using DietMealApp.Application.Commons.Services.FileManager;
 using DietMealApp.Core.DTO;
 using DietMealApp.Core.DTO.Meals;
 using DietMealApp.Core.DTO.Products;
@@ -15,19 +17,18 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Application.Functions.Meal.Query.GetMealById
 {
-    public class GetMealFormByIdQueryHandler : IRequestHandler<GetMealFormByIdQuery, MealFormDTO>
+    public class GetMealFormByIdQueryHandler : BaseRequestHandler<GetMealFormByIdQuery, MealFormDTO>
     {
-        private readonly IMediator _mediator;
         private readonly IMealRepository _mealRepository;
 
         public GetMealFormByIdQueryHandler(
+            IMealRepository mealRepository,
             IMediator mediator,
-            IMealRepository mealRepository)
+            IFileManager fileManager) : base(mediator, fileManager)
         {
-            _mediator = mediator;
             _mealRepository = mealRepository;
         }
-        public async Task<MealFormDTO> Handle(GetMealFormByIdQuery request, CancellationToken cancellationToken)
+        public override async Task<MealFormDTO> Handle(GetMealFormByIdQuery request, CancellationToken cancellationToken)
         {
             var meal = await _mealRepository.GetByID(request.Id);
             var products = await _mediator.Send(new GetAllProductsQuery() { OrderBy = Core.Enums.OrderByProductOptions.ByName });

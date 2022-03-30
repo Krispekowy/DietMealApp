@@ -1,4 +1,6 @@
-﻿using DietMealApp.Core.Interfaces;
+﻿using DietMealApp.Application.Commons.Abstract;
+using DietMealApp.Application.Commons.Services.FileManager;
+using DietMealApp.Core.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,16 +13,19 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Application.Functions.Product.Query.GetProductsBySearch
 {
-    public sealed class GetProductsBySearchQueryHandler : IRequestHandler<GetProductsBySearchQuery, SelectList>
+    public sealed class GetProductsBySearchQueryHandler : BaseRequestHandler<GetProductsBySearchQuery, SelectList>
     {
         private readonly IProductRepository _productRepository;
 
-        public GetProductsBySearchQueryHandler(IProductRepository productRepository)
+        public GetProductsBySearchQueryHandler(
+            IProductRepository productRepository,
+            IMediator mediator,
+            IFileManager fileManager) : base(mediator, fileManager)
         {
             _productRepository = productRepository;
         }
 
-        public async Task<SelectList> Handle(GetProductsBySearchQuery request, CancellationToken cancellationToken)
+        public override async Task<SelectList> Handle(GetProductsBySearchQuery request, CancellationToken cancellationToken)
         {
             var products = await _productRepository.Get(p => p.ProductName.Contains(request.Query)).ToListAsync();
             return new SelectList(products, "Id", "ProductName");

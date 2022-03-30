@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using DietMealApp.Application.Commons.Abstract;
+using DietMealApp.Application.Commons.Services.FileManager;
 using DietMealApp.Core.DTO;
 using DietMealApp.Core.DTO.Days;
 using DietMealApp.Core.Interfaces;
@@ -12,19 +14,21 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser
 {
-    public class GetDaysByUserQueryHandler : IRequestHandler<GetDaysByUserQuery, List<DayDTO>>
+    public class GetDaysByUserQueryHandler : BaseRequestHandler<GetDaysByUserQuery, List<DayDTO>>
     {
-        private readonly IDayRepository _dietDayRepository;
+        private readonly IDayRepository _dayRepository;
 
         public GetDaysByUserQueryHandler(
-            IDayRepository dietDayRepository)
+            IDayRepository dayRepository,
+            IMediator mediator,
+            IFileManager fileManager) : base(mediator, fileManager)
         {
-            _dietDayRepository = dietDayRepository;
+            _dayRepository = dayRepository;
         }
 
-        public async Task<List<DayDTO>> Handle(GetDaysByUserQuery request, CancellationToken cancellationToken)
+        public override async Task<List<DayDTO>> Handle(GetDaysByUserQuery request, CancellationToken cancellationToken)
         {
-            var days = await _dietDayRepository.GetDaysByUser(request.UserId);
+            var days = await _dayRepository.GetDaysByUser(request.UserId);
             var dto = days.Select(a=> DayDTO.CreateFromEntity(a)).ToList();
             dto.Select(a=>a.DayMeals.OrderBy(a=>a.Type)).ToList();
             return dto;

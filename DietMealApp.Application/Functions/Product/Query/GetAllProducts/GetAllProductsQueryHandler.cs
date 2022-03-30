@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using DietMealApp.Application.Commons.Abstract;
+using DietMealApp.Application.Commons.Services.FileManager;
 using DietMealApp.Core.DTO.Products;
 using DietMealApp.Core.Entities;
 using DietMealApp.Core.Interfaces;
@@ -13,16 +15,18 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Service.Functions.Query
 {
-    public class GetAllProductsQueryHandler : IRequestHandler<GetAllProductsQuery, List<ProductDTO>>
+    public class GetAllProductsQueryHandler : BaseRequestHandler<GetAllProductsQuery, List<ProductDTO>>
     {
         private readonly IProductRepository _productRepository;
 
         public GetAllProductsQueryHandler(
-            IProductRepository productRepository)
+            IProductRepository productRepository,
+            IMediator mediator,
+            IFileManager fileManager) : base (mediator, fileManager)
         {
             _productRepository = productRepository;
         }
-        public async Task<List<ProductDTO>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+        public override async Task<List<ProductDTO>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
         {
             var result = new List<Product>();
 

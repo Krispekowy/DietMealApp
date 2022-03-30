@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using DietMealApp.Application.Commons.Abstract;
+using DietMealApp.Application.Commons.Services.FileManager;
 using DietMealApp.Core.Interfaces;
 using MediatR;
 using System;
@@ -10,17 +12,19 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Application.Functions.Meal.Command.DeleteMeal
 {
-    public class DeleteMealCommandHandler : IRequestHandler<DeleteMealCommand,Unit>
+    public class DeleteMealCommandHandler : BaseRequestHandler<DeleteMealCommand,Unit>
     {
         private readonly IMealRepository _mealRepository;
 
         public DeleteMealCommandHandler(
-            IMealRepository mealRepository)
+            IMealRepository mealRepository,
+            IMediator mediator,
+            IFileManager fileManager) : base(mediator, fileManager)
         {
             _mealRepository = mealRepository;
         }
 
-        public async Task<Unit> Handle(DeleteMealCommand request, CancellationToken cancellationToken)
+        public override async Task<Unit> Handle(DeleteMealCommand request, CancellationToken cancellationToken)
         {
             await _mealRepository.Delete(request.Id);
             await _mealRepository.CommitAsync();

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using DietMealApp.Application.Commons.Abstract;
+using DietMealApp.Application.Commons.Services.FileManager;
 using DietMealApp.Application.Functions.Day.Query.GetDayById;
 using DietMealApp.Core.Interfaces;
 using MediatR;
@@ -11,18 +13,19 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Application.Functions.Day.Command.DeleteDay
 {
-    public class DeleteDayCommandHandler : IRequestHandler<DeleteDayCommand, Unit>
+    public class DeleteDayCommandHandler : BaseRequestHandler<DeleteDayCommand, Unit>
     {
         private readonly IDayRepository _dayRepository;
-        private readonly IMediator _mediator;
 
-        public DeleteDayCommandHandler(IDayRepository dayRepository, IMediator mediator)
+        public DeleteDayCommandHandler(
+            IDayRepository dayRepository,
+            IMediator mediator,
+            IFileManager fileManager) : base(mediator, fileManager)
         {
             _dayRepository = dayRepository;
-            _mediator = mediator;
         }
 
-        public async Task<Unit> Handle(DeleteDayCommand request, CancellationToken cancellationToken)
+        public override async Task<Unit> Handle(DeleteDayCommand request, CancellationToken cancellationToken)
         {
             var day = await _mediator.Send(new GetDayByIdQuery { Id = request.DayId });
             if (day == null)

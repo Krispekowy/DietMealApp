@@ -1,4 +1,9 @@
-﻿using DietMealApp.Core.DTO;
+﻿using DietMealApp.Application.Commons.Abstract;
+using DietMealApp.Application.Commons.Services.FileManager;
+using DietMealApp.Application.Functions.Day.Query.GetDayById;
+using DietMealApp.Application.Functions.Meal.Query.GetMealById;
+using DietMealApp.Core.DTO;
+using DietMealApp.Core.Entities;
 using DietMealApp.Core.Interfaces;
 using MediatR;
 using System;
@@ -10,20 +15,15 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Application.Functions.Shopping.Query
 {
-    public class GetShoppingListQueryHandler : IRequestHandler<GetShoppingListQuery, List<ProductsToBuyDTO>>
+    public class GetShoppingListQueryHandler : BaseRequestHandler<GetShoppingListQuery, List<ProductsToBuyDTO>>
     {
-        private readonly IMediator _mediator;
-        private readonly IDayRepository _dayRepository;
-        private readonly IMealRepository _mealRepository;
+        public GetShoppingListQueryHandler(
+            IMediator mediator, 
+            IFileManager fileManager) : 
+            base(mediator, fileManager)
+        { }
 
-        public GetShoppingListQueryHandler(IMediator mediator, IDayRepository dayRepository, IMealRepository mealRepository)
-        {
-            _mediator = mediator;
-            _dayRepository = dayRepository;
-            _mealRepository = mealRepository;
-        }
-
-        public async Task<List<ProductsToBuyDTO>> Handle(GetShoppingListQuery request, CancellationToken cancellationToken)
+        public override async Task<List<ProductsToBuyDTO>> Handle(GetShoppingListQuery request, CancellationToken cancellationToken)
         {
             List<ProductsToBuyDTO> products = new List<ProductsToBuyDTO>();
             if(request.ShoppingListModel.ListType == "day")
@@ -32,10 +32,11 @@ namespace DietMealApp.Application.Functions.Shopping.Query
                 {
                     if (day.Quantity > 0)
                     {
-                        var dayDetails = await _dayRepository.GetByID(day.Day.Id);
-                        if (dayDetails != null)
+                        var dayDtoForm = await _mediator.Send(new GetDayByIdQuery() { Id = day.Day.Id, UserId = request.UserId});
+                        var dayEntity = DietMealApp.Core.Entities.Day.CreateFromDto(dayDtoForm);
+                        if (dayEntity != null)
                         {
-                            foreach (var product in dayDetails.DayMeals)
+                            foreach (var product in dayEntity.DayMeals)
                             {
                                 for (int i = 0; i < day.Quantity; i++)
                                 {
@@ -52,7 +53,7 @@ namespace DietMealApp.Application.Functions.Shopping.Query
                 {
                     if (meal.Quantity > 0)
                     {
-                        var mealDetails = await _mealRepository.GetByID(meal.Meal.Id);
+                        var mealDetails = await _mediator.Send(new GetMealFormByIdQuery() { Id = meal.Meal.Id});
                         if (mealDetails != null)
                         {
                                 for (int i = 0; i < meal.Quantity; i++)

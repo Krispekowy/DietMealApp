@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using DietMealApp.Application.Commons.Abstract;
+using DietMealApp.Application.Commons.Services.FileManager;
 using DietMealApp.Core.DTO.Days;
+using DietMealApp.Core.Interfaces;
 using DietMealApp.Service.Functions.Query;
 using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,19 +15,18 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Application.Functions.Day.Query.GetDayForm
 {
-    public class GetDayFormQueryHandler : IRequestHandler<GetDayFormQuery, DayFormDTO>
+    public class GetDayFormQueryHandler : BaseRequestHandler<GetDayFormQuery, DayFormDTO>
     {
-        private readonly IMapper _mapper;
-        private readonly IMediator _mediator;
+        private readonly IDayRepository _dayRepository;
 
         public GetDayFormQueryHandler(
-            IMapper mapper,
-            IMediator mediator)
+            IDayRepository dayRepository,
+            IMediator mediator,
+            IFileManager fileManager) : base(mediator, fileManager)
         {
-            _mapper = mapper;
-            _mediator = mediator;
+            _dayRepository = dayRepository;
         }
-        public async Task<DayFormDTO> Handle(GetDayFormQuery request, CancellationToken cancellationToken)
+        public override async Task<DayFormDTO> Handle(GetDayFormQuery request, CancellationToken cancellationToken)
         {
             var meals = await _mediator.Send(new GetMealsByUserQuery() { UserId = request.UserId });
             var response = new DayFormDTO()

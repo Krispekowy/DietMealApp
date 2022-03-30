@@ -10,24 +10,23 @@ using System.Threading.Tasks;
 using DietMealApp.Core.Entities;
 using DietMealApp.Service.Functions.Query;
 using DietMealApp.Application.Commons.Services.FileManager;
+using DietMealApp.Application.Commons.Abstract;
 
 namespace DietMealApp.Application.Functions.Meal.Command.InsertMeal
 {
-    public class InsertMealCommandHandler : IRequestHandler<InsertMealCommand, Unit>
+    public class InsertMealCommandHandler : BaseRequestHandler<InsertMealCommand, Unit>
     {
         private readonly IMealRepository _mealRepository;
-        private readonly IFileManager _fileManager;
 
         public InsertMealCommandHandler(
             IMealRepository mealRepository,
-            IFileManager fileManager
-            )
+            IMediator mediator,
+            IFileManager fileManager) : base(mediator, fileManager)
         {
             _mealRepository = mealRepository;
-            _fileManager = fileManager;
         }
 
-        public async Task<Unit> Handle(InsertMealCommand request, CancellationToken cancellationToken)
+        public override async Task<Unit> Handle(InsertMealCommand request, CancellationToken cancellationToken)
         {
             if (request.MealForm.Photo != null)
             {

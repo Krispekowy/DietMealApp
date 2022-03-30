@@ -1,4 +1,6 @@
-﻿using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
+﻿using DietMealApp.Application.Commons.Abstract;
+using DietMealApp.Application.Commons.Services.FileManager;
+using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
 using DietMealApp.Core.DTO.Menu;
 using MediatR;
 using System;
@@ -10,16 +12,13 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Application.Functions.Menu.Query.GetMenuForm
 {
-    public class GetMenuFormQueryHandler : IRequestHandler<GetMenuFormQuery, List<MenuDTO>>
+    public class GetMenuFormQueryHandler : BaseRequestHandler<GetMenuFormQuery, List<MenuDTO>>
     {
-        private readonly IMediator _mediator;
-
-        public GetMenuFormQueryHandler(IMediator mediator)
+        public GetMenuFormQueryHandler(IMediator mediator, IFileManager fileManager) : base (mediator, fileManager)
         {
-            _mediator = mediator;
         }
 
-        public async Task<List<MenuDTO>> Handle(GetMenuFormQuery request, CancellationToken cancellationToken)
+        public override async Task<List<MenuDTO>> Handle(GetMenuFormQuery request, CancellationToken cancellationToken)
         {
             var dto = new List<MenuDTO>();
             var days = await _mediator.Send(new GetDaysByUserQuery() { UserId = request.UserId});

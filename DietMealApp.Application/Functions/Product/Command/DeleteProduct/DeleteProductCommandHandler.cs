@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using DietMealApp.Application.Commons.Abstract;
+using DietMealApp.Application.Commons.Services.FileManager;
 using DietMealApp.Core.Entities;
 using DietMealApp.Core.Interfaces;
 using MediatR;
@@ -11,16 +13,18 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Service.Functions.Command
 {
-    public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, Unit>
+    public class DeleteProductCommandHandler : BaseRequestHandler<DeleteProductCommand, Unit>
     {
         private readonly IProductRepository _productRepository;
 
         public DeleteProductCommandHandler(
-            IProductRepository productRepository)
+            IProductRepository productRepository,
+            IMediator mediator,
+            IFileManager fileManager) : base(mediator, fileManager)
         {
             _productRepository = productRepository;
         }
-        public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
+        public override async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
             await _productRepository.Delete(request.Id);
             await _productRepository.CommitAsync();

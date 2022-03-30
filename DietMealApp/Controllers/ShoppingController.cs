@@ -52,7 +52,7 @@ namespace DietMealApp.WebClient.Controllers
             InitId();
             try
             {
-                var shoppingList = await _mediator.Send(new GetShoppingListQuery() {ShoppingListModel = model });
+                var shoppingList = await _mediator.Send(new GetShoppingListQuery() {ShoppingListModel = model, UserId = _senderId });
                 return PartialView("_ShoppingList", shoppingList);
             }
             catch (Exception ex)

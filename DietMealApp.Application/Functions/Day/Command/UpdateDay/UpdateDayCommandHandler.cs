@@ -11,23 +11,24 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using DietMealApp.Application.Commons.Services.FileManager;
+using DietMealApp.Application.Commons.Abstract;
 
 namespace DietMealApp.Application.Functions.Day.Command.UpdateDay
 {
-    public class UpdateDayCommandHandler : IRequestHandler<UpdateDayCommand, Unit>
+    public class UpdateDayCommandHandler : BaseRequestHandler<UpdateDayCommand, Unit>
     {
         private readonly IDayRepository _dayRepository;
-        private readonly IMediator _mediator;
 
         public UpdateDayCommandHandler(
             IDayRepository dayRepository,
-            IMediator mediator)
+            IMediator mediator,
+            IFileManager fileManager) : base(mediator, fileManager)
         {
             _dayRepository = dayRepository;
-            _mediator = mediator;
         }
 
-        public async Task<Unit> Handle(UpdateDayCommand request, CancellationToken cancellationToken)
+        public override async Task<Unit> Handle(UpdateDayCommand request, CancellationToken cancellationToken)
         {
             var entity = DayFactory.CreateDayFromFormDto(request.DayForm);
             _dayRepository.Update(entity);
