@@ -14,9 +14,10 @@
             <label class="col-form-label">@(culture.DateTimeFormat.GetDayName((Model[i].DayOfWeek)))</label>
             <div class="col">
                 <select class="form-control select-class" asp-for="@Model[i].DayId">
+                    <option>-- Wybierz plan na dany dzień --</option>
                     @for (int j = 0; j < Model[i].Days.Count; j++)
                     {
-                        <option value="@Model[i].Days[j].Id">@Model[i].Days[j].Name</option>
+                        <option value="@Model[i].Days[j].Id">@(Model[i].Days[j].Name + " (" + Model[i].Days[j].DayMeals.Where(a=>a.Meal.TypeOfMeal == DietMealApp.Core.Enums.MealTimeType.Lunch).Select(a=>a.Meal.MealName).FirstOrDefault() + ")")</option>
                     }
                 </select>
             </div>

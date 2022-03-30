@@ -26,7 +26,10 @@ namespace DietMealApp.Application.Functions.Menu.Query.GetMenuForWeek
             foreach (var dayMenu in request.MenuDto)
             {
                 var day = await _mediator.Send(new GetDayByIdQuery() { Id = dayMenu.DayId, UserId = request.userId });
-                result.Add(new MenuWeeklyViewModel() { Day = DayDTO.CreateFromOtherDto(day), DayOfWeek = dayMenu.DayOfWeek });
+                if (day != null)
+                {
+                    result.Add(new MenuWeeklyViewModel() { Day = DayDTO.CreateFromOtherDto(day), DayOfWeek = dayMenu.DayOfWeek });
+                }
             }
             return result;
         }
