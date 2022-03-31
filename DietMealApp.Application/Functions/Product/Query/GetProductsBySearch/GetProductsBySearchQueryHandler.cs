@@ -27,7 +27,7 @@ namespace DietMealApp.Application.Functions.Product.Query.GetProductsBySearch
 
         public override async Task<SelectList> Handle(GetProductsBySearchQuery request, CancellationToken cancellationToken)
         {
-            var products = await _productRepository.Get(p => p.ProductName.Contains(request.Query)).ToListAsync();
+            var products = _productRepository.Get(p => p.ProductName.Contains(request.Query)).ToList();
             return new SelectList(products, "Id", "ProductName");
         }
     }

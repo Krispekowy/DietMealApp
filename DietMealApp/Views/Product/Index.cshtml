@@ -6,21 +6,15 @@
 }
 <h1>Produkty</h1>
 
-<form method="get">
-    <div class="input-group col-sm-10">
-        <input id="searchBox" class="form-control" /> @*search box do uzupełnienia*@
-        <div class="input-group-append">
-            <button type="submit" class="btn btn-primary">Szukaj</button>
-        </div>
-    </div>
-</form>
-
-<p></p>
-<div class="form-group mb-3 text-center d-grid gap-2 col-6 mx-auto">
-<a asp-controller="Product" asp-action="Create" class="btn btn-primary btn-block">DODAJ NOWY</a>
+<div class="input-group col-sm-10">
+    <input id="searchBox" class="form-control" placeholder="&#xF002; Wyszukaj produkt" style="font-family: Arial, 'Font Awesome 5 Free'" />
 </div>
 
-<div class="row row-cols-1 row-cols-md-6 g-2">
+<div class="form-group mb-3 text-center d-grid gap-2 col-5 mx-auto">
+    <a asp-controller="Product" asp-action="Create" class="btn btn-primary btn-block">DODAJ NOWY</a>
+</div>
+
+<div id="listOfProducts" class="row row-cols-1 row-cols-md-6 g-2">
     @foreach (var item in Model)
     {
         <div class="col">
@@ -45,37 +39,29 @@
         </div>
     }
 </div>
-@*
-    // SKRYPT DO WYKORZYSTANIA JEŻELI WYSZUKIWANIE MIAŁOBY BYĆ WYWOŁYWANE PRZEZ AJAX - DO POPRAWY ODŚWIEŻANIE TABELI //
-
-    <script type="text/javascript">
-    var searchRequest = null;
-
-    $(function () {
-    var minlength = 3;
-
-    $("#searchBox").keyup(function () {
-    var that = this,
-    value = $(this).val();
-    if (value.length >= minlength ) {
-    if (searchRequest != null)
-    searchRequest.abort();
-    searchRequest = $.ajax({
-    type: "GET",
-    url: "/Products/",
-    data: {
-    'SearchTerm' : value
-    },
-    dataType: "text",
-    success: function(msg){
-    //we need to check if the value is the same
-    if (value == $(that).val()) {
-    console.log(data);
-    //Receiving the result of search here
-    }
-    }
+<script type="text/javascript">
+        $(document).ready(function(){
+         $('#searchBox').keyup(function(){
+              search_cards($(this).val());
+         });
+         function search_cards(value){
+              $('#listOfProducts > div').each(function(){
+                   var found = 'false';
+                   $(this).each(function(){
+                        if($(this).text().toLowerCase().indexOf(value.toLowerCase()) >= 0)
+                        {
+                             found = 'true';
+                        }
+                   });
+                   if(found == 'true')
+                   {
+                        $(this).show();
+                   }
+                   else
+                   {
+                        $(this).hide();
+                   }
+              });
+         }
     });
-    }
-    });
-    });
-    </script>*@
+</script>
