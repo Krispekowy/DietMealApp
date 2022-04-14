@@ -79,6 +79,14 @@
                 data: data,
                 success: function (data, textStatus, jqXHR) {
                     $("#shoppingProductsList").html(data);
+                    $(".isBought").on("click", function(){
+                        if (this.checked == true){
+                            $(this).parent().parent().css({"color": "#a9b1b8", "text-decoration":"line-through" })
+                        }
+                        else{
+                            $(this).parent().parent().css({"color": "#212529", "text-decoration":"none" })
+                        }
+                    })
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log("Error: " + textStatus + ". ErrorThrown: " + errorThrown );
@@ -89,7 +97,7 @@
         buttons.forEach(function (button){
             button.addEventListener('click', function TabContent(){
                 document.getElementById('ListType').value = button.getAttribute("aria-controls");
+            });
         });
     });
-        });
 </script>

@@ -2,16 +2,16 @@
 
 <tr class="d-table-row mb-3">
     <td style="width:70%">
-        <select class="form-control select-class" id="selectedProduct_@Model.Index" name="MealProducts[@Model.Index].ProductId">
+        <select class="form-control select-class" onchange="myScript()" id="selectedProduct_@Model.Index" name="MealProducts[@Model.Index].ProductId">
             <option selected> --Wybierz produkt-- </option>
             @foreach (var product in Model.Products)
             {
-                <option value="@product.Id">@product.ProductName</option>
+                <option value="@product.Id" data-kcal="@product.Kcal" data-protein="@product.Protein" data-carbo="@product.Carbohydrates" data-fats="@product.Fats">@product.ProductName</option>
             }
         </select>
     </td>
     <td style="width:30%">
-        <input id="quantity" class="form-control quantity-class" name="MealProducts[@Model.Index].Quantity" placeholder="Ilość" />
+        <input id="quantity_@Model.Index" onkeyup="myScript()" class="form-control quantity-class" name="MealProducts[@Model.Index].Quantity" placeholder="Ilość" />
     </td>
     <td>
         <button type="button" style="color:red" onclick="DeleteRow(this)" class="btn"><i class="fa fa-close"></i></button>

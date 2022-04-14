@@ -29,9 +29,6 @@
 <div id="menuPlan">
 </div>
 
-@section Scripts {
-<partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
-}
 <script type="text/javascript">
     $(document).ready(function () {
         $("#btnsubmit").click(function () {
@@ -44,7 +41,7 @@
                 data: data,
                 success: function (data, textStatus, jqXHR) {
                     $("#menuPlan").html(data);
-                    console.log(data);
+                    
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log("Error: " + textStatus + ". ErrorThrown: " + errorThrown );

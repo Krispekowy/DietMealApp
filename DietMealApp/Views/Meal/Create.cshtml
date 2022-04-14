@@ -57,7 +57,8 @@
                         <th style="width:30%" class="col mb-3">Ilość (w gramach)</th>
                         <th style="width:10%" class="col mb-3"></th>
                     </tr>
-                    @if (Model.MealProducts != null)
+                    <tbody>
+                        @if (Model.MealProducts != null)
                     {
                         @for (int i = 0; i < Model.MealProducts.Count; i++)
                         {
@@ -82,6 +83,7 @@
                             </tr>
                         }
                     }
+                    </tbody>
                 </table>
             </div>
             <div class="col">
@@ -91,6 +93,9 @@
                         <input asp-for="Photo" type="file" accept="image/*" onchange="readURL(this);" class="form-control form-control-sm fw-bold">
                         <span asp-validation-for="Photo" class="text-danger"></span>
                     </div>
+                </div>
+                <div id="nutrition">
+
                 </div>
             </div>
         </div>
@@ -105,60 +110,98 @@
         </div>
     </div>
 </form>
-@section Scripts {
-<partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
-}
 <script type="text/javascript">
+            $(document).on("click", "#add-row", function () {
+                var indexProductTable = document.getElementById("productsTable").rows.length-1;
+                $.ajax({
+                    method: "GET",
+                    url: "/Meal/AddProductRow?index=" + indexProductTable,
+                    success: function (data) {
+                        $("#productsTable").append(data);
+                    }
+                });
+            });
 
-    $(document).on("click", "#add-row", function () {
-        var indexProductTable = document.getElementById("productsTable").rows.length-1;
-        $.ajax({
-            method: "GET",
-            url: "/Meal/AddProductRow?index=" + indexProductTable,
-            success: function (data) {
-                $("#productsTable").append(data);
+            function DeleteRow(r) {
+                var i = r.parentNode.parentNode.rowIndex;
+                document.getElementById("productsTable").deleteRow(i);
             }
-        });
-    });
 
-    function DeleteRow(r) {
-        var i = r.parentNode.parentNode.rowIndex;
-        document.getElementById("productsTable").deleteRow(i);
-    };
+            $(document).ready(function () {
+                const mealForm = document.querySelector('#mealForm');
+                mealForm.addEventListener('submit', function resetFields() {
 
-    $(document).ready(function () {
-        const mealForm = document.querySelector('#mealForm');
-        mealForm.addEventListener('submit', function resetFields() {
+                    var count = 0;
+                    var products = $("#productsTable .select-class");
+                    $.each(products, function () {
+                        $(this).attr(`name`, `MealProducts[${count}].ProductId`);
+                        count++;
+                    });
 
-            var count = 0;
-            var products = $("#productsTable .select-class");
-            $.each(products, function () {
-                $(this).attr(`name`, `MealProducts[${count}].ProductId`);
-                count++;
+                    var count = 0;
+                    var quantity = $("#productsTable .quantity-class");
+                    $.each(quantity, function () {
+                        $(this).attr(`name`, `MealProducts[${count}].Quantity`);
+                        count++;
+
+                    });
+                });
             });
 
-            var count = 0;
-            var quantity = $("#productsTable .quantity-class");
-            $.each(quantity, function () {
-                $(this).attr(`name`, `MealProducts[${count}].Quantity`);
-                count++;
+                function readURL(input) {
+                            if (input.files && input.files[0]) {
+                                var reader = new FileReader();
+                                reader.onload = function (e) {
+                                    $('#PhotoPreview')
+                                        .attr('src', e.target.result)
+                                        .width(300)
+                                        .height(300);
+                                    $('#PhotoPreview').show();
+                                };
+                                reader.readAsDataURL(input.files[0]);
+                            }
+                 }
 
+        function sumKcal(item, index){
+            if(item.contains('select')){
+                console.log("tu mamy selekta")
+            }
+            if(item.contains('input')){
+                console.log("tu mamy inputa")
+            }
+            console.log(item.value);
+            console.log(index);
+        }
+
+        function myScript(){
+            $(document).ready(function(){
+                var record = {};
+                var allRecords =  [];
+                $('tr.d-table-row').each(function (index, value){
+                    newRecord = {
+                        _kcal: $('option:selected', $(this)).attr('data-kcal'),
+                        _protein: $('option:selected', $(this)).attr('data-protein'),
+                        _carbo: $('option:selected', $(this)).attr('data-carbo'),
+                        _fats: $('option:selected', $(this)).attr('data-fats'),
+                        _quantity: $('.quantity-class',$(this)).val()
+                    }
+                    allRecords.push(newRecord);
+                })
+                var html = calculateNutrition(allRecords);
             });
-        });
-    });
-
-        function readURL(input) {
-                    if (input.files && input.files[0]) {
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            $('#PhotoPreview')
-                                .attr('src', e.target.result)
-                                .width(300)
-                                .height(300);
-                            $('#PhotoPreview').show();
-                        };
-                        reader.readAsDataURL(input.files[0]);
-                    }
-                    }
-
+        }
+        function calculateNutrition(data){
+                            var kalorie;
+                            var tluszcze;
+                            var bialka;
+                            var weglowodany;
+                $.each(data, function(index, value){
+                        kalorie = (((parseFloat(value._kcal || 0)/100)*parseFloat(value._quantity || 0))+parseFloat(kalorie || 0)).toFixed(2);
+                        tluszcze = (((parseFloat(value._fats||0)/100)*parseFloat(value._quantity||0))+parseFloat(tluszcze||0)).toFixed(2);
+                        bialka = (((parseFloat(value._protein||0)/100)*parseFloat(value._quantity)||0)+parseFloat(bialka||0)).toFixed(2);
+                        weglowodany = (((parseFloat(value._carbo||0)/100)*parseFloat(value._quantity||0))+parseFloat(weglowodany||0)).toFixed(2);
+                });
+                var html = "<b>Kalorie: "+ kalorie+"</b><br> <b>Tłuszcze: "+ tluszcze+"</b><br> <b>Białka: "+ bialka+"</b><br> <b>Węglowodany: "+ weglowodany+"</b><br>"
+                $('#nutrition').html(html);
+        }
 </script>

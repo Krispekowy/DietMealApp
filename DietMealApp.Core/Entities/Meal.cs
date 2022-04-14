@@ -40,6 +40,7 @@ namespace DietMealApp.Core.Entities
                 TypeOfMeal = dto.TypeOfMeal,
                 UserId = dto.UserId,
                 MealName = dto.MealName,
+                MealProducts = dto.MealProducts.Select(a=>MealProduct.CreateFromDto(a)).ToList(),
             };
         }
         public MealTimeType TypeOfMeal { get; set; }

@@ -24,6 +24,9 @@ namespace DietMealApp.Core.Entities
                 Photo150x150Path = dto.Photo150x150Path,
                 ProductName = dto.ProductName,
                 QuantityUnit = dto.QuantityUnit,
+                Carbohydrates = dto.Carbohydrates,
+                Fats = dto.Fats,
+                Protein = dto.Protein,
                 Unit = dto.Unit
             };
         }

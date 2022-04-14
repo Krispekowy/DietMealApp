@@ -14,19 +14,28 @@
                 <h6>@category.GetDisplayName()</h6>
             </div>
             <div class="card-body">
+                <div class="row" style="text-align:center">
+                    <div class="col-4">Produkt</div>
+                    <div class="col-1">Ilość</div>
+                    <div class="col-3">Czy kupiono?</div>
+                </div>
                 <ol>
                     @foreach (var item in Model)
                     {
                         @if (item.Category == category)
                         {
-                            <li>@(item.Product + " (" + item.Quantity + " g/ml)") </li>
+                            <li>
+                                <div class="row positionShoppingList">
+                                    <div class="col-4">@item.Product</div>
+                                    <div class="col-1" style="text-align:right">@(item.Quantity +" g")</div>
+                                    <div class="col-3" style="text-align:center">
+                                        <input class="checkbox isBought" type="checkbox" />
+                                    </div>
+                                </div>
+                            </li>
                         }
                     }
-                    
-                        @if (Model.All(a=>a.Category != category))
-                        {
-                            <p>Brak</p>
-                        }
+                    <button class="btn fas fa-plus-circle"></button>
                 </ol>
             </div>
         </div>

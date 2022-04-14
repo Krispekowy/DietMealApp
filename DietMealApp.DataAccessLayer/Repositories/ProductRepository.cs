@@ -86,7 +86,7 @@ namespace DietMealApp.DataAccessLayer.Repositories
 
         public void Update(Product entityToUpdate)
         {
-            dbContext.Update(entityToUpdate);
+            dbContext.Products.Update(entityToUpdate);
         }
     }
 }
