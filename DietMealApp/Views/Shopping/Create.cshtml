@@ -86,6 +86,10 @@
                         else{
                             $(this).parent().parent().css({"color": "#212529", "text-decoration":"none" })
                         }
+                    });
+                    $(".add-position").on("click", function(){
+                        var card = $(this).parent().parent().parent();
+                        card.find('.listByCategory').append('<li><div class="row positionShoppingList"><div class="col-4"><input type="text" class="form-control"/></div><div class="col-2"><input type="text" class="form-control"/></div><div class="col-3" style="text-align:center"><input class="checkbox isBought" type="checkbox" /></div></div></li>')
                     })
                 },
                 error: function (jqXHR, textStatus, errorThrown) {

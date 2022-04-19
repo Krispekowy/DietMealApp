@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DietMealApp.WebClient.Controllers
@@ -38,6 +39,7 @@ namespace DietMealApp.WebClient.Controllers
                 {
                     model.ListByMeal.Add(new ShoppingMealsDTO() { Meal = meal, Quantity = 0 });
                 }
+                model.ListByMeal = model.ListByMeal.OrderBy(a=>a.Meal.MealName).ToList();
                 return View(model);
             }
             catch (Exception ex)
