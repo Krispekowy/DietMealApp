@@ -90,7 +90,23 @@
                     $(".add-position").on("click", function(){
                         var card = $(this).parent().parent().parent();
                         card.find('.listByCategory').append('<li><div class="row positionShoppingList"><div class="col-4"><input type="text" class="form-control"/></div><div class="col-2"><input type="text" class="form-control"/></div><div class="col-3" style="text-align:center"><input class="checkbox isBought" type="checkbox" /></div></div></li>')
-                    })
+                    });
+                    $("ol").on('click', '.edit-position', function(){
+                        var button = $(this);
+                        console.log($('input.editing').val());
+                        var elem = button.parent();
+                        if(button.attr('editing') == '1') {
+                            button.removeAttr('editing');
+                            $(document).find('div.editing').each(function() {
+                                var div = $('<div class="col-2"><div class="editable" style="text-align:right; display: inline-block">'+ $('input.editing').val().trim() +'</div><button type="button" class="btn fas fa-edit edit-position"></button></div>');
+                                elem.replaceWith(div);
+                            });
+                        }
+                        else {
+                            var input = $("<div class='col-2'><div class='editing' style='text-align:right; display: inline-block'></div><input class='col-8 editing' type='text' value='"+ elem.text().trim() +"'/><button editing='1' type='button' class='btn fas fa-save edit-position'></button></div>");
+                            elem.replaceWith(input);
+                        }
+                    });
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log("Error: " + textStatus + ". ErrorThrown: " + errorThrown );

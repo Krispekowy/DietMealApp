@@ -23,24 +23,26 @@
                 <ol class="listByCategory">
                     @foreach (var item in Model)
                     {
-                        
-                            @if (item.Category == category)
-                            {
+
+                        @if (item.Category == category)
+                        {
                             <li>
                                 <div class="row positionShoppingList">
                                     <div class="col-4">@item.Product</div>
-                                    <div class="col-2" style="text-align:right">@(item.Quantity +" g")</div>
+                                    <div class="col-2">
+                                        <div class="editable" style="text-align:right; display: inline-block">@(item.Quantity +" g")</div>
+                                        <button type="button" class="btn fas fa-edit edit-position"></button>
+                                    </div>
                                     <div class="col-3" style="text-align:center">
                                         <input class="checkbox isBought" type="checkbox" />
                                     </div>
-
                                 </div>
                             </li>
-                            }
-                
+                        }
+
                     }
-            </ol>
+                </ol>
+            </div>
         </div>
     </div>
-                </div>
 }
