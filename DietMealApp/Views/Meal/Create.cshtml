@@ -128,6 +128,7 @@
             }
 
             $(document).ready(function () {
+                calcNutri();
                 const mealForm = document.querySelector('#mealForm');
                 mealForm.addEventListener('submit', function resetFields() {
 
@@ -162,18 +163,8 @@
                             }
                  }
 
-        function sumKcal(item, index){
-            if(item.contains('select')){
-                console.log("tu mamy selekta")
-            }
-            if(item.contains('input')){
-                console.log("tu mamy inputa")
-            }
-            console.log(item.value);
-            console.log(index);
-        }
 
-        function myScript(){
+        function calcNutri(){
             $(document).ready(function(){
                 var record = {};
                 var allRecords =  [];

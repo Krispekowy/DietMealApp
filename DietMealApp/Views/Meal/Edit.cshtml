@@ -63,19 +63,19 @@
                         {
                             <tr class="d-table-row">
                                 <td style="width:70%">
-                                    <select class="form-control select-class" id="selectedProduct_@i" name="@Model.MealProducts[i].ProductId">
+                                    <select class="form-control select-class" onkeyup="calcNutri()" id="selectedProduct_@i" name="@Model.MealProducts[i].ProductId">
                                         @foreach (var product in Model.Products)
                                         {
                                             if (product.Id == Model.MealProducts[i].ProductId)
                                             {
-                                                <option selected value="@product.Id">@product.ProductName</option>
+                                                <option selected value="@product.Id" data-kcal="@product.Kcal" data-protein="@product.Protein" data-carbo="@product.Carbohydrates" data-fats="@product.Fats">@product.ProductName</option>
                                             }
-                                            <option value="@product.Id">@product.ProductName</option>
+                                            <option value="@product.Id" data-kcal="@product.Kcal" data-protein="@product.Protein" data-carbo="@product.Carbohydrates" data-fats="@product.Fats">@product.ProductName</option>
                                         }
                                     </select>
                                 </td>
                                 <td style="width:30%">
-                                    <input id="quantity" class="form-control quantity-class" name="@Model.MealProducts[i].Quantity" placeholder="Ilość" value="@Model.MealProducts[i].Quantity" />
+                                    <input id="quantity" class="form-control quantity-class" onkeyup="calcNutri()" name="@Model.MealProducts[i].Quantity" placeholder="Ilość" value="@Model.MealProducts[i].Quantity" />
                                 </td>
                                 <td>
                                     <button type="button" onclick="DeleteRow(this)" style="color:red" class="btn"><i class="fa fa-close"></i></button>
@@ -105,6 +105,8 @@
                     <input asp-for="Photo" accept="image/*" type="file" onchange="readURL(this);" class="form-control form-control-sm fw-bold">
                     <span asp-validation-for="Photo" class="text-danger"></span>
                 </div>
+                <div id="nutrition">
+                </div>
             </div>
         </div>
     </div>
@@ -120,9 +122,7 @@
     <div class="form-group row">
     </div>
 </form>
-@section Scripts {
-<partial name="~/Views/Shared/_ValidationScriptsPartial.cshtml" />
-}
+
 <script type="text/javascript">
 
     $(document).on("click", "#add-row", function () {
@@ -142,6 +142,7 @@
     };
 
     $(document).ready(function () {
+        calcNutri();
         const mealForm = document.querySelector('#mealForm');
         mealForm.addEventListener('submit', function resetFields() {
 
@@ -175,4 +176,35 @@
                         reader.readAsDataURL(input.files[0]);
                     }
                     }
+            function calcNutri(){
+            $(document).ready(function(){
+                var record = {};
+                var allRecords =  [];
+                $('tr.d-table-row').each(function (index, value){
+                    newRecord = {
+                        _kcal: $('option:selected', $(this)).attr('data-kcal'),
+                        _protein: $('option:selected', $(this)).attr('data-protein'),
+                        _carbo: $('option:selected', $(this)).attr('data-carbo'),
+                        _fats: $('option:selected', $(this)).attr('data-fats'),
+                        _quantity: $('.quantity-class',$(this)).val()
+                    }
+                    allRecords.push(newRecord);
+                })
+                var html = calculateNutrition(allRecords);
+            });
+        }
+        function calculateNutrition(data){
+                            var kalorie;
+                            var tluszcze;
+                            var bialka;
+                            var weglowodany;
+                $.each(data, function(index, value){
+                        kalorie = (((parseFloat(value._kcal || 0)/100)*parseFloat(value._quantity || 0))+parseFloat(kalorie || 0)).toFixed(2);
+                        tluszcze = (((parseFloat(value._fats||0)/100)*parseFloat(value._quantity||0))+parseFloat(tluszcze||0)).toFixed(2);
+                        bialka = (((parseFloat(value._protein||0)/100)*parseFloat(value._quantity)||0)+parseFloat(bialka||0)).toFixed(2);
+                        weglowodany = (((parseFloat(value._carbo||0)/100)*parseFloat(value._quantity||0))+parseFloat(weglowodany||0)).toFixed(2);
+                });
+                var html = "<b>Kalorie: "+ kalorie+"</b><br> <b>Tłuszcze: "+ tluszcze+"</b><br> <b>Białka: "+ bialka+"</b><br> <b>Węglowodany: "+ weglowodany+"</b><br>"
+                $('#nutrition').html(html);
+        }
 </script>
