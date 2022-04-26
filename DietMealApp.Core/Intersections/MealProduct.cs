@@ -17,7 +17,7 @@ namespace DietMealApp.Core.Intersections
                 MealId = dto.MealId,
                 ProductId = dto.ProductId,
                 Quantity = dto.Quantity,
-                //Product = Product.CreateFromDto(dto.Product)
+                Product = Product.CreateFromDto(dto.Product)
             };
         }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

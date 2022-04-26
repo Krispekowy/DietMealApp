@@ -80,11 +80,14 @@
                 success: function (data, textStatus, jqXHR) {
                     $("#shoppingProductsList").html(data);
                     $(".isBought").on("click", function(){
+                        var row = $(this).parent().parent();
                         if (this.checked == true){
-                            $(this).parent().parent().css({"color": "#a9b1b8", "text-decoration":"line-through" })
+                            row.css({"color": "#a9b1b8", "text-decoration":"line-through" })
+                            row.find(".editable").css({"color": "#a9b1b8", "text-decoration":"line-through" })
                         }
                         else{
-                            $(this).parent().parent().css({"color": "#212529", "text-decoration":"none" })
+                            row.css({"color": "#212529", "text-decoration":"none" })
+                            row.find(".editable").css({"color": "#212529", "text-decoration":"none" })
                         }
                     });
                     $(".add-position").on("click", function(){

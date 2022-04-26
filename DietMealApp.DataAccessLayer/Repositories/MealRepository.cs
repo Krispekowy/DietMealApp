@@ -94,6 +94,7 @@ namespace DietMealApp.DataAccessLayer.Repositories
         public async Task<List<Meal>> GetMealsByUser(string user)
         {
             return await dbContext.Meals
+                .AsNoTracking()
                 .Include(x=>x.MealProducts)
                     .ThenInclude(x=>x.Product)
                 .Where(x => x.UserId == user && !x.IsDeleted).ToListAsync();

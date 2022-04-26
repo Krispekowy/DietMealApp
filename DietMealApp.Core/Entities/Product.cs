@@ -15,6 +15,10 @@ namespace DietMealApp.Core.Entities
     {
         public static Product CreateFromDto(ProductDTO dto)
         {
+            if(dto == null)
+            {
+                return null;
+            }
             return new Product()
             {
                 Id = dto.Id,

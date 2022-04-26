@@ -23,6 +23,7 @@ namespace DietMealApp.Core.DTO.Days
                     Id = entity.Id,
                     Name = entity.Name,
                     MealsCount = entity.NumberOfMeals,
+                    Meals = entity.DayMeals.Select(a => MealDTO.CreateFromEntity(a.Meal)).ToList(),
                     MealItems = entity.DayMeals.Select(a => new MealMenuItemDTO() { AssignedMealTimeType = a.Type, SelectedMeal = a.MealId }).ToList(),
                     UserId = entity.UserId,
                     Kcal = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Kcal / a.Product.QuantityUnit) * a.Quantity), 2)),
