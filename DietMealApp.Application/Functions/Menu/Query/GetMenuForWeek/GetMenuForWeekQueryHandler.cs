@@ -25,7 +25,7 @@ namespace DietMealApp.Application.Functions.Menu.Query.GetMenuForWeek
             var result = new List<MenuWeeklyViewModel>();
             foreach (var dayMenu in request.MenuDto)
             {
-                var day = await _mediator.Send(new GetDayByIdQuery() { Id = dayMenu.DayId, UserId = request.userId });
+                var day = await _mediator.Send(new GetDayFormDTOByIdQuery() { Id = dayMenu.DayId, UserId = request.userId });
                 if (day != null)
                 {
                     result.Add(new MenuWeeklyViewModel() { Day = DayDTO.CreateFromOtherDto(day), DayOfWeek = dayMenu.DayOfWeek });

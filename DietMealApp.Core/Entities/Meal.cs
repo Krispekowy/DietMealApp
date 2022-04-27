@@ -24,7 +24,15 @@ namespace DietMealApp.Core.Entities
                 TypeOfMeal = dto.TypeOfMeal,
                 UserId = dto.UserId,
                 MealName = dto.MealName,
-                MealProducts = dto.MealProducts.Select(a => new MealProduct() { MealId = a.MealId, ProductId = a.ProductId, Product = Product.CreateFromDto(a.Product), Quantity = a.Quantity }).ToList(),
+                MealProducts = dto.MealProducts
+                .Select(a => new MealProduct()
+                {
+                    MealId = a.MealId,
+                    ProductId = a.ProductId,
+                    Product = Product.CreateFromDto(a.Product),
+                    Quantity = a.Quantity
+                })
+                .ToList(),
 
             };
         }
@@ -40,7 +48,7 @@ namespace DietMealApp.Core.Entities
                 TypeOfMeal = dto.TypeOfMeal,
                 UserId = dto.UserId,
                 MealName = dto.MealName,
-                MealProducts = dto.MealProducts.Select(a=> new MealProduct() { MealId = a.MealId, ProductId = a.ProductId, Product = Product.CreateFromDto(a.Product), Quantity = a.Quantity}).ToList(),
+                MealProducts = dto.MealProducts.Select(a => new MealProduct() { MealId = a.MealId, ProductId = a.ProductId, Product = Product.CreateFromDto(a.Product), Quantity = a.Quantity }).ToList(),
             };
         }
         public MealTimeType TypeOfMeal { get; set; }

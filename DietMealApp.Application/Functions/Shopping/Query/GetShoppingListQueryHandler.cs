@@ -32,8 +32,7 @@ namespace DietMealApp.Application.Functions.Shopping.Query
                 {
                     if (day.Quantity > 0)
                     {
-                        var dayDtoForm = await _mediator.Send(new GetDayByIdQuery() { Id = day.Day.Id, UserId = request.UserId});
-                        var dayEntity = DietMealApp.Core.Entities.Day.CreateFromDto(dayDtoForm);
+                        var dayEntity = await _mediator.Send(new GetDayByIdQuery() { Id = day.Day.Id, UserId = request.UserId });
                         if (dayEntity != null)
                         {
                             foreach (var product in dayEntity.DayMeals)

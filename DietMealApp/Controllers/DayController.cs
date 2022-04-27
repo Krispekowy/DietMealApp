@@ -3,7 +3,6 @@ using DietMealApp.Application.Functions.Day.Command.DeleteDay;
 using DietMealApp.Application.Functions.Day.Command.InsertDay;
 using DietMealApp.Application.Functions.Day.Command.UpdateDay;
 using DietMealApp.Application.Functions.Day.Query.GetDayById;
-using DietMealApp.Application.Functions.Day.Query.GetDayForm;
 using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
 using DietMealApp.Core.DTO.Days;
 using DietMealApp.Core.ViewModels;
@@ -47,8 +46,7 @@ namespace DietMealApp.WebClient.Controllers
             InitId();
             try
             {
-                var model = await _mediator.Send(new GetDayFormQuery() { UserId = _senderId });
-                return View(model);
+                return View(new DayFormDTO() { UserId = _senderId});
             }
             catch (Exception ex)
             {
@@ -79,7 +77,7 @@ namespace DietMealApp.WebClient.Controllers
             InitId();
             try
             {
-                var model = await _mediator.Send(new GetDayByIdQuery() { Id = id, UserId = _senderId });
+                var model = await _mediator.Send(new GetDayFormDTOByIdQuery() { Id = id, UserId = _senderId });
                 return View(model);
             }
             catch (Exception ex)
@@ -111,7 +109,7 @@ namespace DietMealApp.WebClient.Controllers
             InitId();
             try
             {
-                var day = await _mediator.Send(new GetDayByIdQuery() { Id= dayId });
+                var day = await _mediator.Send(new GetDayFormDTOByIdQuery() { Id= dayId });
                 var meals = await _mediator.Send(new GetMealsByUserQuery() { UserId = _senderId });
                 if (day != null)
                 {
@@ -132,7 +130,7 @@ namespace DietMealApp.WebClient.Controllers
             InitId();
             try
             {
-                var model = await _mediator.Send(new GetDayByIdQuery() { Id = id });
+                var model = await _mediator.Send(new GetDayFormDTOByIdQuery() { Id = id });
                 return View(model);
             }
             catch (Exception ex)

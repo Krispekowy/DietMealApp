@@ -27,7 +27,7 @@ namespace DietMealApp.Application.Functions.Day.Command.DeleteDay
 
         public override async Task<Unit> Handle(DeleteDayCommand request, CancellationToken cancellationToken)
         {
-            var day = await _mediator.Send(new GetDayByIdQuery { Id = request.DayId });
+            var day = await _mediator.Send(new GetDayFormDTOByIdQuery { Id = request.DayId });
             if (day == null)
             {
                 throw new NullReferenceException($"Day with Id: { request.DayId} doesn't exists");

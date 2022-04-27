@@ -21,7 +21,7 @@ namespace DietMealApp.Application.Functions.Day.Command.InsertDay
         }
         public override async Task<Unit> Handle(InsertDayCommand request, CancellationToken cancellationToken)
         {
-            request.DayForm.Meals = await _mediator.Send(new GetMealsByUserQuery() { UserId = request.DayForm.UserId });
+            //request.DayForm.Meals = await _mediator.Send(new GetMealsByUserQuery() { UserId = request.DayForm.UserId });
             var entity = Core.Entities.Day.CreateFromDto(request.DayForm);
             _dayRepository.Insert(entity);
             await _dayRepository.CommitAsync();

@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DietMealApp.Application.Functions.Day.Query.GetDayForm
+namespace DietMealApp.Application.Functions.Day.Query.GetDayById
 {
-    public class GetDayFormQuery : IRequest<DayFormDTO>
+    public sealed class GetDayFormDTOByIdQuery : IRequest<DayFormDTO>
     {
+        public Guid Id { get; set; }
         public string UserId { get; set; }
     }
 }

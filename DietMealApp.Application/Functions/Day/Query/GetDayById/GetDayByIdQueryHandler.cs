@@ -1,10 +1,6 @@
-﻿using AutoMapper;
-using DietMealApp.Application.Commons.Abstract;
+﻿using DietMealApp.Application.Commons.Abstract;
 using DietMealApp.Application.Commons.Services.FileManager;
-using DietMealApp.Core.DTO.Days;
-using DietMealApp.Core.Entities;
 using DietMealApp.Core.Interfaces;
-using DietMealApp.Service.Functions.Query;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -15,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Application.Functions.Day.Query.GetDayById
 {
-    public class GetDayByIdQueryHandler : BaseRequestHandler<GetDayByIdQuery, DayFormDTO>
+    public class GetDayByIdQueryHandler : BaseRequestHandler<GetDayByIdQuery, Core.Entities.Day>
     {
         private readonly IDayRepository _dayRepository;
 
@@ -26,18 +22,9 @@ namespace DietMealApp.Application.Functions.Day.Query.GetDayById
         {
             _dayRepository = dayRepository;
         }
-        public override async Task<DayFormDTO> Handle(GetDayByIdQuery request, CancellationToken cancellationToken)
+        public override async Task<Core.Entities.Day> Handle(GetDayByIdQuery request, CancellationToken cancellationToken)
         {
-            var day = await _dayRepository.GetByID(request.Id);
-            if (day == null)
-            {
-                return null;
-            }
-            day.DayMeals = day.DayMeals.OrderBy(a => a.Type).ToList();
-            var dto = DayFormDTO.CreateFromEntity(day);
-            var meals = await _mediator.Send(new GetMealsByUserQuery() { UserId = request.UserId });
-            dto.Meals = meals;
-            return dto;
+            return await _dayRepository.GetByID(request.Id);
         }
     }
 }

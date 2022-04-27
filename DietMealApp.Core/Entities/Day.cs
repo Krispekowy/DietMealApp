@@ -27,7 +27,13 @@ namespace DietMealApp.Core.Entities
             return new Day()
             {
                 CanBeEdited = true,
-                DayMeals = dto.MealItems.Select(a => new DayMeals() { DayId = dto.Id, Meal = Meal.CreateFromDto(dto.Meals.Where(b=>b.Id == a.SelectedMeal).FirstOrDefault()), MealId = a.SelectedMeal, Type = a.AssignedMealTimeType }).ToList(),
+                DayMeals = dto.MealItems.Select(a => new DayMeals()
+                {
+                    DayId = dto.Id,
+                    //Meal = Meal.CreateFromDto(dto.Meals.Where(b => b.Id == a.SelectedMeal).FirstOrDefault()),
+                    MealId = a.SelectedMeal,
+                    Type = a.AssignedMealTimeType
+                }).ToList(),
                 Name = dto.Name,
                 NumberOfMeals = dto.MealsCount,
                 Id = dto.Id
