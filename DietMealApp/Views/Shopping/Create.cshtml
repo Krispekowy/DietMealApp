@@ -69,6 +69,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        document.getElementById('ListType').value = $("#shoppingTabs li button.active").attr("aria-controls");
         $("#btnsubmit").click(function () {
             var data = $('#shoppingList').serialize();
             $.ajax({
