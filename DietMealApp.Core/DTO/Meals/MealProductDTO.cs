@@ -12,13 +12,17 @@ namespace DietMealApp.Core.DTO.Meals
     {
         public static MealProductDTO CreateFromEntity(MealProduct entity)
         {
-            return new MealProductDTO()
+            if (entity!=null)
             {
-                MealId = entity.MealId,
-                Product = ProductDTO.CreateFromEntity(entity.Product),
-                ProductId = entity.ProductId,
-                Quantity = entity.Quantity
-            };
+                return new MealProductDTO()
+                {
+                    MealId = entity.MealId,
+                    Product = ProductDTO.CreateFromEntity(entity.Product),
+                    ProductId = entity.ProductId,
+                    Quantity = entity.Quantity
+                };
+            }
+            return null;
         }
         public int Quantity { get; set; }
         public Guid MealId { get; set; }

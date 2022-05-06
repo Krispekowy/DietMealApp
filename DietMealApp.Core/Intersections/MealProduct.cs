@@ -12,13 +12,17 @@ namespace DietMealApp.Core.Intersections
     {
         public static MealProduct CreateFromDto(MealProductDTO dto)
         {
-            return new MealProduct()
+            if (dto!=null)
             {
-                MealId = dto.MealId,
-                ProductId = dto.ProductId,
-                Quantity = dto.Quantity,
-                Product = Product.CreateFromDto(dto.Product)
-            };
+                return new MealProduct()
+                {
+                    MealId = dto.MealId,
+                    ProductId = dto.ProductId,
+                    Quantity = dto.Quantity,
+                    Product = Product.CreateFromDto(dto.Product)
+                };
+            }
+            return null;
         }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

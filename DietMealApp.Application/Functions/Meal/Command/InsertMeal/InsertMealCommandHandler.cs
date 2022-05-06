@@ -32,7 +32,10 @@ namespace DietMealApp.Application.Functions.Meal.Command.InsertMeal
             {
                 (request.MealForm.PhotoFullPath, request.MealForm.Photo150x150Path) = await _fileManager.SendFileToFtp(request.MealForm.Photo, Core.Enums.ImageType.Meal);
             }
-            request.MealForm.MealProducts.RemoveAll(item => item.ProductId == Guid.Empty);
+            if (request.MealForm.MealProducts != null)
+            {
+                request.MealForm.MealProducts.RemoveAll(item => item.ProductId == Guid.Empty);
+            }
             var meal = DietMealApp.Core.Entities.Meal.CreateFromDto(request.MealForm);
             _mealRepository.Insert(meal);
             await _mealRepository.CommitAsync();
