@@ -187,10 +187,10 @@
                             var bialka;
                             var weglowodany;
                 $.each(data, function(index, value){
-                        kalorie = (((parseFloat(value._kcal || 0)/100)*parseFloat(value._quantity || 0))+parseFloat(kalorie || 0)).toFixed(2);
-                        tluszcze = (((parseFloat(value._fats||0)/100)*parseFloat(value._quantity||0))+parseFloat(tluszcze||0)).toFixed(2);
-                        bialka = (((parseFloat(value._protein||0)/100)*parseFloat(value._quantity)||0)+parseFloat(bialka||0)).toFixed(2);
-                        weglowodany = (((parseFloat(value._carbo||0)/100)*parseFloat(value._quantity||0))+parseFloat(weglowodany||0)).toFixed(2);
+                        kalorie = (((parseFloat(value._kcal.replace(',', '.') || 0)/100)*parseFloat(value._quantity.replace(',', '.') || 0))+parseFloat(kalorie || 0)).toFixed(2);
+                        tluszcze = (((parseFloat(value._fats.replace(',', '.')||0)/100)*parseFloat(value._quantity.replace(',', '.')||0))+parseFloat(tluszcze||0)).toFixed(2);
+                        bialka = (((parseFloat(value._protein.replace(',', '.')||0)/100)*parseFloat(value._quantity.replace(',', '.')||0))+parseFloat(bialka||0)).toFixed(2);
+                        weglowodany = (((parseFloat(value._carbo.replace(',', '.')||0)/100)*parseFloat(value._quantity.replace(',', '.')||0))+parseFloat(weglowodany||0)).toFixed(2);
                 });
                 var html = "<b>Kalorie: "+ kalorie+"</b><br> <b>Tłuszcze: "+ tluszcze+"</b><br> <b>Białka: "+ bialka+"</b><br> <b>Węglowodany: "+ weglowodany+"</b><br>"
                 $('#nutrition').html(html);
