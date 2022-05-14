@@ -7,21 +7,23 @@
 <h1>Edycja dnia diety</h1>
 
 <form id="day" method="post" class="mt-3">
+    <div class="row">
+        <div class="col" id="form">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input id="dayId" type="hidden" asp-for="Id" />
     <input type="hidden" asp-for="UserId" />
     <div class="form-group row">
-        <label asp-for="Name" class="col-sm-2 col-form-label">
+        <label asp-for="Name" class="col-sm-4 col-form-label">
             Nazwa
         </label>
-        <div class="col-sm-4">
+        <div class="col-sm-8">
             <input asp-for="Name" class="form-control" placeholder="Wprowadź nazwę">
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group row">
-        <label asp-for="MealsCount" class="col-sm-2 col-form-label">Ilość posiłków</label>
-        <div class="col-sm-4">
+        <label asp-for="MealsCount" class="col-sm-4 col-form-label">Ilość posiłków</label>
+        <div class="col-sm-8">
             <select disabled="disabled" class="form-control" asp-for="MealsCount" id="mealsCounter">
                 <option>-- Ilość posiłków --</option>
                 <option value="3">3</option>
@@ -35,12 +37,12 @@
         @if (Model.MealsCount == 3)
         {
             <div class="form-group row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <label for="MealItems[0].AssignedMealTimeType" value="1">Śniadanie</label>
                     <input type="hidden" value="1" name="MealItems[0].AssignedMealTimeType" />
                 </div>
-                <div class="col-sm-6">
-                    <select class="form-control" name="MealItems[0].SelectedMeal">
+                <div class="col-sm-8 mealChoice">
+                    <select class="form-control" onchange="calcNutri()" name="MealItems[0].SelectedMeal">
                         @if (Model.MealItems.Count > 0)
                         {
                             @if (Model.MealItems[0].SelectedMeal == Guid.Empty)
@@ -51,11 +53,11 @@
                             {
                                 if (Model.MealItems[0].SelectedMeal == meal.Id)
                                 {
-                                    <option selected value="@meal.Id">@meal.MealName</option>
+                                    <option selected value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                                 else
                                 {
-                                    <option value="@meal.Id">@meal.MealName</option>
+                                    <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                             }
                         }
@@ -64,20 +66,20 @@
                             <option selected value="0">-- Wybierz posiłek --</option>
                             @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Breakfast))
                             {
-                                <option value="@meal.Id">@meal.MealName</option>
+                                <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                             }
                         }
                     </select>
                 </div>
             </div>
             <div class="form-group row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <label for="MealItems[1].AssignedMealTimeType" value="2">Obiad</label>
                     <input type="hidden" value="2" name="MealItems[1].AssignedMealTimeType" />
                 </div>
 
-                <div class="col-sm-6">
-                    <select class="form-control" name="MealItems[1].SelectedMeal">
+                <div class="col-sm-8 mealChoice">
+                    <select class="form-control" onchange="calcNutri()" name="MealItems[1].SelectedMeal">
                         @if (Model.MealItems.Count > 0)
                         {
                             @if (Model.MealItems[1].SelectedMeal == Guid.Empty)
@@ -88,11 +90,11 @@
                             {
                                 if (Model.MealItems[1].SelectedMeal == meal.Id)
                                 {
-                                    <option selected value="@meal.Id">@meal.MealName</option>
+                                    <option selected value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                                 else
                                 {
-                                    <option value="@meal.Id">@meal.MealName</option>
+                                    <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                             }
                         }
@@ -101,20 +103,20 @@
                             <option selected value="0">-- Wybierz posiłek --</option>
                             @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Lunch))
                             {
-                                <option value="@meal.Id">@meal.MealName</option>
+                                <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                             }
                         }
                     </select>
                 </div>
             </div>
             <div class="form-group row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <label for="MealItems[2].AssignedMealTimeType" value="3">Kolacja</label>
                     <input type="hidden" value="3" name="MealItems[2].AssignedMealTimeType" />
                 </div>
 
-                <div class="col-sm-6">
-                    <select class="form-control" name="MealItems[1].SelectedMeal">
+                <div class="col-sm-8 mealChoice">
+                    <select class="form-control" onchange="calcNutri()" name="MealItems[1].SelectedMeal">
                         @if (Model.MealItems.Count > 0)
                         {
                             @if (Model.MealItems[2].SelectedMeal == Guid.Empty)
@@ -125,11 +127,11 @@
                             {
                                 if (Model.MealItems[2].SelectedMeal == meal.Id)
                                 {
-                                    <option selected value="@meal.Id">@meal.MealName</option>
+                                    <option selected value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                                 else
-                                {
-                                    <option value="@meal.Id">@meal.MealName</option>
+                                { 
+                                    <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                             }
                         }
@@ -138,7 +140,7 @@
                             <option selected value="0">-- Wybierz posiłek --</option>
                             @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Dinner))
                             {
-                                <option value="@meal.Id">@meal.MealName</option>
+                                <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                             }
                         }
                     </select>
@@ -149,12 +151,12 @@
         @if (Model.MealsCount == 4)
         {
             <div class="form-group row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <label for="MealItems[0].AssignedMealTimeType" value="1">I śniadanie</label>
                     <input type="hidden" value="1" name="MealItems[0].AssignedMealTimeType" />
                 </div>
-                <div class="col-sm-6">
-                    <select class="form-control" name="MealItems[0].SelectedMeal">
+                <div class="col-sm-8 mealChoice">
+                    <select class="form-control" onchange="calcNutri()" name="MealItems[0].SelectedMeal">
                         @if (Model.MealItems.Count > 0)
                         {
                             @if (Model.MealItems[0].SelectedMeal == Guid.Empty)
@@ -165,11 +167,11 @@
                             {
                                 if (Model.MealItems[0].SelectedMeal == meal.Id)
                                 {
-                                    <option selected value="@meal.Id">@meal.MealName</option>
+                                    <option selected value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                                 else
                                 {
-                                    <option value="@meal.Id">@meal.MealName</option>
+                                    <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                             }
                         }
@@ -178,19 +180,19 @@
                             <option selected value="0">-- Wybierz posiłek --</option>
                             @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Breakfast))
                             {
-                                <option value="@meal.Id">@meal.MealName</option>
+                                <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                             }
                         }
                     </select>
                 </div>
             </div>
             <div class="form-group row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <label for="MealItems[1].AssignedMealTimeType" value="2">II śniadanie</label>
                     <input type="hidden" value="2" name="MealItems[1].AssignedMealTimeType" />
                 </div>
-                <div class="col-sm-6">
-                    <select class="form-control" name="MealItems[1].SelectedMeal">
+                <div class="col-sm-8 mealChoice">
+                    <select class="form-control" onchange="calcNutri()" name="MealItems[1].SelectedMeal">
                         @if (Model.MealItems.Count > 0)
                         {
                             @if (Model.MealItems[1].SelectedMeal == Guid.Empty)
@@ -201,11 +203,11 @@
                             {
                                 if (Model.MealItems[1].SelectedMeal == meal.Id)
                                 {
-                                    <option selected value="@meal.Id">@meal.MealName</option>
+                                    <option selected value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                                 else
                                 {
-                                    <option value="@meal.Id">@meal.MealName</option>
+                                    <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                             }
                         }
@@ -214,20 +216,20 @@
                             <option selected value="0">-- Wybierz posiłek --</option>
                             @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Brunch))
                             {
-                                <option value="@meal.Id">@meal.MealName</option>
+                                <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                             }
                         }
                     </select>
                 </div>
             </div>
             <div class="form-group row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <label for="MealItems[2].AssignedMealTimeType" value="3">Obiad</label>
                     <input type="hidden" value="3" name="MealItems[2].AssignedMealTimeType" />
                 </div>
 
-                <div class="col-sm-6">
-                    <select class="form-control" name="MealItems[2].SelectedMeal">
+                <div class="col-sm-8 mealChoice">
+                    <select class="form-control" onchange="calcNutri()" name="MealItems[2].SelectedMeal">
                         @if (Model.MealItems.Count > 0)
                         {
                             @if (Model.MealItems[2].SelectedMeal == Guid.Empty)
@@ -238,11 +240,11 @@
                             {
                                 if (Model.MealItems[2].SelectedMeal == meal.Id)
                                 {
-                                    <option selected value="@meal.Id">@meal.MealName</option>
+                                    <option selected value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                                 else
                                 {
-                                    <option value="@meal.Id">@meal.MealName</option>
+                                    <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                             }
                         }
@@ -251,20 +253,20 @@
                             <option selected value="0">-- Wybierz posiłek --</option>
                             @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Lunch))
                             {
-                                <option value="@meal.Id">@meal.MealName</option>
+                                <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                             }
                         }
                     </select>
                 </div>
             </div>
             <div class="form-group row">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <label for="MealItems[3].AssignedMealTimeType" value="4">Kolacja</label>
                     <input type="hidden" value="4" name="MealItems[3].AssignedMealTimeType" />
                 </div>
 
-                <div class="col-sm-6">
-                    <select class="form-control" name="MealItems[3].SelectedMeal">
+                <div class="col-sm-8 mealChoice">
+                    <select class="form-control" onchange="calcNutri()" name="MealItems[3].SelectedMeal">
                         @if (Model.MealItems.Count > 0)
                         {
                             @if (Model.MealItems[3].SelectedMeal == Guid.Empty)
@@ -275,11 +277,11 @@
                             {
                                 if (Model.MealItems[3].SelectedMeal == meal.Id)
                                 {
-                                    <option selected value="@meal.Id">@meal.MealName</option>
+                                    <option selected value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                                 else
                                 {
-                                    <option value="@meal.Id">@meal.MealName</option>
+                                    <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                             }
                         }
@@ -288,7 +290,7 @@
                             <option selected value="0">-- Wybierz posiłek --</option>
                             @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == MealTimeType.Dinner))
                             {
-                                <option value="@meal.Id">@meal.MealName</option>
+                                <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                             }
                         }
                     </select>
@@ -301,12 +303,12 @@
             @for (int i = 0; i < Model.MealsCount; i++)
             {
                 <div class="form-group row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <label for="MealItems[@i].AssignedMealTimeType" value="@(i+1)">@(EnumHelper<MealTimeType>.GetDisplayValue((MealTimeType)i+1))</label>
                         <input type="hidden" value="@(i+1)" name="MealItems[@i].AssignedMealTimeType" />
                     </div>
-                    <div class="col-sm-6">
-                        <select class="form-control" name="MealItems[@i].SelectedMeal">
+                    <div class="col-sm-8 mealChoice">
+                        <select class="form-control" onchange="calcNutri()" name="MealItems[@i].SelectedMeal">
                             @if (Model.MealItems.Count > 0)
                             {
                                 @if (Model.MealItems[i].SelectedMeal == Guid.Empty)
@@ -317,11 +319,11 @@
                                 {
                                     if (Model.MealItems[i].SelectedMeal == meal.Id)
                                     {
-                                        <option selected value="@meal.Id">@meal.MealName</option>
+                                        <option selected value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                     }
                                     else
                                     {
-                                        <option value="@meal.Id">@meal.MealName</option>
+                                        <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                     }
                                 }
                             }
@@ -330,7 +332,7 @@
                                 <option selected value="0">-- Wybierz posiłek --</option>
                                 @foreach (var meal in Model.Meals.Where(a => a.TypeOfMeal == (MealTimeType)i + 1))
                                 {
-                                    <option value="@meal.Id">@meal.MealName</option>
+                                    <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
                                 }
                             }
                         </select>
@@ -339,6 +341,10 @@
             }
         }
     </div>
+    </div>
+            <div class="col" id="nutrition">
+        </div>
+    </div>
     <div class="form-group row">
         <button type="submit" class="btn btn-primary">Aktualizuj</button>
         <a asp-action="Index" class="btn btn-danger">Anuluj</a>
@@ -346,4 +352,39 @@
 </form>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        calcNutri();
+        function calcNutri(){
+            $(document).ready(function(){
+                var record = {};
+                var allRecords =  [];
+                $('div.mealChoice').each(function (index, value){
+                    if($(this).find('option:selected').val()!=0){
+                        newRecord = {
+                        _kcal: $('option:selected', $(this)).attr('data-kcal'),
+                        _protein: $('option:selected', $(this)).attr('data-protein'),
+                        _carbo: $('option:selected', $(this)).attr('data-carbo'),
+                        _fats: $('option:selected', $(this)).attr('data-fats')
+                    }
+                    allRecords.push(newRecord);
+                    };
+                })
+                var html = calculateNutrition(allRecords);
+            });
+        }
+        function calculateNutrition(data){
+                            var kalorie;
+                            var tluszcze;
+                            var bialka;
+                            var weglowodany;
+                $.each(data, function(index, value){
+                        kalorie = (parseFloat(value._kcal.replace(',', '.') || 0)+parseFloat(kalorie || 0)).toFixed(2);
+                        tluszcze = (parseFloat(value._fats.replace(',', '.')||0)+parseFloat(tluszcze||0)).toFixed(2);
+                        bialka = (parseFloat(value._protein.replace(',', '.')||0)+parseFloat(bialka||0)).toFixed(2);
+                        weglowodany = (parseFloat(value._carbo.replace(',', '.')||0)+parseFloat(weglowodany||0)).toFixed(2);
+                });
+                var html = "<b>Kalorie: "+ kalorie+"</b><br> <b>Tłuszcze: "+ tluszcze+"</b><br> <b>Białka: "+ bialka+"</b><br> <b>Węglowodany: "+ weglowodany+"</b><br>"
+                $('#nutrition').html(html);
+        }
+        });
 </script>

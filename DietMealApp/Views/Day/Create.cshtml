@@ -9,18 +9,21 @@
 <form method="post" class="mt-3">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="UserId" />
-    <div class="form-group row">
-        <label asp-for="Name" class="col-sm-2 col-form-label">
+    <div class="row">
+                <div class="col" id="form">
+        
+         <div class="form-group row">
+        <label asp-for="Name" class="col-sm-4 col-form-label">
             Nazwa
         </label>
-        <div class="col-sm-4">
+        <div class="col-sm-8">
             <input asp-for="Name" class="form-control" placeholder="Wprowadź nazwę">
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group row">
-        <label asp-for="MealsCount" class="col-sm-2 col-form-label">Ilość posiłków</label>
-        <div class="col-sm-4">
+        <label asp-for="MealsCount" class="col-sm-4 col-form-label">Ilość posiłków</label>
+        <div class="col-sm-8">
             <select class="form-control" asp-for="MealsCount" id="mealsCounter">
                 <option selected>-- Ilość posiłków --</option>
                 <option value="3">3</option>
@@ -29,9 +32,15 @@
             </select>
         </div>
     </div>
-    <div class="form-group col" id="menu">
+    <div class="form-group" id="menu">
 
     </div>
+    </div>
+        <div class="col" id="nutrition">
+        </div>
+    </div>
+
+
     <div class="form-group row">
         <div class="col-sm-12">
             <button type="button" id="add-row" class="btn btn-link"><i class="fa fa-plus"></i> Dodaj produkt</button>
@@ -64,4 +73,37 @@
             });
         });
     });
+
+    function calcNutri(){
+            $(document).ready(function(){
+                var record = {};
+                var allRecords =  [];
+                $('div.mealChoice').each(function (index, value){
+                    if($(this).find('option:selected').val()!=0){
+                        newRecord = {
+                        _kcal: $('option:selected', $(this)).attr('data-kcal'),
+                        _protein: $('option:selected', $(this)).attr('data-protein'),
+                        _carbo: $('option:selected', $(this)).attr('data-carbo'),
+                        _fats: $('option:selected', $(this)).attr('data-fats')
+                    }
+                    allRecords.push(newRecord);
+                    };
+                })
+                var html = calculateNutrition(allRecords);
+            });
+        }
+        function calculateNutrition(data){
+                            var kalorie;
+                            var tluszcze;
+                            var bialka;
+                            var weglowodany;
+                $.each(data, function(index, value){
+                        kalorie = (parseFloat(value._kcal.replace(',', '.') || 0)+parseFloat(kalorie || 0)).toFixed(2);
+                        tluszcze = (parseFloat(value._fats.replace(',', '.')||0)+parseFloat(tluszcze||0)).toFixed(2);
+                        bialka = (parseFloat(value._protein.replace(',', '.')||0)+parseFloat(bialka||0)).toFixed(2);
+                        weglowodany = (parseFloat(value._carbo.replace(',', '.')||0)+parseFloat(weglowodany||0)).toFixed(2);
+                });
+                var html = "<b>Kalorie: "+ kalorie+"</b><br> <b>Tłuszcze: "+ tluszcze+"</b><br> <b>Białka: "+ bialka+"</b><br> <b>Węglowodany: "+ weglowodany+"</b><br>"
+                $('#nutrition').html(html);
+        }
 </script>
