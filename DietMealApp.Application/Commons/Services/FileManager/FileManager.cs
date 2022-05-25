@@ -48,6 +48,41 @@ namespace DietMealApp.Application.Commons.Services.FileManager
                     return await UploadFile(file, LocalPathsRepository.LocalGlobalFull, FtpPathsRepository.FtpGlobalFull, LocalPathsRepository.LocalGlobal150x150, FtpPathsRepository.FtpGlobal150x150);
             }
         }
+        public string SaveFile(string directoryFrom, string ftpDirectoryTo, string fileName)
+        {
+            try
+            {
+                var ftpFilePath = UploadFileToFtp(directoryFrom, ftpDirectoryTo, fileName);
+                return ftpFilePath;
+            }
+            catch (Exception e)
+            {
+                return "";
+            }
+            finally
+            {
+                DeleteLocalFile(Path.Combine(directoryFrom, fileName));
+            }
+        }
+
+        public bool DeleteLocalFiles(string[] fullPaths)
+        {
+            try
+            {
+                foreach (string fullPath in fullPaths)
+                {
+                    if (File.Exists(fullPath))
+                    {
+                        File.Delete(fullPath);
+                    }
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         private async Task<(string, string)> UploadFile(IFormFile file, string localFullPath, string ftpFullPath, string local150x150path, string ftp150x150path)
         {
@@ -182,23 +217,6 @@ namespace DietMealApp.Application.Commons.Services.FileManager
                 return false;
             }
         }
-        private bool DeleteLocalFiles(string[] fullPaths)
-        {
-            try
-            {
-                foreach (string fullPath in fullPaths)
-                {
-                    if (File.Exists(fullPath))
-                    {
-                        File.Delete(fullPath);
-                    }
-                }
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
+
     }
 }

@@ -71,6 +71,7 @@ namespace DietMealApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             #region CultureAndLocalizationConfig
             services.Configure<RequestLocalizationOptions>(options =>
             {
@@ -128,6 +129,7 @@ namespace DietMealApp
                Configuration["FileManager:Password"],
                a.GetService<IWebHostEnvironment>()));
             services.AddSingleton<IMailService, MailService>();
+            services.AddSingleton<IPdfGenerator, PdfGenerator>();
             #endregion
 
             #region MvcConfig

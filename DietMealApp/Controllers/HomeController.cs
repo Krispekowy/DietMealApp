@@ -14,13 +14,16 @@ namespace DietMealApp.WebClient.Controllers
     public class HomeController : _ParentController
     {
         private readonly IFileManager _fileManager;
+        private readonly IPdfGenerator _pdfGenerator;
 
         public HomeController(
             IMediator mediator,
-            IFileManager fileManager
+            IFileManager fileManager,
+            IPdfGenerator pdfGenerator
             ) : base(mediator)
         {
             _fileManager = fileManager;
+            _pdfGenerator = pdfGenerator;
         }
 
         public async Task<IActionResult> Index()
@@ -28,6 +31,12 @@ namespace DietMealApp.WebClient.Controllers
             InitId();
             //var filePath = _fileManager.GetFileFromFtp("noimage.png");
             return View("Index", model: "http://dietmealapp.cba.pl/products/shutterstock_360681410-1500px-square.jpg");
+        }
+
+        public async Task<IActionResult> GeneratePDF()
+        {
+            var tupla = _pdfGenerator.Generate();
+            return File(tupla.Item1, "application/force-download", tupla.Item2);
         }
     }
 }

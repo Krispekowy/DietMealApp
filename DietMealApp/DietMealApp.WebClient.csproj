@@ -50,8 +50,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\objects\" />
     <Folder Include="wwwroot\objects\meals\full\" />
+    <Folder Include="wwwroot\objects\shoppingLists\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>

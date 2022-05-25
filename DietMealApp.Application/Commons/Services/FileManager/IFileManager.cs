@@ -11,5 +11,6 @@ namespace DietMealApp.Application.Commons.Services.FileManager
     public interface IFileManager
     {
         Task<(string,string)> SendFileToFtp(IFormFile file, ImageType imageType);
+        bool DeleteLocalFiles(string[] fullPaths);
     }
 }
