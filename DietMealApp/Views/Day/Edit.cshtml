@@ -352,9 +352,7 @@
 </form>
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        calcNutri();
-        function calcNutri(){
+    function calcNutri(){
             $(document).ready(function(){
                 var record = {};
                 var allRecords =  [];
@@ -386,5 +384,8 @@
                 var html = "<b>Kalorie: "+ kalorie+"</b><br> <b>Tłuszcze: "+ tluszcze+"</b><br> <b>Białka: "+ bialka+"</b><br> <b>Węglowodany: "+ weglowodany+"</b><br>"
                 $('#nutrition').html(html);
         }
+    $(document).ready(function () {
+        calcNutri();
+        
         });
 </script>

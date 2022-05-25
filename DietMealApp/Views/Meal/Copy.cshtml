@@ -62,7 +62,7 @@
                         {
                             <tr class="d-table-row">
                                 <td style="width:70%">
-                                    <select class="form-control select-class" onkeyup="calcNutri()" id="selectedProduct_@i" name="@Model.MealProducts[i].ProductId">
+                                    <select class="form-control select-class" onchange="calcNutri()" id="selectedProduct_@i" name="@Model.MealProducts[i].ProductId">
                                         @foreach (var product in Model.Products)
                                         {
                                             if (product.Id == Model.MealProducts[i].ProductId)
