@@ -36,7 +36,7 @@ namespace DietMealApp.WebClient.Controllers
         public async Task<IActionResult> GeneratePDF()
         {
             var tupla = _pdfGenerator.Generate();
-            return File(tupla.Item1, "application/force-download", tupla.Item2);
+            return File(tupla.Item1, tupla.Item2, tupla.Item3);
         }
     }
 }
