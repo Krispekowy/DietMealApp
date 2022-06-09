@@ -20,6 +20,9 @@ namespace DietMealApp.DataAccessLayer
         public DbSet<DietDay> DietDays { get; set; }
         public DbSet<Day> Days { get; set; }
         public DbSet<Diet> Diets { get; set; }
+        public DbSet<ShoppingList> ShoppingList { get; set; }
+        public DbSet<ShoppingListProduct> ShoppingListProducts { get; set;}
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
