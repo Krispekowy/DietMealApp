@@ -63,5 +63,21 @@ namespace DietMealApp.WebClient.Controllers
                 throw;
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Save(GenerateShoppingListViewModel model)
+        {
+            InitId();
+            try
+            {
+                var shoppingList = await _mediator.Send(new GetShoppingListQuery() { ShoppingListModel = model, UserId = _senderId });
+                return PartialView("_ShoppingList", shoppingList);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
     }
 }

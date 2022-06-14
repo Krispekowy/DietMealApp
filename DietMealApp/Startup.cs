@@ -50,6 +50,12 @@ using DietMealApp.Core.DTO.Menu;
 using DietMealApp.Application.Functions.Menu.Query.GetMenuForm;
 using DietMealApp.Application.Functions.Menu.Query.GetMenuForWeek;
 using DietMealApp.Core.ViewModels;
+using DietMealApp.Application.Functions.Shopping.Query.GetShoppingListById;
+using DietMealApp.Application.Functions.Shopping.Query.GetAllShoppingLists;
+using DietMealApp.Application.Functions.Shopping.Query.GetShoppingListBySearch;
+using DietMealApp.Application.Functions.Shopping.Command.DeleteShoppingList;
+using DietMealApp.Application.Functions.Shopping.Command.InsertShoppingList;
+using DietMealApp.Application.Functions.Shopping.Command.UpdateShoppingList;
 
 namespace DietMealApp
 {
@@ -123,11 +129,17 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<GetDaysByIdsQuery, List<DayDTO>>, GetDaysByIdsQueryHandler>();
             services.AddScoped<IRequestHandler<GetMenuFormQuery, List<MenuDTO>>, GetMenuFormQueryHandler>();
             services.AddScoped<IRequestHandler<GetMenuForWeekQuery, List<MenuWeeklyViewModel>>, GetMenuForWeekQueryHandler>();
-            services.AddSingleton<IFileManager> (a=> new FileManager(
-               Configuration["FileManager:Host"],
-               Configuration["FileManager:User"],
-               Configuration["FileManager:Password"],
-               a.GetService<IWebHostEnvironment>()));
+            services.AddScoped<IRequestHandler<GetShoppingListByIdQuery, ShoppingListDTO>, GetShoppingListByIdQueryHandler>();
+            services.AddScoped<IRequestHandler<GetShoppingListsQuery, List<ShoppingListDTO>>, GetShoppingListsQueryHandler>();
+            services.AddScoped<IRequestHandler<GetShoppingListBySearchQuery, List<ShoppingListDTO>>, GetShoppingListBySearchQueryHandler>();
+            services.AddScoped<IRequestHandler<DeleteShoppingListCommand, Unit>, DeleteShoppingListCommandHandler>();
+            services.AddScoped<IRequestHandler<InsertShoppingListCommand, Unit>, InsertShoppingListCommandHandler>();
+            services.AddScoped<IRequestHandler<UpdateShoppingListCommand, Unit>, UpdateShoppingListCommandHandler>();
+            services.AddSingleton<IFileManager>(a => new FileManager(
+              Configuration["FileManager:Host"],
+              Configuration["FileManager:User"],
+              Configuration["FileManager:Password"],
+              a.GetService<IWebHostEnvironment>()));
             services.AddSingleton<IMailService, MailService>();
             services.AddSingleton<IPdfGenerator, PdfGenerator>();
             #endregion
