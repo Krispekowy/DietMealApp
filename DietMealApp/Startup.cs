@@ -103,6 +103,7 @@ namespace DietMealApp
             services.AddScoped<IMealRepository, MealRepository>();
             services.AddScoped<IDayRepository, DayRepository>();
             services.AddScoped<IDietRepository, DietRepository>();
+            services.AddScoped<IShoppingListRepository, ShoppingListRepository>();
 
             services.AddScoped<IRequestHandler<GetAllProductsQuery, List<ProductDTO>>, GetAllProductsQueryHandler>();
             services.AddScoped<IRequestHandler<GetDietsByUserQuery, List<DietDTO>>, GetDietsByUserQueryHandler>();
@@ -133,7 +134,7 @@ namespace DietMealApp
             services.AddScoped<IRequestHandler<GetShoppingListsQuery, List<ShoppingListDTO>>, GetShoppingListsQueryHandler>();
             services.AddScoped<IRequestHandler<GetShoppingListBySearchQuery, List<ShoppingListDTO>>, GetShoppingListBySearchQueryHandler>();
             services.AddScoped<IRequestHandler<DeleteShoppingListCommand, Unit>, DeleteShoppingListCommandHandler>();
-            services.AddScoped<IRequestHandler<InsertShoppingListCommand, Unit>, InsertShoppingListCommandHandler>();
+            services.AddScoped<IRequestHandler<InsertShoppingListCommand, Guid>, InsertShoppingListCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateShoppingListCommand, Unit>, UpdateShoppingListCommandHandler>();
             services.AddSingleton<IFileManager>(a => new FileManager(
               Configuration["FileManager:Host"],

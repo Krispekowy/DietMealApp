@@ -10,7 +10,7 @@ namespace DietMealApp.Core.DTO
         public Guid ProductId { get; set; }
         public string Product { get; set; }
         public Guid ShoppingListId { get; set; }
-        public ProductCategories Category { get; set; }
         public decimal Quantity { get; set; }
+        public ProductCategories Category { get; set; }
     }
 }

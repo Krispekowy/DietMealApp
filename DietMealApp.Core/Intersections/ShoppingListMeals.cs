@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Core.Intersections
 {
-    public class ShoppingListProduct
+    public class ShoppingListMeals
     {
         public Guid ShoppingListId { get; set; }
         public ShoppingList ShoppingList { get; set; }
-        public Guid ProductId { get; set; }
-        public Product Product { get; set; }
-        public decimal Quantity { get; set; }
+        public Guid MealId { get; set; }
+        public Meal Meal { get; set; }
+        public int Quantity { get; set; }
     }
 }

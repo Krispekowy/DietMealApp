@@ -1,18 +1,18 @@
 ﻿using DietMealApp.Core.DTO;
-using DietMealApp.Core.ViewModels;
-using MediatR;
+using DietMealApp.Core.DTO.ShoppingList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DietMealApp.Application.Functions.Shopping.Command.InsertShoppingList
+namespace DietMealApp.Core.ViewModels
 {
-    public class InsertShoppingListCommand : IRequest<Guid>
+    public class CreateShoppingListViewModel
     {
         public string UserId { get; set; }
         public List<ShoppingDaysDTO> Days { get; set; }
         public List<ShoppingMealsDTO> Meals { get; set; }
+        public List<ShoppingListProductsDTO> Products { get; set; }
     }
 }

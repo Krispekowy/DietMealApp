@@ -1,6 +1,8 @@
 ﻿using DietMealApp.Application.Commons.Services;
 using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
+using DietMealApp.Application.Functions.Shopping.Command.InsertShoppingList;
 using DietMealApp.Application.Functions.Shopping.Query;
+using DietMealApp.Application.Functions.Shopping.Query.GetShoppingListById;
 using DietMealApp.Core.DTO;
 using DietMealApp.Core.ViewModels;
 using DietMealApp.Service.Functions.Query;
@@ -26,46 +28,11 @@ namespace DietMealApp.WebClient.Controllers
         public async Task<IActionResult> Create()
         {
             InitId();
-            try
-            {
-                var days = await _mediator.Send(new GetDaysByUserQuery() { UserId = _senderId });
-                var meals = await _mediator.Send(new GetMealsByUserQuery() { UserId= _senderId });
-                GenerateShoppingListViewModel model = new GenerateShoppingListViewModel() { ListByDay = new List<ShoppingDaysDTO>(), ListByMeal = new List<ShoppingMealsDTO>()};
-                foreach (var day in days)
-                {
-                    model.ListByDay.Add(new ShoppingDaysDTO() { Day = day, Quantity = 0 });
-                }
-                foreach (var meal in meals)
-                {
-                    model.ListByMeal.Add(new ShoppingMealsDTO() { Meal = meal, Quantity = 0 });
-                }
-                model.ListByMeal = model.ListByMeal.OrderBy(a=>a.Meal.MealName).ToList();
-                return View(model);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return View(model: new CreateShoppingListViewModel() { UserId = _senderId });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Generate(GenerateShoppingListViewModel model)
-        {
-            InitId();
-            try
-            {
-                var shoppingList = await _mediator.Send(new GetShoppingListQuery() {ShoppingListModel = model, UserId = _senderId });
-                return PartialView("_ShoppingList", shoppingList);
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Save(GenerateShoppingListViewModel model)
+        public async Task<IActionResult> Generate(CreateShoppingListViewModel model)
         {
             InitId();
             try
@@ -78,6 +45,59 @@ namespace DietMealApp.WebClient.Controllers
 
                 throw;
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Save(CreateShoppingListViewModel model)
+        {
+            InitId();
+            try
+            {
+                var guid = await _mediator.Send(new InsertShoppingListCommand() { Days = model.Days, Meals = model.Meals, UserId = _senderId });
+                return RedirectToAction("Edit", new { id = guid });
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            InitId();
+            var shoppingListDTO = await _mediator.Send(new GetShoppingListByIdQuery() { Id = id });
+            var meals = await _mediator.Send(new GetMealsByUserQuery() { UserId = _senderId });
+            var days = await _mediator.Send(new GetDaysByUserQuery() { UserId = _senderId });
+            var model = new EditShoppingListViewModel()
+            {
+                Days = shoppingListDTO.Days,
+                DaysToChoice = days,
+                Meals = shoppingListDTO.Meals,
+                MealsToChoice = meals,
+                Products = shoppingListDTO.Products,
+                UserId = _senderId
+            };
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddMealRow(int index)
+        {
+            InitId();
+            var meals = await _mediator.Send(new GetMealsByUserQuery() { UserId = _senderId });
+            var model = new MealRow() { Index = index, Meals = meals };
+            return PartialView("_MealRow", model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddDayRow(int index)
+        {
+            InitId();
+            var days = await _mediator.Send(new GetDaysByUserQuery() { UserId = _senderId });
+            var model = new DayRow() { Index = index, Days = days };
+            return PartialView("_DayRow", model);
         }
     }
 }

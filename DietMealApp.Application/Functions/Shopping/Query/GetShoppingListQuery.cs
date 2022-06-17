@@ -11,7 +11,7 @@ namespace DietMealApp.Application.Functions.Shopping.Query
 {
     public class GetShoppingListQuery : IRequest<List<ProductsToBuyDTO>>
     {
-        public GenerateShoppingListViewModel ShoppingListModel { get; set; }
+        public CreateShoppingListViewModel ShoppingListModel { get; set; }
         public string UserId { get; set; }
     }
 }

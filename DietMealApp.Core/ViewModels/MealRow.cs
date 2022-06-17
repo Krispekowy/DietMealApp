@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DietMealApp.Core.DTO
+namespace DietMealApp.Core.ViewModels
 {
-    public class ShoppingMealsDTO
+    public sealed class MealRow
     {
-        public Guid MealId { get; set; }
-        public int Quantity { get; set; }
+        public ICollection<MealDTO> Meals { get; set; }
+        public int Index { get; set; }
     }
 }

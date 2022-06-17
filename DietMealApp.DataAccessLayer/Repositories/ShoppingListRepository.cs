@@ -60,7 +60,10 @@ namespace DietMealApp.DataAccessLayer.Repositories
         public async Task<ShoppingList> GetByID(Guid id)
         {
             return await _dbContext.ShoppingList
-                .AsNoTracking()
+                    .Include(a=>a.ShoppingListDays)
+                    .Include(a=>a.ShoppingListMeals)
+                    .Include(a=>a.ShoppingListProducts)
+                        .ThenInclude(b=>b.Product)
                 .Where(a => a.Id == id)
                 .FirstOrDefaultAsync();
         }

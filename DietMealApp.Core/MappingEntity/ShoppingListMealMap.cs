@@ -1,26 +1,27 @@
-﻿using DietMealApp.Core.Entities;
-using DietMealApp.Core.Intersections;
+﻿using DietMealApp.Core.Intersections;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DietMealApp.Core.MappingEntity
 {
-    public class ShoppingListProductMap
+    public class ShoppingListMealMap
     {
-        public ShoppingListProductMap(EntityTypeBuilder<ShoppingListProduct> entityBuilder)
+        public ShoppingListMealMap(EntityTypeBuilder<ShoppingListMeals> entityBuilder)
         {
             entityBuilder
-                .HasKey(t => new { t.ProductId, t.ShoppingListId });
+                .HasKey(t => new { t.MealId, t.ShoppingListId });
             entityBuilder
-                .HasOne(t => t.Product)
-                .WithMany(a => a.ShoppingListProducts)
-                .HasForeignKey(t => t.ProductId)
+                .HasOne(t => t.Meal)
+                .WithMany(a => a.ShoppingListMeals)
+                .HasForeignKey(t => t.MealId)
                 .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Cascade);
             entityBuilder
                 .HasOne(t => t.ShoppingList)
-                .WithMany(a => a.ShoppingListProducts)
+                .WithMany(a => a.ShoppingListMeals)
                 .HasForeignKey(t => t.ShoppingListId)
                 .OnDelete(Microsoft.EntityFrameworkCore.DeleteBehavior.Cascade);
         }

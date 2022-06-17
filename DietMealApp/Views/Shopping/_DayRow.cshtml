@@ -1,0 +1,19 @@
+﻿@model DietMealApp.Core.ViewModels.DayRow
+
+<tr class="d-table-row mb-3">
+    <td style="width:75%">
+        <select class="form-control select-class" id="selectedDay_@Model.Index" name="Days[@Model.Index].DayId">
+            <option selected> --Wybierz dzień-- </option>
+            @foreach (var day in Model.Days)
+            {
+                <option value="@day.Id" data-kcal="@day.Kcal" data-protein="@day.Protein" data-carbo="@day.Carbohydrates" data-fats="@day.Fats">@day.Name</option>
+            }
+        </select>
+    </td>
+    <td style="width:15%">
+        <input id="quantity_@Model.Index" class="form-control quantity-class" name="Days[@Model.Index].Quantity" placeholder="Ilość" />
+    </td>
+    <td>
+        <button type="button" style="color:red" onclick="DeleteRow(this)" class="btn"><i class="fa fa-close"></i></button>
+    </td>
+</tr>

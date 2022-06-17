@@ -1,18 +1,19 @@
-﻿using DietMealApp.Core.Entities;
+﻿using DietMealApp.Core.DTO.Products;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DietMealApp.Core.Intersections
+namespace DietMealApp.Core.DTO.ShoppingList
 {
-    public class ShoppingListProduct
+    public class ShoppingListProductsDTO
     {
+        public Guid Id { get; set; }
         public Guid ShoppingListId { get; set; }
-        public ShoppingList ShoppingList { get; set; }
+        public ShoppingListDTO ShoppingList { get; set; }
         public Guid ProductId { get; set; }
-        public Product Product { get; set; }
+        public ProductDTO Product { get; set; }
         public decimal Quantity { get; set; }
     }
 }
