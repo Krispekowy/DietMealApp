@@ -1,6 +1,7 @@
 ﻿using DietMealApp.Application.Commons.Abstract;
 using DietMealApp.Application.Commons.Services.FileManager;
 using DietMealApp.Core.DTO;
+using DietMealApp.Core.DTO.ShoppingList;
 using DietMealApp.Core.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

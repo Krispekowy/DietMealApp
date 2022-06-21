@@ -73,7 +73,8 @@ namespace DietMealApp.Application.Functions.Shopping.Command.InsertShoppingList
             {
                 Meals = request.Meals,
                 Days = request.Days,
-                Products = groupedProducts
+                Products = groupedProducts,
+                UserId = request.UserId,
             };
             var dto = ShoppingListDTO.CreateFromViewModel(model);
             var entity = ShoppingList.CreateFromDto(dto);

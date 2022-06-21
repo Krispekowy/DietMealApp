@@ -1,5 +1,7 @@
 ﻿@model DietMealApp.Core.ViewModels.EditShoppingListViewModel
 @using DietMealApp.Core.Enums;
+@using DietMealApp.Core.Extensions
+@using System.Linq;
 @{
 
 }
@@ -76,29 +78,43 @@
         </div>
     </div>
     <div class="row">
-        <table id="shoppingList">
-                <tr>
-                    <th style="width:50%" class="col">Produkt</th>
-                    <th style="width:25%" class="col">Ilość</th>
-                    <th style="width:25%" class="col">Czy kupiono?</th>
-                </tr>
-                <tbody>
+        <div class="col-6">
+            <table id="shoppingList" class="table table-hover">
+            <tr>
+                <th style="width: 60%">Produkt</th>
+                <th style="width: 25%">Ilość</th>
+                <th style="width: 15%">Kupione?</th>
+            </tr>
+            <tbody>
+                @foreach (ProductCategories category in (ProductCategories[])Enum.GetValues(typeof(ProductCategories)))
+                {
+                    <tr class="category">
+                        <td colspan="3" >
+                            <label>@category.GetDisplayName()</label>
+                        </td>
+                    </tr>
                     @foreach (var product in Model.Products)
                     {
-                        <tr class="d-table-row mb-3">
-                            <td style="width:50%">
-                                <label class="form-control">@product.Product.ProductName</label>
-                            </td>
-                            <td style="width:15%">
-                                <label class="form-control quantity-class" placeholder="Ilość">@product.Quantity</label>
-                            </td>
-                            <td>
-                                <input class="checkbox isBought" type="checkbox" />
-                            </td>
-                        </tr>
+                        if (product.Product.Category == category)
+                        {
+                            <tr>
+                                <td>
+                                    <label>@product.Product.ProductName</label>
+                                </td>
+                                <td>
+                                    <label>@product.Quantity</label>
+                                </td>
+                                <td>
+                                    <input type="checkbox" />
+                                </td>
+                            </tr>
+                        }
                     }
-                </tbody>
-            </table>
+                }
+            </tbody>
+        </table>
+        </div>
+        
     </div>
 </form>
 <div class="row">

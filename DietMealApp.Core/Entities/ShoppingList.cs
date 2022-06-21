@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Core.DTO;
+using DietMealApp.Core.DTO.ShoppingList;
 using DietMealApp.Core.Intersections;
 using System;
 using System.Collections.Generic;

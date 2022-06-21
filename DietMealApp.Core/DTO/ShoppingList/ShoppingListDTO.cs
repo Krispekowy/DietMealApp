@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DietMealApp.Core.DTO
+namespace DietMealApp.Core.DTO.ShoppingList
 {
     public sealed class ShoppingListDTO : _BaseDTO
     {
@@ -20,6 +20,7 @@ namespace DietMealApp.Core.DTO
             {
                 Id = entity.Id,
                 Name = entity.Name,
+                CreationDate = entity.CreationDate,
                 Products = entity.ShoppingListProducts.Select(a => new ShoppingListProductsDTO()
                 {
                     Product = ProductDTO.CreateFromEntity(a.Product),
@@ -69,6 +70,7 @@ namespace DietMealApp.Core.DTO
         }
 
         public string Name { get; set; }
+        public DateTime CreationDate { get; set; }
         public List<ShoppingListProductsDTO> Products { get; set; }
         public List<ShoppingListMealsDTO> Meals { get; set; }
         public List<ShoppingListDaysDTO> Days { get; set; }

@@ -36,7 +36,8 @@ namespace DietMealApp.Core.Entities
                 }).ToList(),
                 Name = dto.Name,
                 NumberOfMeals = dto.MealsCount,
-                Id = dto.Id
+                Id = dto.Id,
+                UserId = dto.UserId
             };
         }
         public string Name { get; set; }

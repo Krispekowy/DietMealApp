@@ -2,6 +2,7 @@
 using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
 using DietMealApp.Application.Functions.Shopping.Command.InsertShoppingList;
 using DietMealApp.Application.Functions.Shopping.Query;
+using DietMealApp.Application.Functions.Shopping.Query.GetAllShoppingLists;
 using DietMealApp.Application.Functions.Shopping.Query.GetShoppingListById;
 using DietMealApp.Core.DTO;
 using DietMealApp.Core.ViewModels;
@@ -22,6 +23,14 @@ namespace DietMealApp.WebClient.Controllers
             IMediator mediator
             ) : base(mediator)
         {
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            InitId();
+            var model = await _mediator.Send(new GetShoppingListsQuery() { UserId = _senderId });
+            return View(model);
         }
 
         [HttpGet]
@@ -53,8 +62,8 @@ namespace DietMealApp.WebClient.Controllers
             InitId();
             try
             {
-                var guid = await _mediator.Send(new InsertShoppingListCommand() { Days = model.Days, Meals = model.Meals, UserId = _senderId });
-                return RedirectToAction("Edit", new { id = guid });
+                await _mediator.Send(new InsertShoppingListCommand() { Days = model.Days, Meals = model.Meals, UserId = _senderId });
+                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {

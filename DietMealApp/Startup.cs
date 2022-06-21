@@ -56,6 +56,7 @@ using DietMealApp.Application.Functions.Shopping.Query.GetShoppingListBySearch;
 using DietMealApp.Application.Functions.Shopping.Command.DeleteShoppingList;
 using DietMealApp.Application.Functions.Shopping.Command.InsertShoppingList;
 using DietMealApp.Application.Functions.Shopping.Command.UpdateShoppingList;
+using DietMealApp.Core.DTO.ShoppingList;
 
 namespace DietMealApp
 {

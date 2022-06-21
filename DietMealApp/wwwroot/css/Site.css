@@ -119,3 +119,9 @@ input.empty {
     font-weight: normal;
     text-decoration: inherit;
 }
+
+.category {
+    font-size: 22px;
+    font-weight: 600;
+    background-color: aliceblue;
+}

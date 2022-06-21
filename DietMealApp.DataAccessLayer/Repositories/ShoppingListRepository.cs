@@ -49,7 +49,12 @@ namespace DietMealApp.DataAccessLayer.Repositories
 
         public IQueryable<ShoppingList> Get()
         {
-            return _dbContext.ShoppingList.AsNoTracking().Where(a => !a.IsDeleted);
+            return _dbContext.ShoppingList
+                    .Include(a => a.ShoppingListDays)
+                    .Include(a => a.ShoppingListMeals)
+                    .Include(a => a.ShoppingListProducts)
+                        .ThenInclude(b => b.Product)
+                .AsNoTracking().Where(a => !a.IsDeleted);
         }
 
         public IQueryable<ShoppingList> Get(Func<ShoppingList, bool> filterCondition)
@@ -60,10 +65,10 @@ namespace DietMealApp.DataAccessLayer.Repositories
         public async Task<ShoppingList> GetByID(Guid id)
         {
             return await _dbContext.ShoppingList
-                    .Include(a=>a.ShoppingListDays)
-                    .Include(a=>a.ShoppingListMeals)
-                    .Include(a=>a.ShoppingListProducts)
-                        .ThenInclude(b=>b.Product)
+                    .Include(a => a.ShoppingListDays)
+                    .Include(a => a.ShoppingListMeals)
+                    .Include(a => a.ShoppingListProducts)
+                        .ThenInclude(b => b.Product)
                 .Where(a => a.Id == id)
                 .FirstOrDefaultAsync();
         }
