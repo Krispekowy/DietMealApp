@@ -1,10 +1,12 @@
 ﻿using DietMealApp.Application.Commons.Services;
 using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
+using DietMealApp.Application.Functions.Shopping.Command.DeleteShoppingList;
 using DietMealApp.Application.Functions.Shopping.Command.InsertShoppingList;
 using DietMealApp.Application.Functions.Shopping.Query;
 using DietMealApp.Application.Functions.Shopping.Query.GetAllShoppingLists;
 using DietMealApp.Application.Functions.Shopping.Query.GetShoppingListById;
 using DietMealApp.Core.DTO;
+using DietMealApp.Core.DTO.ShoppingList;
 using DietMealApp.Core.ViewModels;
 using DietMealApp.Service.Functions.Query;
 using MediatR;
@@ -107,6 +109,20 @@ namespace DietMealApp.WebClient.Controllers
             var days = await _mediator.Send(new GetDaysByUserQuery() { UserId = _senderId });
             var model = new DayRow() { Index = index, Days = days };
             return PartialView("_DayRow", model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var result = await _mediator.Send(new GetShoppingListByIdQuery() { Id = id });
+            return View(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(ShoppingListDTO dto)
+        {
+            await _mediator.Send(new DeleteShoppingListCommand() { ShoppingListId = dto.Id });
+            return RedirectToAction("Index");
         }
     }
 }
