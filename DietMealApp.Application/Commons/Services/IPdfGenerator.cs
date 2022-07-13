@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace DietMealApp.Application.Commons.Services
     public interface IPdfGenerator
     {
         (MemoryStream, string, string) Generate();
+        MemoryStream CreateTablePDF();
     }
 }

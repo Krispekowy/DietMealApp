@@ -1,14 +1,17 @@
 ﻿using DietMealApp.Application.Commons.Services.FileManager;
-using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Syncfusion.Drawing;
 using Syncfusion.HtmlConverter;
 using Syncfusion.Pdf;
+using Syncfusion.Pdf.Graphics;
+using Syncfusion.Pdf.Grid;
+using Syncfusion.Pdf.Tables;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Data;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 
 namespace DietMealApp.Application.Commons.Services
 {
@@ -20,6 +23,44 @@ namespace DietMealApp.Application.Commons.Services
         {
             _fileManager = fileManager;
         }
+
+        public MemoryStream CreateTablePDF()
+        {
+
+            //Generate a new PDF document.
+            PdfDocument doc = new PdfDocument();
+            //Add a page.
+            PdfPage page = doc.Pages.Add();
+            //Create a PdfGrid.
+            PdfGrid pdfGrid = new PdfGrid();
+            //Add values to list
+            List<object> data = new List<object>();
+            Object row1 = new { ID = "E01", Name = "Clay" };
+            Object row2 = new { ID = "E02", Name = "Thomas" };
+            Object row3 = new { ID = "E03", Name = "Andrew" };
+            Object row4 = new { ID = "E04", Name = "Paul" };
+            Object row5 = new { ID = "E05", Name = "Gray" };
+            data.Add(row1);
+            data.Add(row2);
+            data.Add(row3);
+            data.Add(row4);
+            data.Add(row5);
+            //Add list to IEnumerable
+            IEnumerable<object> dataTable = data;
+            //Assign data source.
+            pdfGrid.DataSource = dataTable;
+            //Draw grid to the page of PDF document.
+            pdfGrid.Draw(page, new Syncfusion.Drawing.PointF(10, 10));
+            //Write the PDF document to stream
+            MemoryStream stream = new MemoryStream();
+            doc.Save(stream);
+            //If the position is not set to '0' then the PDF will be empty.
+            stream.Position = 0;
+            //Close the document.
+            doc.Close(true);
+            return stream;
+        }
+
         public (MemoryStream, string, string) Generate()
         {
             //Initialize HTML converter with WebKit rendering engine
@@ -41,7 +82,7 @@ namespace DietMealApp.Application.Commons.Services
             htmlConverter.ConverterSettings = settings;
 
             //Convert URL to PDF
-            PdfDocument document = htmlConverter.Convert("http://localhost:50727/Shopping/Create/");
+            PdfDocument document = htmlConverter.ConvertPartialHtml("http://localhost:50727/Shopping/Create/", "shoppingList");
 
             //Save the document into stream.
             MemoryStream stream = new MemoryStream();
@@ -57,10 +98,48 @@ namespace DietMealApp.Application.Commons.Services
             string contentType = "application/pdf";
 
             //Define the file name.
-            string fileName = " Sample.pdf";
+            string fileName = "Sample.pdf";
 
             //Creates a FileContentResult object by using the file contents, content type, and file name.
             return (stream, contentType, fileName);
+        }
+
+        async void Save(Stream stream, string filename)
+
+        {
+
+            stream.Position = 0;
+
+            FileSavePicker savePicker = new FileSavePicker();
+
+            savePicker.DefaultFileExtension = ".pdf";
+
+            savePicker.SuggestedFileName = "Sample";
+
+            savePicker.FileTypeChoices.Add("Adobe PDF Document", new List<string>() { ".pdf" });
+
+            StorageFile stFile = await savePicker.PickSaveFileAsync();
+
+            if (stFile != null)
+
+            {
+
+                Windows.Storage.Streams.IRandomAccessStream fileStream = await stFile.OpenAsync(FileAccessMode.ReadWrite);
+
+                Stream stream1 = fileStream.AsStreamForWrite();
+
+                stream1.SetLength(0);
+
+                stream1.Write((stream as MemoryStream).ToArray(), 0, (int)stream.Length);
+
+                stream1.Flush();
+
+                stream1.Dispose();
+
+                fileStream.Dispose();
+
+            }
+
         }
 
     }
