@@ -11,6 +11,6 @@ namespace DietMealApp.Application.Commons.Services
     public interface IPdfGenerator
     {
         (MemoryStream, string, string) Generate();
-        MemoryStream CreateTablePDF();
+        MemoryStream CreateTablePDF<T>(List<T> listOfElements);
     }
 }

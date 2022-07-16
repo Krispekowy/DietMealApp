@@ -50,18 +50,18 @@ namespace DietMealApp.Core.DTO.ShoppingList
                 Id = Guid.NewGuid(),
                 Name = "ShoppingList_" + DateTime.Now.ToString(),
                 UserId = vm.UserId,
-                Products = vm.Products.Select(a => new ShoppingListProductsDTO()
+                Products = vm.Products?.Select(a => new ShoppingListProductsDTO()
                 {
                     ProductId = a.ProductId,
                     Quantity = a.Quantity,
                     ShoppingListId = a.ShoppingListId,
                 }).ToList(),
-                Days = vm.Days.Select(a=> new ShoppingListDaysDTO()
+                Days = vm.Days?.Select(a=> new ShoppingListDaysDTO()
                 {
                     DayId = a.DayId,
                     Quantity = a.Quantity
                 }).ToList(),
-                Meals = vm.Meals.Select(a => new ShoppingListMealsDTO()
+                Meals = vm.Meals?.Select(a => new ShoppingListMealsDTO()
                 {
                     MealId = a.MealId,
                     Quantity = a.Quantity

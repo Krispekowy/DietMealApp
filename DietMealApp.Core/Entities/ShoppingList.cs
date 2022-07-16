@@ -22,20 +22,20 @@ namespace DietMealApp.Core.Entities
                 Id = dto.Id,
                 Name = dto.Name,
                 UserId = dto.UserId,
-                ShoppingListProducts = dto.Products.Select(a => new ShoppingListProduct()
+                ShoppingListProducts = dto.Products?.Select(a => new ShoppingListProduct()
                 {
                     ProductId = a.ProductId,
                     Quantity = a.Quantity,
                     ShoppingListId = a.ShoppingListId
                 })
                 .ToList(),
-                ShoppingListDays = dto.Days.Select(a => new ShoppingListDays()
+                ShoppingListDays = dto.Days?.Select(a => new ShoppingListDays()
                 {
                     DayId = a.DayId,
                     Quantity = a.Quantity,
                     ShoppingListId = a.ShoppingListId
                 }).ToList(),
-                ShoppingListMeals = dto.Meals.Select(a=> new ShoppingListMeals()
+                ShoppingListMeals = dto.Meals?.Select(a=> new ShoppingListMeals()
                 {
                     MealId = a.MealId,
                     Quantity= a.Quantity,

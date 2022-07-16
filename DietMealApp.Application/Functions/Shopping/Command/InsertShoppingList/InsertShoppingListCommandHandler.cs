@@ -35,7 +35,7 @@ namespace DietMealApp.Application.Functions.Shopping.Command.InsertShoppingList
         {
             List<ShoppingListProductsDTO> products = new List<ShoppingListProductsDTO>();
 
-            foreach (var day in request.Days)
+            foreach (var day in request.Days ?? new List<ShoppingDaysDTO>())
             {
                 if (day.Quantity > 0)
                 {
@@ -53,7 +53,7 @@ namespace DietMealApp.Application.Functions.Shopping.Command.InsertShoppingList
                 }
             }
 
-            foreach (var meal in request.Meals)
+            foreach (var meal in request.Meals ?? new List<ShoppingMealsDTO>())
             {
                 if (meal.Quantity > 0)
                 {

@@ -13,7 +13,7 @@ namespace DietMealApp.Core.MappingEntity
         public ShoppingListMealMap(EntityTypeBuilder<ShoppingListMeals> entityBuilder)
         {
             entityBuilder
-                .HasKey(t => new { t.MealId, t.ShoppingListId });
+                .HasKey(t => new { t.Id});
             entityBuilder
                 .HasOne(t => t.Meal)
                 .WithMany(a => a.ShoppingListMeals)

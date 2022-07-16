@@ -9,6 +9,7 @@ namespace DietMealApp.Core.Intersections
 {
     public class ShoppingListMeals
     {
+        public Guid Id { get; set; }
         public Guid ShoppingListId { get; set; }
         public ShoppingList ShoppingList { get; set; }
         public Guid MealId { get; set; }

@@ -59,13 +59,13 @@ namespace DietMealApp.WebClient.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Save(CreateShoppingListViewModel model)
+        public async Task<IActionResult> Create(CreateShoppingListViewModel model)
         {
             InitId();
             try
             {
-                await _mediator.Send(new InsertShoppingListCommand() { Days = model.Days, Meals = model.Meals, UserId = _senderId });
-                return RedirectToAction("Index");
+                Guid id = await _mediator.Send(new InsertShoppingListCommand() { Days = model.Days, Meals = model.Meals, UserId = _senderId });
+                return RedirectToAction("Edit", new { id = id });
             }
             catch (Exception ex)
             {
