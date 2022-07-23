@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Application.Commons.Services.FileManager;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Syncfusion.Drawing;
 using Syncfusion.HtmlConverter;
@@ -18,10 +19,17 @@ namespace DietMealApp.Application.Commons.Services
     public class PdfGenerator : IPdfGenerator
     {
         private readonly IFileManager _fileManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public PdfGenerator(IFileManager fileManager)
+        public PdfGenerator(IFileManager fileManager, IWebHostEnvironment webHostEnvironment)
         {
             _fileManager = fileManager;
+            _webHostEnvironment = webHostEnvironment;
+
+            if (string.IsNullOrWhiteSpace(_webHostEnvironment.WebRootPath))
+            {
+                _webHostEnvironment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            }
         }
 
         public MemoryStream CreateTablePDF<T>(List<T> listOfElements)
@@ -33,10 +41,14 @@ namespace DietMealApp.Application.Commons.Services
             PdfPage page = doc.Pages.Add();
             //Create a PdfGrid.
             PdfGrid pdfGrid = new PdfGrid();
+            Stream fontStream = File.OpenRead(Path.Combine(_webHostEnvironment.WebRootPath, "fonts/TanoheSans-Regular.ttf"));
+            PdfTrueTypeFont tfont = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Regular);
+
             //Add list to IEnumerable
             IEnumerable<T> dataTable = listOfElements;
             //Assign data source.
             pdfGrid.DataSource = dataTable;
+            pdfGrid.Style.Font = tfont;
             //Draw grid to the page of PDF document.
             pdfGrid.Draw(page, new Syncfusion.Drawing.PointF(10, 10));
             //Write the PDF document to stream

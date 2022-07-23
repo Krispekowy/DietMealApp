@@ -50,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\fonts\" />
     <Folder Include="wwwroot\objects\meals\full\" />
     <Folder Include="wwwroot\objects\shoppingLists\" />
   </ItemGroup>
