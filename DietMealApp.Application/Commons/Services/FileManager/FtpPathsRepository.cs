@@ -16,5 +16,7 @@ namespace DietMealApp.Application.Commons.Services.FileManager
 
         internal static readonly string FtpMealFull = "meals/full";
         internal static readonly string FtpMeal150x150 = "meals/150x150";
+
+        internal static readonly string FtpShoppingLists = "pdf/shoppinglists/";
     }
 }

@@ -1,17 +1,23 @@
 ﻿@using DietMealApp.Core.ViewModels
 @using DietMealApp.Core.Extensions;
-@model List<MenuWeeklyViewModel>
+@model List<MenuDay>
 @{
     var culture = new System.Globalization.CultureInfo("pl-PL");
 }
-@foreach (var day in Model)
+@for (var i = 0; i < Model.Count; i++)
 {
     <table class="table table-striped">
         <thead>
             <tr>
                 <th style="width:10%" scope="col">#</th>
-                <th style="width:30%" scope="col">@(culture.DateTimeFormat.GetDayName(day.DayOfWeek))</th>
-                <th style="width:60%" scope="col">@day.Day.Name Kcal <b>@day.Day.Kcal</b> B <b>@day.Day.Protein</b> T <b>@day.Day.Fats</b> W <b>@day.Day.Carbohydrates</b></th>
+                <th style="width:30%" scope="col">
+                    <input type="hidden" name="MenuDays[@i].DayOfWeekString" value="@(culture.DateTimeFormat.GetDayName(Model[i].DayOfWeek))">
+                    @Html.LabelFor(a=>a[i].DayOfWeekString, culture.DateTimeFormat.GetDayName(Model[i].DayOfWeek))
+                </th>
+                <th style="width:60%" scope="col">
+                    <input type="hidden" name="MenuDays[@i].DayDescription" value="@Model[i].Day.Name @Model[i].Day.Kcal B @Model[i].Day.Protein T @Model[i].Day.Fats W @Model[i].Day.Carbohydrates">
+                    @Html.Label(Model[i].Day.Name + "Kcal" + Model[i].Day.Kcal +"B"+ Model[i].Day.Protein +"T"+ Model[i].Day.Fats +"W"+ Model[i].Day.Carbohydrates)
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -20,24 +26,41 @@
                 <td style="width:30%"></td>
                 <td style="width:60%"></td>
             </tr>
-            @foreach (var meal in day.Day.DayMeals)
+            @for (var j=0; j < Model[i].Day.DayMeals.Count; j++)
             {
                 <tr>
-                    <th style="width:10%" scope="row">@meal.Type.GetDisplayName()</th>
-                    <td style="width:30%">Kcal <b>@meal.Meal.Kcal</b> B <b>@meal.Meal.Protein</b> T <b>@meal.Meal.Fats</b> W <b>@meal.Meal.Carbohydrates</b></td>
-                    <td style="width:60%">@meal.Meal.MealName</td>
+                    <th style="width:10%" scope="row">
+                        @Model[i].Day.DayMeals[j].Type.GetDisplayName()
+                        <input type="hidden" name="MenuDays[@i].Meals[@j].Type" value="@Model[i].Day.DayMeals[j].Type.GetDisplayName()">
+                    </th>
+                    <td style="width:30%">
+                        <input type="hidden" name="MenuDays[@i].Meals[@j].Nutrition" value="@("Kcal " + Model[i].Day.DayMeals[j].Meal.Kcal + "B " + Model[i].Day.DayMeals[j].Meal.Protein + "T " + Model[i].Day.DayMeals[j].Meal.Fats + "W " + Model[i].Day.DayMeals[j].Meal.Carbohydrates) ">
+                        Kcal<b>@Model[i].Day.DayMeals[j].Meal.Kcal</b> B <b>@Model[i].Day.DayMeals[j].Meal.Protein</b> T <b>@Model[i].Day.DayMeals[j].Meal.Fats</b> W <b>@Model[i].Day.DayMeals[j].Meal.Carbohydrates</b>
+                    </td>
+
+                    <td style="width:60%" name="@Model[i].Day.DayMeals[j].Meal.MealName">
+                        <input type="hidden" name="MenuDays[@i].Meals[@j].Name" value="@Model[i].Day.DayMeals[j].Meal.MealName">
+                        @Model[i].Day.DayMeals[j].Meal.MealName
+                    </td>
                 </tr>
                 <tr>
                     <th style="width:10%" scope="row">Składniki:</th>
                     <td style="width:30%">
                         <ul>
-                            @foreach (var product in meal.Meal.MealProducts)
+                            @for (var k = 0; k < Model[i].Day.DayMeals[j].Meal.MealProducts.Count; k ++)
                             {
-                                <li>@(product.Product.ProductName + " (" + product.Quantity + " " + product.Product.Unit +")")</li>
+                                <input type="hidden" name="MenuDays[@i].Meals[@j].Ingredients" value="@(Model[i].Day.DayMeals[j].Meal.MealProducts[k].Product.ProductName + " (" + Model[i].Day.DayMeals[j].Meal.MealProducts[k].Quantity + " " + Model[i].Day.DayMeals[j].Meal.MealProducts[k].Product.Unit +")")">
+                        
+                                <li name="MenuDays[@i].Meals[@j].Ingredients[@k]">
+                                    @(Model[i].Day.DayMeals[j].Meal.MealProducts[k].Product.ProductName + " (" + Model[i].Day.DayMeals[j].Meal.MealProducts[k].Quantity + " " + Model[i].Day.DayMeals[j].Meal.MealProducts[k].Product.Unit +")")
+                                </li>
                             }
                         </ul>
                     </td>
-                    <td style="width:60%">@meal.Meal.Description</td>
+                    <td style="width:60%">
+                        <input type="hidden" name="MenuDays[@i].Meals[@j].Description" value="@Model[i].Day.DayMeals[j].Meal.Description">
+                        @Model[i].Day.DayMeals[j].Meal.Description
+                    </td>
                 </tr>
             }
         </tbody>

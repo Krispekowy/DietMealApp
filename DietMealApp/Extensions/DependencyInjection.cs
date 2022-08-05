@@ -42,6 +42,8 @@ using DietMealApp.Application.Functions.Day.Command.UpdateDay;
 using DietMealApp.Application.Functions.Shopping.Query;
 using DietMealApp.Service.Functions.Command;
 using DietMealApp.Core.Entities;
+using DietMealApp.Application.Functions.PDFGenerator.Query.GetMenu;
+using System.IO;
 
 namespace DietMealApp.WebClient.Extensions
 {
@@ -83,13 +85,14 @@ namespace DietMealApp.WebClient.Extensions
             services.AddScoped<IRequestHandler<GetShoppingListQuery, List<ProductsToBuyDTO>>, GetShoppingListQueryHandler>();
             services.AddScoped<IRequestHandler<GetDaysByIdsQuery, List<DayDTO>>, GetDaysByIdsQueryHandler>();
             services.AddScoped<IRequestHandler<GetMenuFormQuery, List<MenuDTO>>, GetMenuFormQueryHandler>();
-            services.AddScoped<IRequestHandler<GetMenuForWeekQuery, List<MenuWeeklyViewModel>>, GetMenuForWeekQueryHandler>();
+            services.AddScoped<IRequestHandler<GetMenuForWeekQuery, List<MenuDay>>, GetMenuForWeekQueryHandler>();
             services.AddScoped<IRequestHandler<GetShoppingListByIdQuery, ShoppingListDTO>, GetShoppingListByIdQueryHandler>();
             services.AddScoped<IRequestHandler<GetShoppingListsQuery, List<ShoppingListDTO>>, GetShoppingListsQueryHandler>();
             services.AddScoped<IRequestHandler<GetShoppingListBySearchQuery, List<ShoppingListDTO>>, GetShoppingListBySearchQueryHandler>();
             services.AddScoped<IRequestHandler<DeleteShoppingListCommand, Unit>, DeleteShoppingListCommandHandler>();
             services.AddScoped<IRequestHandler<InsertShoppingListCommand, Guid>, InsertShoppingListCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateShoppingListCommand, Unit>, UpdateShoppingListCommandHandler>();
+            services.AddScoped<IRequestHandler<GetMenuPDFQuery, (MemoryStream, string)>, GetMenuPDFQueryHandler>();
             return services;
         }
     }

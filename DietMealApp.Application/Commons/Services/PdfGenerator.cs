@@ -1,4 +1,6 @@
 ﻿using DietMealApp.Application.Commons.Services.FileManager;
+using DietMealApp.Core.DTO.Menu;
+using DietMealApp.Core.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Syncfusion.Drawing;
@@ -59,6 +61,36 @@ namespace DietMealApp.Application.Commons.Services
             //Close the document.
             doc.Close(true);
             return stream;
+        }
+
+        public (MemoryStream, string) GenerateMenu(List<MenuDay> menu)
+        {
+
+            //Generate a new PDF document.
+            PdfDocument doc = new PdfDocument();
+            //Add a page.
+            PdfPage page = doc.Pages.Add();
+            //Create a PdfGrid.
+            PdfGrid pdfGrid = new PdfGrid();
+            Stream fontStream = File.OpenRead(Path.Combine(_webHostEnvironment.WebRootPath, "fonts/TanoheSans-Regular.ttf"));
+            PdfTrueTypeFont tfont = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Regular);
+
+            //Add list to IEnumerable
+            IEnumerable<MenuDay> dataTable = menu;
+            //Assign data source.
+            pdfGrid.DataSource = dataTable;
+            pdfGrid.Headers.Clear();
+            pdfGrid.Style.Font = tfont;
+            //Draw grid to the page of PDF document.
+            pdfGrid.Draw(page, new Syncfusion.Drawing.PointF(10, 10));
+            //Write the PDF document to stream
+            MemoryStream stream = new MemoryStream();
+            doc.Save(stream);
+            //If the position is not set to '0' then the PDF will be empty.
+            stream.Position = 0;
+            //Close the document.
+            doc.Close(true);
+            return (stream, "Menu.pdf");
         }
 
         public (MemoryStream, string, string) Generate()

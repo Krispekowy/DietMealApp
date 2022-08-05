@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DietMealApp.Core.DTO.Menu;
+using DietMealApp.Core.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,5 +14,6 @@ namespace DietMealApp.Application.Commons.Services
     {
         (MemoryStream, string, string) Generate();
         MemoryStream CreateTablePDF<T>(List<T> listOfElements);
+        (MemoryStream, string) GenerateMenu(List<MenuDay> menu);
     }
 }

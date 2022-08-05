@@ -1,47 +1,53 @@
-﻿@model List<DietMealApp.Core.DTO.Menu.MenuDTO>
+﻿@using DietMealApp.Core.ViewModels
+@model MenuWeeklyViewModel
 @{
     var culture = new System.Globalization.CultureInfo("pl-PL");
 }
 
 <h1>Generowanie jadłospisu</h1>
 
-<form method="post" id="plan" class="mt-3">
+<form asp-action="Generate" method="get" id="plan" class="mt-3">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    @for (int i = 0; i < @Model.Count; i++)
+    @for (var i = 0; i < Model.Days.Count; i++)
     {
         <div class="form-group row">
-            @Html.HiddenFor(a=>a[i].DayOfWeek)
-            <label class="col-form-label">@(culture.DateTimeFormat.GetDayName((Model[i].DayOfWeek)))</label>
+            @Html.HiddenFor(x=>Model.Days[i].DayOfWeek)
+            <label class="col-form-label">@(culture.DateTimeFormat.GetDayName((@Model.Days[i].DayOfWeek)))</label>
             <div class="col">
-                <select class="form-control select-class" asp-for="@Model[i].DayId">
+                <select class="form-control select-class" asp-for="@Model.Days[i].DayId">
                     <option>-- Wybierz plan na dany dzień --</option>
-                    @for (int j = 0; j < Model[i].Days.Count; j++)
+                    @foreach (var dayMenu in @Model.Days[i].Days)
                     {
-                        <option value="@Model[i].Days[j].Id">@(Model[i].Days[j].Name + " (" + Model[i].Days[j].DayMeals.Where(a=>a.Meal.TypeOfMeal == DietMealApp.Core.Enums.MealTimeType.Lunch).Select(a=>a.Meal.MealName).FirstOrDefault() + ")")</option>
+                        <option value="@dayMenu.Id">@(dayMenu.Name + " (" + @dayMenu.DayMeals.Where(a=>a.Meal.TypeOfMeal == DietMealApp.Core.Enums.MealTimeType.Lunch).Select(a=>a.Meal.MealName).FirstOrDefault() + ")")</option>
                     }
                 </select>
             </div>
         </div>
     }
-   
 </form>
- <button type="submit" name="submit" id="btnsubmit" class="btn btn-primary">Generuj</button>
-<div id="menuPlan">
+
+<input type="button" name="generatebtn" value="Generuj" id="generatebtn" class="btn btn-primary"/>
+<form asp-controller="Menu" asp-action="Save" method="post" id="menuForm" class="mt-3">
+    <div id="menuPlan">
 </div>
+<input asp-action="Save" type="submit" class="btn btn-primary" />
+</form>
+
+
 
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#btnsubmit").click(function () {
+        $("#generatebtn").click(function () {
             var data = $('#plan').serialize();
             $.ajax({
-                type: 'post',
+                type: 'get',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                 cache: false,
                 url: "/Menu/Generate",
                 data: data,
                 success: function (data, textStatus, jqXHR) {
                     $("#menuPlan").html(data);
-                    
+
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log("Error: " + textStatus + ". ErrorThrown: " + errorThrown );

@@ -60,8 +60,8 @@ namespace DietMealApp.Core.DTO.Days
         public decimal Protein { get; set; }
         public decimal Carbohydrates { get; set; }
         public decimal Fats { get; set; }
-        public ICollection<DayMealsDTO> DayMeals { get; set; }
-        public ICollection<DietDay> DietDays { get; set; }
+        public IList<DayMealsDTO> DayMeals { get; set; }
+        public IList<DietDay> DietDays { get; set; }
         public int NumberOfMeals { get; set; }
     }
 }

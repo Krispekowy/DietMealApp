@@ -3,7 +3,7 @@
 @{
 
 }
-@foreach(var day in Model)
+@*@foreach(var day in Model)
 {
     <h3>@Enum.GetValues(typeof(DayOfWeek))@day.DayOfWeek @day.Day.Name</h3>
     <h6><b>Kcal @day.Day.Kcal B @day.Day.Protein T @day.Day.Fats W @day.Day.Carbohydrates</b></h6>
@@ -20,4 +20,4 @@
         }
         </ul>
     }
-}
+}*@
