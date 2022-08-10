@@ -15,8 +15,8 @@
                     @Html.LabelFor(a=>a[i].DayOfWeekString, culture.DateTimeFormat.GetDayName(Model[i].DayOfWeek))
                 </th>
                 <th style="width:60%" scope="col">
-                    <input type="hidden" name="MenuDays[@i].DayDescription" value="@Model[i].Day.Name @Model[i].Day.Kcal B @Model[i].Day.Protein T @Model[i].Day.Fats W @Model[i].Day.Carbohydrates">
-                    @Html.Label(Model[i].Day.Name + "Kcal" + Model[i].Day.Kcal +"B"+ Model[i].Day.Protein +"T"+ Model[i].Day.Fats +"W"+ Model[i].Day.Carbohydrates)
+                    <input type="hidden" name="MenuDays[@i].DayDescription" value="@Model[i].Day.Name Kcal: @Model[i].Day.Kcal B: @Model[i].Day.Protein T: @Model[i].Day.Fats W: @Model[i].Day.Carbohydrates">
+                    @Html.Label(Model[i].Day.Name + "Kcal: " + Model[i].Day.Kcal +" B: "+ Model[i].Day.Protein +" T: "+ Model[i].Day.Fats +" W: "+ Model[i].Day.Carbohydrates)
                 </th>
             </tr>
         </thead>
@@ -34,8 +34,8 @@
                         <input type="hidden" name="MenuDays[@i].Meals[@j].Type" value="@Model[i].Day.DayMeals[j].Type.GetDisplayName()">
                     </th>
                     <td style="width:30%">
-                        <input type="hidden" name="MenuDays[@i].Meals[@j].Nutrition" value="@("Kcal " + Model[i].Day.DayMeals[j].Meal.Kcal + "B " + Model[i].Day.DayMeals[j].Meal.Protein + "T " + Model[i].Day.DayMeals[j].Meal.Fats + "W " + Model[i].Day.DayMeals[j].Meal.Carbohydrates) ">
-                        Kcal<b>@Model[i].Day.DayMeals[j].Meal.Kcal</b> B <b>@Model[i].Day.DayMeals[j].Meal.Protein</b> T <b>@Model[i].Day.DayMeals[j].Meal.Fats</b> W <b>@Model[i].Day.DayMeals[j].Meal.Carbohydrates</b>
+                        <input type="hidden" name="MenuDays[@i].Meals[@j].Nutrition" value="@("Kcal: " + Model[i].Day.DayMeals[j].Meal.Kcal + " B: " + Model[i].Day.DayMeals[j].Meal.Protein + " T: " + Model[i].Day.DayMeals[j].Meal.Fats + " W: " + Model[i].Day.DayMeals[j].Meal.Carbohydrates) ">
+                        Kcal: <b>@Model[i].Day.DayMeals[j].Meal.Kcal</b> B: <b>@Model[i].Day.DayMeals[j].Meal.Protein</b> T: <b>@Model[i].Day.DayMeals[j].Meal.Fats</b> W: <b>@Model[i].Day.DayMeals[j].Meal.Carbohydrates</b>
                     </td>
 
                     <td style="width:60%" name="@Model[i].Day.DayMeals[j].Meal.MealName">

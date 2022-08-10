@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 
@@ -68,17 +69,81 @@ namespace DietMealApp.Application.Commons.Services
 
             //Generate a new PDF document.
             PdfDocument doc = new PdfDocument();
+
             //Add a page.
             PdfPage page = doc.Pages.Add();
+
             //Create a PdfGrid.
             PdfGrid pdfGrid = new PdfGrid();
-            Stream fontStream = File.OpenRead(Path.Combine(_webHostEnvironment.WebRootPath, "fonts/TanoheSans-Regular.ttf"));
-            PdfTrueTypeFont tfont = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Regular);
 
-            //Add list to IEnumerable
-            IEnumerable<MenuDay> dataTable = menu;
+            //Create a DataTable.
+            DataTable dataTable = new DataTable();
+
+            //Add columns to the DataTable
+            dataTable.Columns.Add("#");
+            dataTable.Columns.Add("Dzień tygodnia");
+            dataTable.Columns.Add("Szczegóły");
+
+            foreach (var day in menu)
+            {
+                dataTable.Rows.Add(new object[] { "#", day.DayOfWeekString, day.DayDescription });
+
+                PdfGridCellStyle cellStyle = new PdfGridCellStyle();
+                cellStyle.TextPen = PdfPens.Black;
+                cellStyle.BackgroundBrush = PdfBrushes.LightBlue;
+
+                foreach (var meal in day.Meals)
+                {
+                    string ingredients = string.Empty;
+                    ingredients = meal.Ingredients.Aggregate((i,j)=> i + ", " + j);
+                    //Add rows to the DataTable.
+                    dataTable.Rows.Add(new object[] { meal.Type, meal.Nutrition, meal.Name });
+                    dataTable.Rows.Add(new object[] { "Składniki:", ingredients, meal.Description });
+                }
+                
+            }
+
+            
+            Stream fontStream = File.OpenRead(Path.Combine(_webHostEnvironment.WebRootPath, "fonts/TanoheSans-Regular.ttf"));
+            PdfTrueTypeFont headerFont = new PdfTrueTypeFont(fontStream, 14, PdfFontStyle.Bold);
+            PdfTrueTypeFont tfont = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Regular);
             //Assign data source.
             pdfGrid.DataSource = dataTable;
+
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+            {
+                pdfGrid.Rows[i].Cells[0].Style.Font = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Bold);
+                if (pdfGrid.Rows[i].Cells[0].Value.ToString() == "Składniki:")
+                {
+                    pdfGrid.Rows[i].Cells[0].Style.BackgroundBrush = PdfBrushes.DarkGray;
+                    pdfGrid.Rows[i].Cells[1].Style.BackgroundBrush = PdfBrushes.DarkGray;
+                    pdfGrid.Rows[i].Cells[2].Style.BackgroundBrush = PdfBrushes.DarkGray;
+                }
+                else if(pdfGrid.Rows[i].Cells[0].Value.ToString() == "#")
+                {
+                    pdfGrid.Rows[i].Cells[0].Style.TextBrush = PdfBrushes.Black;
+                    pdfGrid.Rows[i].Cells[0].Style.Font = headerFont;
+                    pdfGrid.Rows[i].Cells[0].Style.BackgroundBrush = PdfBrushes.DarkGray;
+                    pdfGrid.Rows[i].Cells[1].Style.TextBrush = PdfBrushes.Black;
+                    pdfGrid.Rows[i].Cells[1].Style.Font = headerFont;
+                    pdfGrid.Rows[i].Cells[1].Style.BackgroundBrush = PdfBrushes.DarkGray;
+                    pdfGrid.Rows[i].Cells[2].Style.TextBrush = PdfBrushes.Black;
+                    pdfGrid.Rows[i].Cells[2].Style.Font = headerFont;
+                    pdfGrid.Rows[i].Cells[2].Style.BackgroundBrush = PdfBrushes.DarkGray;
+                }
+                else
+                {
+                    pdfGrid.Rows[i].Cells[0].Style.Font = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Bold);
+                    pdfGrid.Rows[i].Cells[0].Style.BackgroundBrush = PdfBrushes.LightGray;
+                    pdfGrid.Rows[i].Cells[1].Style.Font = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Bold);
+                    pdfGrid.Rows[i].Cells[1].Style.BackgroundBrush = PdfBrushes.LightGray;
+                    pdfGrid.Rows[i].Cells[2].Style.Font = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Bold);
+                    pdfGrid.Rows[i].Cells[2].Style.BackgroundBrush = PdfBrushes.LightGray;
+                }
+            }
+
+
+            pdfGrid.Columns[0].Width = 100;
             pdfGrid.Headers.Clear();
             pdfGrid.Style.Font = tfont;
             //Draw grid to the page of PDF document.
@@ -172,6 +237,11 @@ namespace DietMealApp.Application.Commons.Services
 
             }
 
+        }
+
+        private bool IsDivisible(int x, int n)
+        {
+            return (x % n) == 0;
         }
 
     }

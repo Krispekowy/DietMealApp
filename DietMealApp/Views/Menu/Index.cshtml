@@ -26,11 +26,11 @@
     }
 </form>
 
-<input type="button" name="generatebtn" value="Generuj" id="generatebtn" class="btn btn-primary"/>
 <form asp-controller="Menu" asp-action="Save" method="post" id="menuForm" class="mt-3">
+    <input type="button" name="generatebtn" value="Generuj" id="generatebtn" class="btn btn-primary" style="display:inline-block"/>
+    <input asp-action="Save" type="submit" class="btn btn-success" value="Generuj PDF" />
     <div id="menuPlan">
 </div>
-<input asp-action="Save" type="submit" class="btn btn-primary" />
 </form>
 
 
