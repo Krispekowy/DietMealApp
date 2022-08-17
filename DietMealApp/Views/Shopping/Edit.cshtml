@@ -85,12 +85,16 @@
                 <th style="width: 25%">Ilość</th>
                 <th style="width: 15%">Kupione?</th>
             </tr>
-            <tbody>
+            
                 @foreach (ProductCategories category in (ProductCategories[])Enum.GetValues(typeof(ProductCategories)))
                 {
+                    <tbody id="@category">
                     <tr class="category">
                         <td colspan="3" >
                             <label>@category.GetDisplayName()</label>
+                        </td>
+                        <td>
+                            <button type="button" class="btn fas fa-plus add-position"></button>
                         </td>
                     </tr>
                     @foreach (var product in Model.Products)
@@ -110,8 +114,9 @@
                             </tr>
                         }
                     }
+                    </tbody>
                 }
-            </tbody>
+            
         </table>
         </div>
         
@@ -122,3 +127,16 @@
         <button type="button" name="submit" value="days" id="btnsubmit" class="btn btn-primary m-1">Generuj nową listę</button>
     </div>
 </div>
+
+<script type="text/javascript">
+
+$(".add-position").on("click", function(){
+    var body = $(this).parent().parent().parent();
+    body.append('<tr><td><input type="text" class="form-control"/></td><td><input type="text" class="form-control"/></td><td><button type="button" class="btn fas fa-minus remove-position"></button></td></tr>')
+});
+
+$(document).on("click", ".remove-position", function(){
+    var row = $(this).parent().parent();
+    row.remove();
+});
+</script>
