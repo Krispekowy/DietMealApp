@@ -77,54 +77,70 @@
             </div>
         </div>
     </div>
+</form>
+<form asp-controller="Shopping" asp-action="Save" method="post" id="shoppingListForm">
+    <button type="submit" id="generate-pdf" class="btn btn-secondary">Zapisz pdf</button>
     <div class="row">
         <div class="col-6">
             <table id="shoppingList" class="table table-hover">
-            <tr>
-                <th style="width: 60%">Produkt</th>
-                <th style="width: 25%">Ilość</th>
-                <th style="width: 15%">Kupione?</th>
-            </tr>
-            
+                <tr>
+                    <th style="width: 60%">Produkt</th>
+                    <th style="width: 40%">Ilość</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @{
+                    int i = 0;
+                }
                 @foreach (ProductCategories category in (ProductCategories[])Enum.GetValues(typeof(ProductCategories)))
                 {
                     <tbody id="@category">
-                    <tr class="category">
-                        <td colspan="3" >
-                            <label>@category.GetDisplayName()</label>
-                        </td>
-                        <td>
-                            <button type="button" class="btn fas fa-plus add-position"></button>
-                        </td>
-                    </tr>
-                    @foreach (var product in Model.Products)
-                    {
-                        if (product.Product.Category == category)
-                        {
-                            <tr>
-                                <td>
-                                    <label>@product.Product.ProductName</label>
-                                </td>
-                                <td>
-                                    <div class="editable">
-                                        <label>@product.Quantity</label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <input type="checkbox" />
-                                </td>
-                                <td>
-                                    <button type="button" class="btn fas fa-edit edit-position"></button>
-                                </td>
-                            </tr>
+                        <tr class="category">
+                            <td >
+                                <label>@category.GetDisplayName()</label>
+                                <input type="hidden" name="ShoppingListPdf[@i].Category" value="@category" />
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <button type="button" class="btn fas fa-plus add-position"></button>
+                            </td>
+                        </tr>
+                        @{
+                            int j = 0;
                         }
-                    }
+                        @foreach (var product in Model.Products)
+                        {
+                            if (product.Product.Category == category)
+                            {
+                                <tr>
+                                    <td>
+                                        <label class="product">@product.Product.ProductName</label>
+                                        <input class="product" type="hidden" name="ShoppingListPdf[@i].Products[@j].Name" value="@product.Product.ProductName" />
+                                    </td>
+                                    <td>
+                                        <div class="editable">
+                                            <label class="quantity">@product.Quantity</label>
+                                            <input class="quantity" type="hidden" name="ShoppingListPdf[@i].Products[@j].Quantity" value="@product.Quantity" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn fas fa-minus remove-position"></button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn fas fa-edit edit-position"></button>
+                                    </td>
+                                </tr>
+                                j++;
+                            }
+
+                        }
                     </tbody>
+                    i++;
                 }
-            
-        </table>
+
+            </table>
         </div>
-        
     </div>
 </form>
 <div class="row">
@@ -135,35 +151,33 @@
 
 <script type="text/javascript">
 
-$(document).on("click", ".add-position", function(){
-    var body = $(this).parent().parent().parent();
-    body.append('<tr><td><input type="text" class="form-control"/></td><td><input type="text" class="form-control"/></td><td><button type="button" class="btn fas fa-minus remove-position"></button></td></tr>')
-});
-
-$(document).on("click", ".remove-position", function(){
-    var row = $(this).parent().parent();
-    row.remove();
-});
-
-$(document).on("click", ".edit-position", function(){
-    var row = $(this).parent().parent();
-    var button = $(this);
-    $(row).find('div.editable').each(function() {
-        
-        if(button.attr('editing') == '1'){
-            console.log("editing 1")
-            button.removeAttr('editing');
-            var input = $("<div class='editable' style='text-align:left'>"+ $(row).find('input.editing').val().trim() +"</div>");
-            $(row).find('div.editable').replaceWith(input);
-            var newButton = $("<button type='button' class='btn fas fa-edit edit-position'></button>");
-            $(row).find('button').replaceWith(newButton);
-        }
-        else{
-            var div = $("<div class='editable' style='text-align:right'><input type='text' class='form-control editing' value='"+ $(row).find('div.editable').text().trim() +"'/></div>");
-            $(row).find('div.editable').replaceWith(div);
-            var newButton = $("<button editing='1' type='button' class='btn fas fa-save edit-position'></button>")
-            $(row).find('button').replaceWith(newButton);
-        }
+    $(document).on("click", ".add-position", function(){
+        var body = $(this).parent().parent().parent();
+        body.append('<tr><td><input type="text" class="form-control"/></td><td><div class="editable" style="text-align:right"><input type="text" class="form-control editing" name=""</div></td><td><button type="button" class="btn fas fa-minus remove-position"></button></td><td><button editing="1" type="button" class="btn fas fa-save edit-position"></button></td></tr>')
     });
-});
+
+    $(document).on("click", ".remove-position", function(){
+        var row = $(this).parent().parent();
+
+        row.remove();
+    });
+
+    $(document).on("click", ".edit-position", function(){
+        var row = $(this).parent().parent();
+        var product = $(this).closest('tr').find('input.product').val().trim();
+        var productName = $(this).closest('tr').find('input.product').attr('name');
+        var quantity = $(this).closest('tr').find('input.quantity').val();
+        var quantityName = $(this).closest('tr').find('input.quantity').attr('name');
+            if(button.attr('editing') == '1'){
+            //save
+                button.removeAttr('editing');
+                var newRow = $("<tr><td><label class='product'>"+product+"</label><input class='product' type='hidden' name='"+productName+"' value='"+product+"'></td><td><div class='editable'><label class='quantity'>"+quantity+"</label><input class='quantity' type='hidden' value='"+quantity+"' name='"+quantityName+"'/></td><td><button type='button' class='btn fas fa-minus remove-position'></button></td><td><button type='button' class='btn fas fa-edit edit-position'></button></td></tr>")
+                $(row).replaceWith(newRow);
+            }
+            //edit
+            else{
+                var newRow = $("<tr><td><input class='form-control product' value='"+product+"' name='"+productName+"'/></td><td><input type='text' class='form-control editing quantity' name='"+quantityName+"' value='"+ quantity+"'/></div></td><td><button type='button' class='btn fas fa-minus remove-position'></button></td><td><button editing='1' type='button' class='btn fas fa-save edit-position'></button></td></tr>")
+                $(row).replaceWith(newRow);
+            }
+    });
 </script>

@@ -15,5 +15,6 @@ namespace DietMealApp.Core.DTO.ShoppingList
         public Guid ProductId { get; set; }
         public ProductDTO Product { get; set; }
         public decimal Quantity { get; set; }
+        public bool IsBought { get; set; }
     }
 }

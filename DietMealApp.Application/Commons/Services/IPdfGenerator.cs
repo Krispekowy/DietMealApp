@@ -15,5 +15,6 @@ namespace DietMealApp.Application.Commons.Services
         (MemoryStream, string, string) Generate();
         MemoryStream CreateTablePDF<T>(List<T> listOfElements);
         (MemoryStream, string) GenerateMenu(List<MenuDay> menu);
+        (MemoryStream, string) GenerateShoppingList(List<ShoppingListPdfViewModel> listOfProducts);
     }
 }

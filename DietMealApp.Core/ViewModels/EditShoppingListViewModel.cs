@@ -28,5 +28,6 @@ namespace DietMealApp.Core.ViewModels
         public List<ShoppingListMealsDTO> Meals { get; set; }
         public List<MealDTO> MealsToChoice { get; set; }
         public List<ShoppingListProductsDTO> Products { get; set; }
+        public List<ShoppingListPdfViewModel> ShoppingListPdf { get; set; }
     }
 }

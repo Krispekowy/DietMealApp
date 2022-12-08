@@ -44,6 +44,7 @@ using DietMealApp.Service.Functions.Command;
 using DietMealApp.Core.Entities;
 using DietMealApp.Application.Functions.PDFGenerator.Query.GetMenu;
 using System.IO;
+using DietMealApp.Application.Functions.PDFGenerator.Query.GetShoppingList;
 
 namespace DietMealApp.WebClient.Extensions
 {
@@ -93,6 +94,7 @@ namespace DietMealApp.WebClient.Extensions
             services.AddScoped<IRequestHandler<InsertShoppingListCommand, Guid>, InsertShoppingListCommandHandler>();
             services.AddScoped<IRequestHandler<UpdateShoppingListCommand, Unit>, UpdateShoppingListCommandHandler>();
             services.AddScoped<IRequestHandler<GetMenuPDFQuery, (MemoryStream, string)>, GetMenuPDFQueryHandler>();
+            services.AddScoped<IRequestHandler<GetShoppingListPDFQuery, (MemoryStream, string)>, GetShoppingListPDFQueryHandler>();
             return services;
         }
     }

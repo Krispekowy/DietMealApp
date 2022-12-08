@@ -1,5 +1,6 @@
 ﻿using DietMealApp.Application.Commons.Services;
 using DietMealApp.Application.Functions.DietDay.Query.GetDaysByUser;
+using DietMealApp.Application.Functions.PDFGenerator.Query.GetShoppingList;
 using DietMealApp.Application.Functions.Shopping.Command.DeleteShoppingList;
 using DietMealApp.Application.Functions.Shopping.Command.InsertShoppingList;
 using DietMealApp.Application.Functions.Shopping.Query;
@@ -91,6 +92,22 @@ namespace DietMealApp.WebClient.Controllers
                 UserId = _senderId
             };
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Save(EditShoppingListViewModel model)
+        {
+            InitId();
+            try
+            {
+                var file = await _mediator.Send(new GetShoppingListPDFQuery() { ListOfProducts = model.ShoppingListPdf });
+                return File(file.Item1, "application/pdf", file.Item2);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.StackTrace);
+                throw;
+            }
         }
 
         [HttpGet]
