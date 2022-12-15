@@ -83,22 +83,16 @@
     <div class="row">
         <div class="col-6">
             <table id="shoppingList" class="table table-hover">
-                <tr>
-                    <th style="width: 60%">Produkt</th>
-                    <th style="width: 40%">Ilość</th>
-                    <th></th>
-                    <th></th>
-                </tr>
                 @{
                     int i = 0;
                 }
                 @foreach (ProductCategories category in (ProductCategories[])Enum.GetValues(typeof(ProductCategories)))
                 {
-                    <tbody id="@category">
+                    <tbody class="cat_tbody" id="@category">
                         <tr class="category">
                             <td >
                                 <label>@category.GetDisplayName()</label>
-                                <input type="hidden" name="ShoppingListPdf[@i].Category" value="@category" />
+                                <input class="category" type="hidden" name="ShoppingListPdf[@i].Category" value="@category" />
                             </td>
                             <td></td>
                             <td></td>
@@ -113,7 +107,7 @@
                         {
                             if (product.Product.Category == category)
                             {
-                                <tr>
+                                <tr class="product">
                                     <td>
                                         <label class="product">@product.Product.ProductName</label>
                                         <input class="product" type="hidden" name="ShoppingListPdf[@i].Products[@j].Name" value="@product.Product.ProductName" />
@@ -152,22 +146,29 @@
 <script type="text/javascript">
 
     $(document).on("click", ".add-position", function(){
-        var body = $(this).parent().parent().parent();
-        body.append('<tr><td><input type="text" class="form-control"/></td><td><div class="editable" style="text-align:right"><input type="text" class="form-control editing" name=""</div></td><td><button type="button" class="btn fas fa-minus remove-position"></button></td><td><button editing="1" type="button" class="btn fas fa-save edit-position"></button></td></tr>')
+        // Pobierz najbliższy element tbody dla aktualnego elementu .add-position
+        var body = $(this).closest('tbody.cat_tbody');
+        // Pobierz ostatni element tr z klasą "product" w danym tbody
+        var lastProduct = body.find("tr.product").last();
+        // Pobierz indeks danej sekcji tbody w tabeli
+        var tbodyIndex = body.closest("table").find("tbody.cat_tbody").index(body);
+        // Pobierz numer elementu tr.product w danym tbody
+        var productIndex = lastProduct.index();
+        body.append('<tr class="product"><td><input name="ShoppingListPdf[' + tbodyIndex + '].Products[' + productIndex + '].Name" type="text" class="product form-control"/></td><td><div class="editable" style="text-align:right"><input name="ShoppingListPdf[' + tbodyIndex + '].Products[' + productIndex + '].Quantity" type="text" class="quantity form-control editing" name=""</div></td><td><button type="button" class="btn fas fa-minus remove-position"></button></td><td><button editing="1" type="button" class="btn fas fa-save edit-position"></button></td></tr>')
     });
 
     $(document).on("click", ".remove-position", function(){
         var row = $(this).parent().parent();
-
         row.remove();
     });
 
-    $(document).on("click", ".edit-position", function(){
+    $(document).on("click", ".edit-position ", function(){
         var row = $(this).parent().parent();
-        var product = $(this).closest('tr').find('input.product').val().trim();
+        var product = $(this).closest('tr').find('input.product').val();
         var productName = $(this).closest('tr').find('input.product').attr('name');
         var quantity = $(this).closest('tr').find('input.quantity').val();
         var quantityName = $(this).closest('tr').find('input.quantity').attr('name');
+        var button = $(this);
             if(button.attr('editing') == '1'){
             //save
                 button.removeAttr('editing');
@@ -179,5 +180,21 @@
                 var newRow = $("<tr><td><input class='form-control product' value='"+product+"' name='"+productName+"'/></td><td><input type='text' class='form-control editing quantity' name='"+quantityName+"' value='"+ quantity+"'/></div></td><td><button type='button' class='btn fas fa-minus remove-position'></button></td><td><button editing='1' type='button' class='btn fas fa-save edit-position'></button></td></tr>")
                 $(row).replaceWith(newRow);
             }
+    });
+
+    //Assign new names for each 
+    $(document).on("submit", "#shoppingListForm", function(){
+        // Pobierz wszystkie elementy tbody z klasą cat_tbody
+        var categories = $("tbody.cat_tbody");
+        // Iteruj po wszystkich kategoriach
+        categories.each(function() {
+            // Pobierz wszystkie elementy tr w aktualnej kategorii
+            var products = $(this).find("tr.product");
+            // Dla każdego znalezionego elementu tr, ustaw atrybut name
+            products.each(function(index) {
+                $(this).find("input.product").attr("name", "ShoppingListPdf[" + $(this).closest("tbody.cat_tbody").index() + "].Products[" + index + "].Name");
+                $(this).find("input.quantity").attr("name", "ShoppingListPdf[" + $(this).closest("tbody.cat_tbody").index() + "].Products[" + index + "].Quantity");
+            });
+        });
     });
 </script>

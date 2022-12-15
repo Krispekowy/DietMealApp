@@ -204,6 +204,10 @@
                         bialka = (((parseFloat(value._protein.replace(',', '.')||0)/100)*parseFloat(value._quantity.replace(',', '.')||0))+parseFloat(bialka||0)).toFixed(2);
                         weglowodany = (((parseFloat(value._carbo.replace(',', '.')||0)/100)*parseFloat(value._quantity.replace(',', '.')||0))+parseFloat(weglowodany||0)).toFixed(2);
                 });
+                kalorie = (kalorie / $('#NumberOfServings').val()).toFixed(2);
+                tluszcze = (tluszcze / $('#NumberOfServings').val()).toFixed(2);
+                bialka = (bialka / $('#NumberOfServings').val()).toFixed(2);
+                weglowodany = (weglowodany / $('#NumberOfServings').val()).toFixed(2);
                 var html = "<b>Kalorie: "+ kalorie+"</b><br> <b>Tłuszcze: "+ tluszcze+"</b><br> <b>Białka: "+ bialka+"</b><br> <b>Węglowodany: "+ weglowodany+"</b><br>"
                 $('#nutrition').html(html);
         }

@@ -26,10 +26,10 @@ namespace DietMealApp.Core.DTO.Days
                     Meals = entity.DayMeals.Select(a => MealDTO.CreateFromEntity(a.Meal)).ToList(),
                     MealItems = entity.DayMeals.Select(a => new MealMenuItemDTO() { AssignedMealTimeType = a.Type, SelectedMeal = a.MealId }).ToList(),
                     UserId = entity.UserId,
-                    Kcal = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Kcal / a.Product.QuantityUnit) * a.Quantity), 2)),
-                    Carbohydrates = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Carbohydrates / a.Product.QuantityUnit) * a.Quantity), 2)),
-                    Protein = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Protein / a.Product.QuantityUnit) * a.Quantity), 2)),
-                    Fats = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Fats / a.Product.QuantityUnit) * a.Quantity), 2))
+                    Kcal = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Kcal / a.Product.QuantityUnit) * a.Quantity)/a.Meal.NumberOfServings, 2)),
+                    Carbohydrates = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Carbohydrates / a.Product.QuantityUnit) * a.Quantity) / a.Meal.NumberOfServings, 2)),
+                    Protein = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Protein / a.Product.QuantityUnit) * a.Quantity) / a.Meal.NumberOfServings, 2)),
+                    Fats = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Fats / a.Product.QuantityUnit) * a.Quantity) / a.Meal.NumberOfServings, 2))
                 };
                 return dto;
             }
