@@ -20,8 +20,9 @@ namespace DietMealApp.WebClient.Controllers
     public class MealController : _ParentController
     {
         public MealController(
-            IMediator mediator
-            ) : base(mediator)
+            IMediator mediator,
+            IDeviceDetector deviceDetector
+            ) : base(mediator, deviceDetector)
         {
         }
 

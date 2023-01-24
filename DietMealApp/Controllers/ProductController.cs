@@ -5,6 +5,7 @@ using DietMealApp.Core.DTO.Products;
 using DietMealApp.Service.Functions.Command;
 using DietMealApp.Service.Functions.Query;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -14,18 +15,31 @@ namespace DietMealApp.WebClient.Controllers
 {
     public class ProductController : _ParentController
     {
+
         public ProductController(
-            IMediator mediator
-            ) : base(mediator)
+            IMediator mediator,
+            IDeviceDetector deviceDetector
+            ) : base(mediator, deviceDetector)
         {
         }
-        [HttpGet]
+
+        [Produces("application/json")]
+        [HttpGet("Products")]
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             try
             {
                 var result = await _mediator.Send(new GetAllProductsQuery() { OrderBy = Core.Enums.OrderByProductOptions.ByName}) ;
-                return View(result);
+                return Json(result);
+                //if (_deviceDetector.isMobile(Request.Headers["User-Agent"].ToString()))
+                //{
+                //    return Json(result);
+                //}
+                //else
+                //{
+                //    return View(result);
+                //}
             }
             catch (Exception ex)
             {

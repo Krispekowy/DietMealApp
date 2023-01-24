@@ -21,8 +21,9 @@ namespace DietMealApp.WebClient.Controllers
         public HomeController(
             IMediator mediator,
             IFileManager fileManager,
-            IPdfGenerator pdfGenerator
-            ) : base(mediator)
+            IPdfGenerator pdfGenerator,
+            IDeviceDetector deviceDetector
+            ) : base(mediator, deviceDetector)
         {
             _fileManager = fileManager;
             _pdfGenerator = pdfGenerator;

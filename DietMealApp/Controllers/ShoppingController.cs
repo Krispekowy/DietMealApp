@@ -23,8 +23,9 @@ namespace DietMealApp.WebClient.Controllers
     public class ShoppingController : _ParentController
     {
         public ShoppingController(
-            IMediator mediator
-            ) : base(mediator)
+            IMediator mediator,
+            IDeviceDetector deviceDetector
+            ) : base(mediator, deviceDetector)
         {
         }
 

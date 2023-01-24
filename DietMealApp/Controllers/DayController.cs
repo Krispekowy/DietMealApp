@@ -20,8 +20,9 @@ namespace DietMealApp.WebClient.Controllers
     public class DayController : _ParentController
     {
         public DayController(
-            IMediator mediator
-            ) : base(mediator)
+            IMediator mediator,
+            IDeviceDetector deviceDetector
+            ) : base(mediator, deviceDetector)
         {
         }
 

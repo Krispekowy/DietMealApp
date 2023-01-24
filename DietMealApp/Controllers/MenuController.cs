@@ -1,4 +1,5 @@
-﻿using DietMealApp.Application.Functions.Menu.Query.GetMenuForm;
+﻿using DietMealApp.Application.Commons.Services;
+using DietMealApp.Application.Functions.Menu.Query.GetMenuForm;
 using DietMealApp.Application.Functions.Menu.Query.GetMenuForWeek;
 using DietMealApp.Application.Functions.PDFGenerator.Query.GetMenu;
 using DietMealApp.Core.DTO.Menu;
@@ -13,7 +14,9 @@ namespace DietMealApp.WebClient.Controllers
 {
     public class MenuController : _ParentController
     {
-        public MenuController(IMediator mediator) : base(mediator)
+        public MenuController(IMediator mediator,
+            IDeviceDetector deviceDetector
+            ) : base(mediator, deviceDetector)
         {
         }
 

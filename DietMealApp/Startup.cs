@@ -18,12 +18,13 @@ using MediatR;
 using System.Reflection;
 using DietMealApp.Core.Mappings;
 using DietMealApp.WebClient.Extensions;
-
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using DietMealApp.Application.Commons.Settings;
 using DietMealApp.Application.Commons.Services;
 using DietMealApp.Application.Commons.Services.FileManager;
-
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.OpenApi.Models;
 
 namespace DietMealApp
 {
@@ -66,6 +67,11 @@ namespace DietMealApp
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DietMealApp API", Version = "v1" });
+            });
+
             #region DependencyInjection
             services.AddRepositoriesServices();
             services.AddHandlersServices();
@@ -76,6 +82,7 @@ namespace DietMealApp
               a.GetService<IWebHostEnvironment>()));
             services.AddSingleton<IMailService, MailService>();
             services.AddSingleton<IPdfGenerator, PdfGenerator>();
+            services.AddTransient<IDeviceDetector, Application.Commons.Services.DeviceDetector>();
             #endregion
 
             #region MvcConfig
@@ -86,6 +93,13 @@ namespace DietMealApp
             //{
             //    c.LoginPath = "/Identity/Account/Login";
             //});
+            services.AddAuthentication()
+                .AddCookie()
+            .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+            {
+                options.ClientId = Configuration["Authentication:Google:ClientId"];
+                options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            });
             services.AddAuthorization();
             services.AddMvc().AddDataAnnotationsLocalization().AddViewLocalization();
             #endregion
@@ -134,17 +148,17 @@ namespace DietMealApp
 
 
 
-            services.ConfigureApplicationCookie(options =>
-            {
-                // Cookie settings
-                options.Cookie.HttpOnly = true;
-                options.Cookie.Name = "MealAppCookie";
-                options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+            //services.ConfigureApplicationCookie(options =>
+            //{
+            //    // Cookie settings
+            //    options.Cookie.HttpOnly = false;
+            //    options.Cookie.Name = "MealAppCookie";
+            //    options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
 
-                options.LoginPath = "/Identity/Account/Login";
-                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-                options.SlidingExpiration = true;
-            });
+            //    options.LoginPath = "/Identity/Account/Login";
+            //    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+            //    options.SlidingExpiration = true;
+            //});
             services.AddControllersWithViews();
 
             services.AddCors(c =>
@@ -168,11 +182,16 @@ namespace DietMealApp
             {
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
-                app.UseHttpsRedirection();
                 app.UseStatusCodePagesWithRedirects("/Errors/{0}");
                 //app.UseBrowserLink();
             }
             var localizationOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value;
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
+            //app.UseHttpsRedirection();
+
             app.UseRequestLocalization(localizationOptions);
 
             app.UseStaticFiles();

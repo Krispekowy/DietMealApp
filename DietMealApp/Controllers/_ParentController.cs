@@ -13,6 +13,7 @@ namespace DietMealApp.WebClient.Controllers
     {
         
         protected readonly IMediator _mediator;
+        protected readonly IDeviceDetector _deviceDetector;
         private readonly AppUsersDbContext _appUsersDbContext;
         private readonly UserManager<AppUser> _userManager;
 
@@ -28,9 +29,10 @@ namespace DietMealApp.WebClient.Controllers
             _userManager = userManager;
         }
 
-        public _ParentController(IMediator mediator)
+        public _ParentController(IMediator mediator, IDeviceDetector deviceDetector)
         {
             _mediator = mediator;
+            _deviceDetector = deviceDetector;
         }
 
         protected void InitId()
