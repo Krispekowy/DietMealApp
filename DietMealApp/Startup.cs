@@ -137,7 +137,21 @@ namespace DietMealApp
             #endregion
 
             #region Identity
-            services.AddIdentity<AppUser, IdentityRole<Guid>>()
+            services.AddIdentity<AppUser, IdentityRole<Guid>>(
+                options =>
+                {
+                    options.SignIn.RequireConfirmedEmail = true;
+                    options.SignIn.RequireConfirmedAccount = true;
+                    options.User.AllowedUserNameCharacters = "QqWwEeRrTtYyUuIiOoPpLlKkJjHhGgFfDdSsAaZzXxCcVvBbNnMm1234567890-._";
+                    options.User.RequireUniqueEmail = true;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequiredLength = 8;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(1);
+                    options.Lockout.MaxFailedAccessAttempts = 3;
+                })
                 .AddUserManager<UserManager<AppUser>>()
                 .AddSignInManager<SignInManager<AppUser>>()
                 .AddRoleManager<RoleManager<IdentityRole<Guid>>>()
