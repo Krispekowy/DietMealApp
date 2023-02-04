@@ -25,6 +25,12 @@ using DietMealApp.Application.Commons.Services;
 using DietMealApp.Application.Commons.Services.FileManager;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace DietMealApp
 {
@@ -88,17 +94,33 @@ namespace DietMealApp
             #region MvcConfig
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddControllers().AddNewtonsoftJson();
-            services.AddRazorPages().AddRazorRuntimeCompilation();
-            //services.AddAuthentication().AddCookie(c =>
-            //{
-            //    c.LoginPath = "/Identity/Account/Login";
-            //});
-            services.AddAuthentication()
-                .AddCookie()
-            .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+
+            services.AddAuthentication(options =>
             {
-                options.ClientId = Configuration["Authentication:Google:ClientId"];
-                options.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.LogoutPath = "/Account/Logout";
+                    options.ClaimsIssuer = JwtBearerDefaults.AuthenticationScheme;
+                })
+
+            // Adding Jwt Bearer
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["JWT:ValidAudience"],
+                    ValidIssuer = Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                };
             });
             services.AddAuthorization();
             services.AddMvc().AddDataAnnotationsLocalization().AddViewLocalization();
@@ -115,28 +137,24 @@ namespace DietMealApp
             #endregion
 
             #region Identity
-            services.AddIdentity<AppUser, IdentityRole<Guid>>(
-                options =>
-                {
-                    options.SignIn.RequireConfirmedEmail = true;
-                    options.SignIn.RequireConfirmedAccount = true;
-                    options.User.AllowedUserNameCharacters = "QqWwEeRrTtYyUuIiOoPpLlKkJjHhGgFfDdSsAaZzXxCcVvBbNnMm1234567890-._";
-                    options.User.RequireUniqueEmail = true;
-                    options.Password.RequireUppercase = true;
-                    options.Password.RequireDigit = true;
-                    options.Password.RequireLowercase = true;
-                    options.Password.RequireNonAlphanumeric = true;
-                    options.Password.RequiredLength = 8;
-                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(1);
-                    options.Lockout.MaxFailedAccessAttempts = 3;
-                })
+            services.AddIdentity<AppUser, IdentityRole<Guid>>()
                 .AddUserManager<UserManager<AppUser>>()
                 .AddSignInManager<SignInManager<AppUser>>()
                 .AddRoleManager<RoleManager<IdentityRole<Guid>>>()
                 .AddEntityFrameworkStores<AppUsersDbContext>()
-                .AddDefaultTokenProviders()
-                .AddDefaultUI();
+                .AddDefaultTokenProviders();
+            //.AddDefaultUI();
             #endregion
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+
+                    return Task.CompletedTask;
+                };
+            });
 
             #region AutoMapper
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
@@ -145,28 +163,12 @@ namespace DietMealApp
 
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-
-
-
-            //services.ConfigureApplicationCookie(options =>
-            //{
-            //    // Cookie settings
-            //    options.Cookie.HttpOnly = false;
-            //    options.Cookie.Name = "MealAppCookie";
-            //    options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
-
-            //    options.LoginPath = "/Identity/Account/Login";
-            //    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-            //    options.SlidingExpiration = true;
-            //});
             services.AddControllersWithViews();
 
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
             });
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -176,14 +178,12 @@ namespace DietMealApp
             {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-                //app.UseBrowserLink();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
                 app.UseStatusCodePagesWithRedirects("/Errors/{0}");
-                //app.UseBrowserLink();
             }
             var localizationOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value;
 
@@ -199,7 +199,6 @@ namespace DietMealApp
             app.UseRouting();
 
             app.UseAuthentication();
-
             app.UseAuthorization();
 
             app.UseRequestLocalization(new RequestLocalizationOptions
@@ -209,13 +208,17 @@ namespace DietMealApp
                 SupportedUICultures = _SupportedCultures
             });
 
+            app.UseStatusCodePages();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                //.RequireAuthorization();
-                endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                    name: "error",
+                    pattern: "error/{statusCode}",
+                    defaults: new { controller = "Error", action = "HandleError" });
             });
         }
     }

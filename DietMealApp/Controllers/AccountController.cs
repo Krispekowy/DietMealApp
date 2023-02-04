@@ -122,6 +122,7 @@ namespace DietMealApp.WebClient.Controllers
         }
 
         [HttpGet]
+        [Produces("application/json")]
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
