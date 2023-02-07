@@ -24,22 +24,13 @@ namespace DietMealApp.WebClient.Controllers
         {
         }
 
-        [Produces("application/json")]
-        [HttpGet("Products")]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             try
             {
                 var result = await _mediator.Send(new GetAllProductsQuery() { OrderBy = Core.Enums.OrderByProductOptions.ByName}) ;
-                return Json(result);
-                if (_deviceDetector.isMobile(Request.Headers["User-Agent"].ToString()))
-                {
-                    return Json(result);
-                }
-                else
-                {
-                    return View(result);
-                }
+                return View(result);
             }
             catch (Exception ex)
             {
