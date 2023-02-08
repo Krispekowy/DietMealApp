@@ -1,0 +1,25 @@
+﻿@using DietMealApp.Core.ViewModels;
+@model CreateRoleViewModel
+@{
+    ViewData["Title"] = "Tworzenie nowej roli";
+}
+
+<form method="post" id="registerForm">
+    <h3>Tworzenie nowej roli</h3>
+    <div class="row" style="padding: 20px">
+        <div class="col-6">
+            <div class="form-group">
+                <label for="RoleName">Imię</label>
+                <input class="form-control" asp-for="RoleName" id="Input.RoleName" placeholder="Wprowadź nazwę nowej roli" type="text" autocomplete="off" />
+                <span asp-validation-for="RoleName" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Utwórz rolę</button>
+
+</form>
+
+@section Scripts {
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <partial name="_ValidationScriptsPartial" />
+}
