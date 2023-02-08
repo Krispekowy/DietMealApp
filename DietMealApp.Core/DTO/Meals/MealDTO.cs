@@ -25,10 +25,10 @@ namespace DietMealApp.Core.DTO.Meals
                 Photo150x150Path = entity.Photo150x150Path,
                 PhotoFullPath = entity.PhotoFullPath,
                 TypeOfMeal = entity.TypeOfMeal,
-                Fats = Math.Round(entity.MealProducts.Sum(a => (a.Product.Fats / a.Product.QuantityUnit) * a.Quantity), 2),
-                Kcal = Math.Round(entity.MealProducts.Sum(a => (a.Product.Kcal / a.Product.QuantityUnit) * a.Quantity), 2),
-                Protein = Math.Round(entity.MealProducts.Sum(a => (a.Product.Protein / a.Product.QuantityUnit) * a.Quantity), 2),
-                Carbohydrates = Math.Round(entity.MealProducts.Sum(a => (a.Product.Carbohydrates / a.Product.QuantityUnit) * a.Quantity), 2)
+                Fats = Math.Round(entity.MealProducts.Sum(a => (a.Product.Fats / a.Product.QuantityUnit) * a.Quantity) / entity.NumberOfServings, 2),
+                Kcal = Math.Round(entity.MealProducts.Sum(a => (a.Product.Kcal / a.Product.QuantityUnit) * a.Quantity) / entity.NumberOfServings, 2),
+                Protein = Math.Round(entity.MealProducts.Sum(a => (a.Product.Protein / a.Product.QuantityUnit) * a.Quantity) / entity.NumberOfServings, 2),
+                Carbohydrates = Math.Round(entity.MealProducts.Sum(a => (a.Product.Carbohydrates / a.Product.QuantityUnit) * a.Quantity) / entity.NumberOfServings, 2)
             };
         }
         public MealDTO() : base() { }

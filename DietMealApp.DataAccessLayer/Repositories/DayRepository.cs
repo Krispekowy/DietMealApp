@@ -92,9 +92,8 @@ namespace DietMealApp.DataAccessLayer.Repositories
                     .ThenInclude(a=>a.Meal)
                         .ThenInclude(a=>a.MealProducts)
                             .ThenInclude(a=>a.Product)
-                            .AsSplitQuery()
                 .Include(a => a.DietDays)
-                .Where(a => !a.IsDeleted)
+                .Where(a => !a.IsDeleted && a.UserId == user)
                 .ToListAsync();
         }
 

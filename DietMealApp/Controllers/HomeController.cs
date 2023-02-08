@@ -1,5 +1,6 @@
 ﻿using DietMealApp.Application.Commons.Services;
 using DietMealApp.Application.Commons.Services.FileManager;
+using DietMealApp.Core.DTO;
 using DietMealApp.Core.Entities;
 using DietMealApp.DataAccessLayer;
 using MediatR;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DietMealApp.WebClient.Controllers
@@ -19,8 +21,9 @@ namespace DietMealApp.WebClient.Controllers
         public HomeController(
             IMediator mediator,
             IFileManager fileManager,
-            IPdfGenerator pdfGenerator
-            ) : base(mediator)
+            IPdfGenerator pdfGenerator,
+            IDeviceDetector deviceDetector
+            ) : base(mediator, deviceDetector)
         {
             _fileManager = fileManager;
             _pdfGenerator = pdfGenerator;
@@ -35,8 +38,17 @@ namespace DietMealApp.WebClient.Controllers
 
         public async Task<IActionResult> GeneratePDF()
         {
-            var tupla = _pdfGenerator.Generate();
-            return File(tupla.Item1, tupla.Item2, tupla.Item3);
+            var list = new List<ProductsToBuyDTO>();
+            list.Add(new ProductsToBuyDTO() { Product = "Nowy produkt", Quantity = 100, Category = Core.Enums.ProductCategories.Owoce });
+            list.Add(new ProductsToBuyDTO() { Product = "Nowy", Quantity = 100, Category = Core.Enums.ProductCategories.Owoce });
+            list.Add(new ProductsToBuyDTO() { Product = "produkt", Quantity = 100, Category = Core.Enums.ProductCategories.Owoce });
+            list.Add(new ProductsToBuyDTO() { Product = "Szynka", Quantity = 100, Category = Core.Enums.ProductCategories.Owoce });
+            list.Add(new ProductsToBuyDTO() { Product = "Jeszcze coś", Quantity = 100, Category = Core.Enums.ProductCategories.Owoce });
+            list.Add(new ProductsToBuyDTO() { Product = "Marchew", Quantity = 100, Category = Core.Enums.ProductCategories.Owoce });
+            list.Add(new ProductsToBuyDTO() { Product = "dupa", Quantity = 100, Category = Core.Enums.ProductCategories.Owoce });
+            list.Add(new ProductsToBuyDTO() { Product = "kleik", Quantity = 100, Category = Core.Enums.ProductCategories.Owoce });
+            var stream = _pdfGenerator.CreateTablePDF(list);
+            return File(stream, "application/pdf","ListaZakupow.pdf");
         }
     }
 }

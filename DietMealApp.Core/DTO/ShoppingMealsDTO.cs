@@ -9,7 +9,7 @@ namespace DietMealApp.Core.DTO
 {
     public class ShoppingMealsDTO
     {
-        public MealDTO Meal { get; set; }
+        public Guid MealId { get; set; }
         public int Quantity { get; set; }
     }
 }

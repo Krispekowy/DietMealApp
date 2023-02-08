@@ -5,6 +5,8 @@ using DietMealApp.Core.DTO.Products;
 using DietMealApp.Service.Functions.Command;
 using DietMealApp.Service.Functions.Query;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -14,11 +16,14 @@ namespace DietMealApp.WebClient.Controllers
 {
     public class ProductController : _ParentController
     {
+
         public ProductController(
-            IMediator mediator
-            ) : base(mediator)
+            IMediator mediator,
+            IDeviceDetector deviceDetector
+            ) : base(mediator, deviceDetector)
         {
         }
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {

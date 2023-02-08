@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DietMealApp.Application.Functions.Menu.Query.GetMenuForWeek
 {
-    public class GetMenuForWeekQuery : IRequest<List<MenuWeeklyViewModel>>
+    public class GetMenuForWeekQuery : IRequest<List<MenuDay>>
     {
         public List<MenuDTO> MenuDto { get; set; }
         public string userId { get; set; }

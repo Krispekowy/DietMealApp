@@ -48,6 +48,11 @@ namespace DietMealApp.Application.Commons.Services.FileManager
                     return await UploadFile(file, LocalPathsRepository.LocalGlobalFull, FtpPathsRepository.FtpGlobalFull, LocalPathsRepository.LocalGlobal150x150, FtpPathsRepository.FtpGlobal150x150);
             }
         }
+
+        public async Task<string> SendFileToFtp(MemoryStream file)
+        {
+            return await UploadFile(file, LocalPathsRepository.LocalShoppingList, FtpPathsRepository.FtpShoppingLists);
+        }
         public string SaveFile(string directoryFrom, string ftpDirectoryTo, string fileName)
         {
             try
@@ -102,6 +107,20 @@ namespace DietMealApp.Application.Commons.Services.FileManager
             DeleteLocalFiles(new string[] { localPath, localFullPathResizedImg });
 
             return (ftpPath, ftpResizedPath);
+        }
+
+        private async Task<string> UploadFile(MemoryStream file, string localFullPath, string ftpFullPath)
+        {
+            string fileName = "Test.pdf";
+
+            var localPath = await UploadFileLocal(file, Path.Combine(_webHostEnvironment.WebRootPath, localFullPath), fileName);
+            CheckIfLocationExists(localPath);
+
+            var ftpPath = UploadFileToFtp(localPath, ftpFullPath, fileName);
+
+            DeleteLocalFiles(new string[] { localPath });
+
+            return ftpPath;
         }
 
         private void CheckIfLocationExists(string path)
@@ -201,7 +220,30 @@ namespace DietMealApp.Application.Commons.Services.FileManager
             }
             return fullFilePath;
         }
-        
+
+        private async Task<string> UploadFileLocal(MemoryStream file, string directoryTo, string fileName)
+        {
+            var fullFilePath = Path.Combine(directoryTo, fileName);
+
+            if (!Directory.Exists(directoryTo))
+            {
+                Directory.CreateDirectory(directoryTo);
+            }
+
+            try
+            {
+                using (var fileStream = new FileStream(fullFilePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream).ConfigureAwait(false);
+                }
+            }
+            catch (Exception e)
+            {
+                return $"{e.Message}";
+            }
+            return fullFilePath;
+        }
+
         private bool DeleteLocalFile(string fullPath)
         {
             try

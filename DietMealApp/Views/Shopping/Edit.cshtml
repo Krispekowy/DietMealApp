@@ -1,0 +1,200 @@
+﻿@model DietMealApp.Core.ViewModels.EditShoppingListViewModel
+@using DietMealApp.Core.Enums;
+@using DietMealApp.Core.Extensions
+@using System.Linq;
+@{
+
+}
+<h1>Edytuj listę zakupów</h1>
+
+<form id="shoppingList" method="post" class="mt-3">
+    <input type="hidden" asp-for="UserId" />
+    <div class="row">
+        <div class="col" id="meals">
+            <table id="mealsTable">
+                <tr>
+                    <th style="width:75%" class="col">Posiłek</th>
+                    <th style="width:15%" class="col">Ilość</th>
+                </tr>
+                <tbody>
+                    @foreach (var meal in Model.Meals)
+                    {
+                        <tr class="d-table-row mb-3">
+                            <td style="width:75%">
+                                <select class="form-control select-class" asp-for="@meal.MealId">
+                                    <option selected> --Wybierz posiłek-- </option>
+                                    @foreach (var mealToChoice in @Model.MealsToChoice)
+                                    {
+                                        <option value="@mealToChoice.Id">@mealToChoice.MealName</option>
+                                    }
+                                </select>
+                            </td>
+                            <td style="width:15%">
+                                <input class="form-control quantity-class" asp-for="@meal.Quantity" placeholder="Ilość" />
+                            </td>
+                            <td>
+                                <button type="button" style="color:red" onclick="DeleteRow(this)" class="btn"><i class="fa fa-close"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="col-sm-12">
+                <button type="button" id="add-meal" class="btn btn-link"><i class="fa fa-plus"></i> Dodaj posiłek</button>
+            </div>
+        </div>
+        <div class="col" id="days">
+            <table id="daysTable">
+                <tr>
+                    <th style="width:75%" class="col">Dzień</th>
+                    <th style="width:15%" class="col">Ilość</th>
+                </tr>
+                <tbody>
+                    @foreach (var day in Model.Days)
+                    {
+                        <tr class="d-table-row mb-3">
+                            <td style="width:75%">
+                                <select class="form-control select-class" asp-for="@day.DayId">
+                                    <option selected> --Wybierz dzień-- </option>
+                                    @foreach (var dayToChoice in @Model.DaysToChoice)
+                                    {
+                                        <option value="@dayToChoice.Id">@dayToChoice.Name</option>
+                                    }
+                                </select>
+                            </td>
+                            <td style="width:15%">
+                                <input class="form-control quantity-class" asp-for="@day.Quantity" placeholder="Ilość" />
+                            </td>
+                            <td>
+                                <button type="button" style="color:red" onclick="DeleteRow(this)" class="btn"><i class="fa fa-close"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="col-sm-12">
+                <button type="button" id="add-day" class="btn btn-link"><i class="fa fa-plus"></i> Dodaj dzień</button>
+            </div>
+        </div>
+    </div>
+</form>
+<form asp-controller="Shopping" asp-action="Save" method="post" id="shoppingListForm">
+    <button type="submit" id="generate-pdf" class="btn btn-secondary">Zapisz pdf</button>
+    <div class="row">
+        <div class="col-6">
+            <table id="shoppingList" class="table table-hover">
+                @{
+                    int i = 0;
+                }
+                @foreach (ProductCategories category in (ProductCategories[])Enum.GetValues(typeof(ProductCategories)))
+                {
+                    <tbody class="cat_tbody" id="@category">
+                        <tr class="category">
+                            <td >
+                                <label>@category.GetDisplayName()</label>
+                                <input class="category" type="hidden" name="ShoppingListPdf[@i].Category" value="@category" />
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <button type="button" class="btn fas fa-plus add-position"></button>
+                            </td>
+                        </tr>
+                        @{
+                            int j = 0;
+                        }
+                        @foreach (var product in Model.Products)
+                        {
+                            if (product.Product.Category == category)
+                            {
+                                <tr class="product">
+                                    <td>
+                                        <label class="product">@product.Product.ProductName</label>
+                                        <input class="product" type="hidden" name="ShoppingListPdf[@i].Products[@j].Name" value="@product.Product.ProductName" />
+                                    </td>
+                                    <td>
+                                        <div class="editable">
+                                            <label class="quantity">@product.Quantity</label>
+                                            <input class="quantity" type="hidden" name="ShoppingListPdf[@i].Products[@j].Quantity" value="@product.Quantity" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn fas fa-minus remove-position"></button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn fas fa-edit edit-position"></button>
+                                    </td>
+                                </tr>
+                                j++;
+                            }
+
+                        }
+                    </tbody>
+                    i++;
+                }
+
+            </table>
+        </div>
+    </div>
+</form>
+<div class="row">
+    <div class="col-2">
+        <button type="button" name="submit" value="days" id="btnsubmit" class="btn btn-primary m-1">Generuj nową listę</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).on("click", ".add-position", function(){
+        // Pobierz najbliższy element tbody dla aktualnego elementu .add-position
+        var body = $(this).closest('tbody.cat_tbody');
+        // Pobierz ostatni element tr z klasą "product" w danym tbody
+        var lastProduct = body.find("tr.product").last();
+        // Pobierz indeks danej sekcji tbody w tabeli
+        var tbodyIndex = body.closest("table").find("tbody.cat_tbody").index(body);
+        // Pobierz numer elementu tr.product w danym tbody
+        var productIndex = lastProduct.index();
+        body.append('<tr class="product"><td><input name="ShoppingListPdf[' + tbodyIndex + '].Products[' + productIndex + '].Name" type="text" class="product form-control"/></td><td><div class="editable" style="text-align:right"><input name="ShoppingListPdf[' + tbodyIndex + '].Products[' + productIndex + '].Quantity" type="text" class="quantity form-control editing" name=""</div></td><td><button type="button" class="btn fas fa-minus remove-position"></button></td><td><button editing="1" type="button" class="btn fas fa-save edit-position"></button></td></tr>')
+    });
+
+    $(document).on("click", ".remove-position", function(){
+        var row = $(this).parent().parent();
+        row.remove();
+    });
+
+    $(document).on("click", ".edit-position ", function(){
+        var row = $(this).parent().parent();
+        var product = $(this).closest('tr').find('input.product').val();
+        var productName = $(this).closest('tr').find('input.product').attr('name');
+        var quantity = $(this).closest('tr').find('input.quantity').val();
+        var quantityName = $(this).closest('tr').find('input.quantity').attr('name');
+        var button = $(this);
+            if(button.attr('editing') == '1'){
+            //save
+                button.removeAttr('editing');
+                var newRow = $("<tr><td><label class='product'>"+product+"</label><input class='product' type='hidden' name='"+productName+"' value='"+product+"'></td><td><div class='editable'><label class='quantity'>"+quantity+"</label><input class='quantity' type='hidden' value='"+quantity+"' name='"+quantityName+"'/></td><td><button type='button' class='btn fas fa-minus remove-position'></button></td><td><button type='button' class='btn fas fa-edit edit-position'></button></td></tr>")
+                $(row).replaceWith(newRow);
+            }
+            //edit
+            else{
+                var newRow = $("<tr><td><input class='form-control product' value='"+product+"' name='"+productName+"'/></td><td><input type='text' class='form-control editing quantity' name='"+quantityName+"' value='"+ quantity+"'/></div></td><td><button type='button' class='btn fas fa-minus remove-position'></button></td><td><button editing='1' type='button' class='btn fas fa-save edit-position'></button></td></tr>")
+                $(row).replaceWith(newRow);
+            }
+    });
+
+    //Assign new names for each 
+    $(document).on("submit", "#shoppingListForm", function(){
+        // Pobierz wszystkie elementy tbody z klasą cat_tbody
+        var categories = $("tbody.cat_tbody");
+        // Iteruj po wszystkich kategoriach
+        categories.each(function() {
+            // Pobierz wszystkie elementy tr w aktualnej kategorii
+            var products = $(this).find("tr.product");
+            // Dla każdego znalezionego elementu tr, ustaw atrybut name
+            products.each(function(index) {
+                $(this).find("input.product").attr("name", "ShoppingListPdf[" + $(this).closest("tbody.cat_tbody").index() + "].Products[" + index + "].Name");
+                $(this).find("input.quantity").attr("name", "ShoppingListPdf[" + $(this).closest("tbody.cat_tbody").index() + "].Products[" + index + "].Quantity");
+            });
+        });
+    });
+</script>

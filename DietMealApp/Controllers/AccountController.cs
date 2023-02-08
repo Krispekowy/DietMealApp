@@ -8,6 +8,7 @@ using DietMealApp.DataAccessLayer;
 using DietMealApp.Service;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -29,19 +31,22 @@ namespace DietMealApp.WebClient.Controllers
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<AppUserDTO> _logger;
         private readonly IMailService _mailService;
+        private readonly IDeviceDetector _deviceDetector;
 
         public AccountController(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
             ILogger<AppUserDTO> logger,
             IMediator mediator,
-            IMailService mailService) 
-            : base(mediator)
+            IMailService mailService,
+            IDeviceDetector deviceDetector) 
+            : base(mediator, deviceDetector)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _mailService = mailService;
+            _deviceDetector = deviceDetector;
         }
 
         [HttpGet]
@@ -117,23 +122,24 @@ namespace DietMealApp.WebClient.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
-            var model = new LoginViewModel();
+            
             string errorMessage = "";
             if (!string.IsNullOrEmpty(errorMessage))
             {
                 ModelState.AddModelError(string.Empty, errorMessage);
             }
 
-            model.ReturnUrl ??= Url.Content("~/");
-
             // Clear the existing external cookie to ensure a clean login process
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-            model.ReturnUrl = returnUrl;
+            LoginViewModel model = new LoginViewModel
+            {
+                ReturnUrl = Url.Content("~/"),
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList(),
+            };
             return View(model);
         }
 
@@ -178,6 +184,15 @@ namespace DietMealApp.WebClient.Controllers
             }
 
             return LocalRedirect(returnUrl);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+            var authenticationProperties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return new ChallengeResult(provider, authenticationProperties);
         }
 
         public async Task<IActionResult> Logout(string returnUrl = null)
@@ -307,6 +322,62 @@ namespace DietMealApp.WebClient.Controllers
                 return View("ResetPasswordConfirmation");
             }
             return View(model);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
+        {
+            returnUrl = returnUrl ?? Url.Content("~/");
+            LoginViewModel loginViewModel = new LoginViewModel
+            {
+                ReturnUrl = returnUrl,
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            };
+            if (remoteError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Błąd zewnętrznego dostawcy logowania: {remoteError}");
+                return View("Login", loginViewModel);
+            }
+
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                ModelState.AddModelError(string.Empty, "Błąd ładowania informacji podczas logowania zewnętrznego");
+                return View("Login", loginViewModel);
+            }
+
+            var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+
+            if (signInResult.Succeeded)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+
+                if (email == null)
+                {
+                    var user = await _userManager.FindByEmailAsync(email);
+
+                    if (user == null)
+                    {
+                        user = new AppUser
+                        {
+                            UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
+                            Email = info.Principal.FindFirstValue(ClaimTypes.Email)
+                        };
+
+                        await _userManager.CreateAsync(user);
+                    }
+
+                    await _userManager.AddLoginAsync(user, info);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+
+                    return LocalRedirect(returnUrl);
+                }
+                return LocalRedirect(returnUrl);
+            }
         }
     }
 }

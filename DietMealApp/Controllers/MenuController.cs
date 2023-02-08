@@ -1,6 +1,9 @@
-﻿using DietMealApp.Application.Functions.Menu.Query.GetMenuForm;
+﻿using DietMealApp.Application.Commons.Services;
+using DietMealApp.Application.Functions.Menu.Query.GetMenuForm;
 using DietMealApp.Application.Functions.Menu.Query.GetMenuForWeek;
+using DietMealApp.Application.Functions.PDFGenerator.Query.GetMenu;
 using DietMealApp.Core.DTO.Menu;
+using DietMealApp.Core.ViewModels;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,7 +14,9 @@ namespace DietMealApp.WebClient.Controllers
 {
     public class MenuController : _ParentController
     {
-        public MenuController(IMediator mediator) : base(mediator)
+        public MenuController(IMediator mediator,
+            IDeviceDetector deviceDetector
+            ) : base(mediator, deviceDetector)
         {
         }
 
@@ -22,7 +27,8 @@ namespace DietMealApp.WebClient.Controllers
             InitId();
             try
             {
-                var model = await _mediator.Send(new GetMenuFormQuery() { UserId = _senderId });
+                MenuWeeklyViewModel model = new MenuWeeklyViewModel();
+                model.Days = await _mediator.Send(new GetMenuFormQuery() { UserId = _senderId });
                 return View(model);
             }
             catch (Exception ex)
@@ -32,17 +38,33 @@ namespace DietMealApp.WebClient.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Generate(List<MenuDTO> model)
+        [HttpGet]
+        public async Task<IActionResult> Generate(MenuWeeklyViewModel model)
         {
             InitId();
             try
             {
-                return PartialView("_Menu", await _mediator.Send(new GetMenuForWeekQuery() { MenuDto = model, userId = _senderId}));
+                return PartialView("_Menu", await _mediator.Send(new GetMenuForWeekQuery() { MenuDto = model.Days, userId = _senderId}));
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Save(MenuWeeklyViewModel model)
+        {
+            InitId();
+            try
+            {
+                var file = await _mediator.Send(new GetMenuPDFQuery() { MenuDays = model.MenuDays });
+                return File(file.Item1, "application/pdf", file.Item2);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.StackTrace);
                 throw;
             }
         }

@@ -20,9 +20,15 @@ namespace DietMealApp.DataAccessLayer
         public DbSet<DietDay> DietDays { get; set; }
         public DbSet<Day> Days { get; set; }
         public DbSet<Diet> Diets { get; set; }
+        public DbSet<ShoppingList> ShoppingList { get; set; }
+        public DbSet<ShoppingListProduct> ShoppingListProducts { get; set;}
+        public DbSet<ShoppingListMeals> ShoppingListMeals { get; set; }
+        public DbSet<ShoppingListDays> ShoppingListDays { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             new DayMap(modelBuilder.Entity<Day>());
             new DayMealsMap(modelBuilder.Entity<DayMeals>());
             new DietDayMap(modelBuilder.Entity<DietDay>());
@@ -30,6 +36,11 @@ namespace DietMealApp.DataAccessLayer
             new MealMap(modelBuilder.Entity<Meal>());
             new MealProductMap(modelBuilder.Entity<MealProduct>());
             new ProductMap(modelBuilder.Entity<Product>());
+
+            new ShoppingListMap(modelBuilder.Entity<ShoppingList>());
+            new ShoppingListDayMap(modelBuilder.Entity<ShoppingListDays>());
+            new ShoppingListMealMap(modelBuilder.Entity<ShoppingListMeals>());
+            new ShoppingListProductMap(modelBuilder.Entity<ShoppingListProduct>());
         }
     }
 }

@@ -1,0 +1,13 @@
+﻿@model DietMealApp.Core.DTO.ShoppingList.ShoppingListDTO
+@{
+    ViewData["Title"] = "Usuń listę zakupów";
+}
+<h1>Potwierdzenie usunięcia</h1>
+
+<div class="alert alert-danger">
+    <h5>Czy jesteś pewien, że chcesz usunąć listę zakupów o nazwie: @Model.Name?</h5>
+    <form method="post">
+        <button type="submit" class="btn btn-danger">Tak</button>
+        <a class="btn btn-primary" asp-action="Index">Nie</a>
+    </form>
+</div>

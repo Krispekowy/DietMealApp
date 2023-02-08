@@ -1,0 +1,33 @@
+﻿@model List<DietMealApp.Core.DTO.ShoppingList.ShoppingListDTO>
+@{
+
+}
+
+<h1>Twoje zapisane listy zakupów</h1>
+
+<div class="form-group mb-3 text-center d-grid gap-2 col-5 mx-auto">
+    <a asp-action="Create" class="btn btn-primary btn-block">Nowa lista</a>
+</div>
+
+<div id="shoppingLists">
+    <table id="shoppingList" class="table table-hover">
+        <tr>
+            <th style="width: 60%">Nazwa</th>
+            <th style="width: 25%">Data</th>
+            <th style="width: 15%"></th>
+        </tr>
+        <tbody>
+            @foreach (var shoppingList in Model)
+            {
+                <input type="hidden" asp-for="@shoppingList.Id" />
+                <tr>
+                    <td style="width: 60%">@shoppingList.Name</td>
+                    <td style="width: 25%">@shoppingList.CreationDate</td>
+                    <td style="width: 15%"><a asp-action="Edit" asp-route-Id="@shoppingList.Id" class="btn btn-primary m-1" style="display:inline-block">Edytuj</a><a asp-action="Delete" asp-route-Id="@shoppingList.Id" class="btn btn-danger m-1" style="display:inline-block">Usuń</a></td>
+                </tr>
+                
+            }
+        </tbody>
+    </table>
+
+</div>

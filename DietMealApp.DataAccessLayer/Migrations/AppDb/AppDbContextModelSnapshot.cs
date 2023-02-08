@@ -57,7 +57,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Days", (string)null);
+                    b.ToTable("Days");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Diet", b =>
@@ -94,7 +94,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Diets", (string)null);
+                    b.ToTable("Diets");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Meal", b =>
@@ -144,7 +144,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Meals", (string)null);
+                    b.ToTable("Meals");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Product", b =>
@@ -203,7 +203,41 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("DietMealApp.Core.Entities.ShoppingList", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("CanBeEdited")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeleteDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("ModifyDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShoppingList");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Intersections.DayMeals", b =>
@@ -227,7 +261,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasIndex("MealId");
 
-                    b.ToTable("DayMeals", (string)null);
+                    b.ToTable("DayMeals");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Intersections.DietDay", b =>
@@ -242,7 +276,7 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasIndex("DietId");
 
-                    b.ToTable("DietDays", (string)null);
+                    b.ToTable("DietDays");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Intersections.MealProduct", b =>
@@ -266,7 +300,73 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("MealProducts", (string)null);
+                    b.ToTable("MealProducts");
+                });
+
+            modelBuilder.Entity("DietMealApp.Core.Intersections.ShoppingListDays", b =>
+                {
+                    b.Property<Guid>("DayId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ShoppingListId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("DayId", "ShoppingListId");
+
+                    b.HasIndex("ShoppingListId");
+
+                    b.ToTable("ShoppingListDays");
+                });
+
+            modelBuilder.Entity("DietMealApp.Core.Intersections.ShoppingListMeals", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("MealId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ShoppingListId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MealId");
+
+                    b.HasIndex("ShoppingListId");
+
+                    b.ToTable("ShoppingListMeals");
+                });
+
+            modelBuilder.Entity("DietMealApp.Core.Intersections.ShoppingListProduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("ShoppingListId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ShoppingListId");
+
+                    b.ToTable("ShoppingListProducts");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Intersections.DayMeals", b =>
@@ -326,11 +426,70 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("DietMealApp.Core.Intersections.ShoppingListDays", b =>
+                {
+                    b.HasOne("DietMealApp.Core.Entities.Day", "Day")
+                        .WithMany("ShoppingListDays")
+                        .HasForeignKey("DayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DietMealApp.Core.Entities.ShoppingList", "ShoppingList")
+                        .WithMany("ShoppingListDays")
+                        .HasForeignKey("ShoppingListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Day");
+
+                    b.Navigation("ShoppingList");
+                });
+
+            modelBuilder.Entity("DietMealApp.Core.Intersections.ShoppingListMeals", b =>
+                {
+                    b.HasOne("DietMealApp.Core.Entities.Meal", "Meal")
+                        .WithMany("ShoppingListMeals")
+                        .HasForeignKey("MealId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DietMealApp.Core.Entities.ShoppingList", "ShoppingList")
+                        .WithMany("ShoppingListMeals")
+                        .HasForeignKey("ShoppingListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Meal");
+
+                    b.Navigation("ShoppingList");
+                });
+
+            modelBuilder.Entity("DietMealApp.Core.Intersections.ShoppingListProduct", b =>
+                {
+                    b.HasOne("DietMealApp.Core.Entities.Product", "Product")
+                        .WithMany("ShoppingListProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DietMealApp.Core.Entities.ShoppingList", "ShoppingList")
+                        .WithMany("ShoppingListProducts")
+                        .HasForeignKey("ShoppingListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ShoppingList");
+                });
+
             modelBuilder.Entity("DietMealApp.Core.Entities.Day", b =>
                 {
                     b.Navigation("DayMeals");
 
                     b.Navigation("DietDays");
+
+                    b.Navigation("ShoppingListDays");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Diet", b =>
@@ -343,11 +502,24 @@ namespace DietMealApp.DataAccessLayer.Migrations.AppDb
                     b.Navigation("DayMeals");
 
                     b.Navigation("MealProducts");
+
+                    b.Navigation("ShoppingListMeals");
                 });
 
             modelBuilder.Entity("DietMealApp.Core.Entities.Product", b =>
                 {
                     b.Navigation("MealProducts");
+
+                    b.Navigation("ShoppingListProducts");
+                });
+
+            modelBuilder.Entity("DietMealApp.Core.Entities.ShoppingList", b =>
+                {
+                    b.Navigation("ShoppingListDays");
+
+                    b.Navigation("ShoppingListMeals");
+
+                    b.Navigation("ShoppingListProducts");
                 });
 #pragma warning restore 612, 618
         }

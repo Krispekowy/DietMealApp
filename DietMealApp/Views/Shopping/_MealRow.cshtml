@@ -1,0 +1,19 @@
+﻿@model DietMealApp.Core.ViewModels.MealRow
+
+<tr class="d-table-row mb-3">
+    <td style="width:75%">
+        <select class="form-control select-class" id="selectedMeal_@Model.Index" name="Meals[@Model.Index].MealId">
+            <option selected> --Wybierz posiłek-- </option>
+            @foreach (var meal in Model.Meals)
+            {
+                <option value="@meal.Id" data-kcal="@meal.Kcal" data-protein="@meal.Protein" data-carbo="@meal.Carbohydrates" data-fats="@meal.Fats">@meal.MealName</option>
+            }
+        </select>
+    </td>
+    <td style="width:15%">
+        <input id="quantity_@Model.Index" class="form-control quantity-class" name="Meals[@Model.Index].Quantity" placeholder="Ilość" />
+    </td>
+    <td>
+        <button type="button" style="color:red" onclick="DeleteRow(this)" class="btn"><i class="fa fa-close"></i></button>
+    </td>
+</tr>

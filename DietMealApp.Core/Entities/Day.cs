@@ -36,12 +36,14 @@ namespace DietMealApp.Core.Entities
                 }).ToList(),
                 Name = dto.Name,
                 NumberOfMeals = dto.MealsCount,
-                Id = dto.Id
+                Id = dto.Id,
+                UserId = dto.UserId
             };
         }
         public string Name { get; set; }
         public virtual List<DietDay> DietDays { get; set; }
         public virtual List<DayMeals> DayMeals { get; set; }
+        public virtual List<ShoppingListDays> ShoppingListDays { get; set; }
         public int NumberOfMeals { get; set; }
         public string UserId { get; set; }
     }

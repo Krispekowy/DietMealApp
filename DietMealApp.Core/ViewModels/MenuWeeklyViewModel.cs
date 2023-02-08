@@ -1,4 +1,5 @@
 ﻿using DietMealApp.Core.DTO.Days;
+using DietMealApp.Core.DTO.Menu;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace DietMealApp.Core.ViewModels
 {
     public class MenuWeeklyViewModel
     {
-        public DayDTO Day { get; set; }
-        public DayOfWeek DayOfWeek { get; set; }
+        public List<MenuDTO> Days { get; set; }
+        public List<MenuDay> MenuDays { get; set; }
     }
 }

@@ -23,10 +23,10 @@ namespace DietMealApp.Core.DTO.Days
                     Id = entity.Id,
                     Name = entity.Name,
                     DietDays = entity.DietDays,
-                    Kcal = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Kcal / a.Product.QuantityUnit) * a.Quantity), 2)),
-                    Carbohydrates = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Carbohydrates / a.Product.QuantityUnit) * a.Quantity), 2)),
-                    Protein = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Protein / a.Product.QuantityUnit) * a.Quantity), 2)),
-                    Fats = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Fats / a.Product.QuantityUnit) * a.Quantity), 2)),
+                    Kcal = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Kcal / a.Product.QuantityUnit) * a.Quantity) / a.Meal.NumberOfServings, 2)),
+                    Carbohydrates = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Carbohydrates / a.Product.QuantityUnit) * a.Quantity) / a.Meal.NumberOfServings, 2)),
+                    Protein = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Protein / a.Product.QuantityUnit) * a.Quantity) / a.Meal.NumberOfServings, 2)),
+                    Fats = entity.DayMeals.Sum(a => Math.Round(a.Meal.MealProducts.Sum(a => (a.Product.Fats / a.Product.QuantityUnit) * a.Quantity) / a.Meal.NumberOfServings, 2)),
                     NumberOfMeals = entity.NumberOfMeals,
                     DayMeals = entity.DayMeals.Select(a=> DayMealsDTO.CreateFromEntity(a)).ToList()
                 };
@@ -60,8 +60,8 @@ namespace DietMealApp.Core.DTO.Days
         public decimal Protein { get; set; }
         public decimal Carbohydrates { get; set; }
         public decimal Fats { get; set; }
-        public ICollection<DayMealsDTO> DayMeals { get; set; }
-        public ICollection<DietDay> DietDays { get; set; }
+        public IList<DayMealsDTO> DayMeals { get; set; }
+        public IList<DietDay> DietDays { get; set; }
         public int NumberOfMeals { get; set; }
     }
 }

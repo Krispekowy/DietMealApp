@@ -1,25 +1,239 @@
 ﻿using DietMealApp.Application.Commons.Services.FileManager;
+using DietMealApp.Core.DTO.Menu;
+using DietMealApp.Core.Extensions;
+using DietMealApp.Core.ViewModels;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Syncfusion.Drawing;
 using Syncfusion.HtmlConverter;
 using Syncfusion.Pdf;
+using Syncfusion.Pdf.Graphics;
+using Syncfusion.Pdf.Grid;
+using Syncfusion.Pdf.Tables;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 
 namespace DietMealApp.Application.Commons.Services
 {
     public class PdfGenerator : IPdfGenerator
     {
         private readonly IFileManager _fileManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public PdfGenerator(IFileManager fileManager)
+        public PdfGenerator(IFileManager fileManager, IWebHostEnvironment webHostEnvironment)
         {
             _fileManager = fileManager;
+            _webHostEnvironment = webHostEnvironment;
+
+            if (string.IsNullOrWhiteSpace(_webHostEnvironment.WebRootPath))
+            {
+                _webHostEnvironment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+            }
         }
+
+        public MemoryStream CreateTablePDF<T>(List<T> listOfElements)
+        {
+
+            //Generate a new PDF document.
+            PdfDocument doc = new PdfDocument();
+            //Add a page.
+            PdfPage page = doc.Pages.Add();
+            //Create a PdfGrid.
+            PdfGrid pdfGrid = new PdfGrid();
+            Stream fontStream = File.OpenRead(Path.Combine(_webHostEnvironment.WebRootPath, "fonts/TanoheSans-Regular.ttf"));
+            PdfTrueTypeFont tfont = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Regular);
+
+            //Add list to IEnumerable
+            IEnumerable<T> dataTable = listOfElements;
+            //Assign data source.
+            pdfGrid.DataSource = dataTable;
+            pdfGrid.Style.Font = tfont;
+            //Draw grid to the page of PDF document.
+            pdfGrid.Draw(page, new Syncfusion.Drawing.PointF(10, 10));
+            //Write the PDF document to stream
+            MemoryStream stream = new MemoryStream();
+            doc.Save(stream);
+            //If the position is not set to '0' then the PDF will be empty.
+            stream.Position = 0;
+            //Close the document.
+            doc.Close(true);
+            return stream;
+        }
+
+        public (MemoryStream, string) GenerateMenu(List<MenuDay> menu)
+        {
+
+            //Generate a new PDF document.
+            PdfDocument doc = new PdfDocument();
+
+            //Add a page.
+            PdfPage page = doc.Pages.Add();
+
+            //Create a PdfGrid.
+            PdfGrid pdfGrid = new PdfGrid();
+
+            //Create a DataTable.
+            DataTable dataTable = new DataTable();
+
+            //Add columns to the DataTable
+            dataTable.Columns.Add("#");
+            dataTable.Columns.Add("Dzień tygodnia");
+            dataTable.Columns.Add("Szczegóły");
+
+            PdfGridStyle gridStyle = new PdfGridStyle();
+            gridStyle.TextPen = PdfPens.Black;
+            gridStyle.BackgroundBrush = PdfBrushes.LightBlue;
+            gridStyle.CellPadding = new PdfPaddings(3, 3, 3, 3);
+            foreach (var day in menu)
+            {
+                dataTable.Rows.Add(new object[] { "#", day.DayOfWeekString, day.DayDescription });
+
+                foreach (var meal in day.Meals)
+                {
+                    string ingredients = string.Empty;
+                    ingredients = meal.Ingredients.Aggregate((i,j)=> i + ", " + j);
+                    //Add rows to the DataTable.
+                    dataTable.Rows.Add(new object[] { meal.Type, meal.Nutrition, meal.Name });
+                    dataTable.Rows.Add(new object[] { "Składniki:", ingredients, meal.Description });
+                }
+                
+            }
+
+            
+            Stream fontStream = File.OpenRead(Path.Combine(_webHostEnvironment.WebRootPath, "fonts/TanoheSans-Regular.ttf"));
+            PdfTrueTypeFont headerFont = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Bold);
+            PdfTrueTypeFont tfont = new PdfTrueTypeFont(fontStream, 10, PdfFontStyle.Regular);
+            //Assign data source.
+            pdfGrid.DataSource = dataTable;
+
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+            {
+                //pdfGrid.Rows[i].Cells[0].Style.Font = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Bold);
+                if (pdfGrid.Rows[i].Cells[0].Value.ToString() == "Składniki:")
+                {
+                    pdfGrid.Rows[i].Cells[0].Style.BackgroundBrush = PdfBrushes.LightSlateGray;
+                    pdfGrid.Rows[i].Cells[1].Style.BackgroundBrush = PdfBrushes.LightSlateGray;
+                    pdfGrid.Rows[i].Cells[2].Style.BackgroundBrush = PdfBrushes.LightSlateGray;
+                }
+                else if(pdfGrid.Rows[i].Cells[0].Value.ToString() == "#")
+                {
+                    pdfGrid.Rows[i].Cells[0].Style.Font = headerFont;
+                    pdfGrid.Rows[i].Cells[0].Style.BackgroundBrush = PdfBrushes.Snow;
+                    pdfGrid.Rows[i].Cells[1].Style.Font = headerFont;
+                    pdfGrid.Rows[i].Cells[1].Style.BackgroundBrush = PdfBrushes.Snow;
+                    pdfGrid.Rows[i].Cells[2].Style.Font = headerFont;
+                    pdfGrid.Rows[i].Cells[2].Style.BackgroundBrush = PdfBrushes.Snow;
+                }
+                else
+                {
+                    //pdfGrid.Rows[i].Cells[0].Style.Font = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Bold);
+                    pdfGrid.Rows[i].Cells[0].Style.BackgroundBrush = PdfBrushes.LightGray;
+                    //pdfGrid.Rows[i].Cells[1].Style.Font = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Bold);
+                    pdfGrid.Rows[i].Cells[1].Style.BackgroundBrush = PdfBrushes.LightGray;
+                    //pdfGrid.Rows[i].Cells[2].Style.Font = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Bold);
+                    pdfGrid.Rows[i].Cells[2].Style.BackgroundBrush = PdfBrushes.LightGray;
+                }
+            }
+
+
+            pdfGrid.Columns[0].Width = 100;
+            pdfGrid.Headers.Clear();
+            pdfGrid.Style = gridStyle;
+            //Draw grid to the page of PDF document.
+            pdfGrid.Draw(page, new Syncfusion.Drawing.PointF(10, 10));
+            //Write the PDF document to stream
+            MemoryStream stream = new MemoryStream();
+            doc.Save(stream);
+            //If the position is not set to '0' then the PDF will be empty.
+            stream.Position = 0;
+            //Close the document.
+            doc.Close(true);
+            return (stream, "Menu.pdf");
+        }
+
+        public (MemoryStream, string) GenerateShoppingList(List<ShoppingListPdfViewModel> shoppingList)
+        {
+
+            //Generate a new PDF document.
+            PdfDocument doc = new PdfDocument();
+
+            //Add a page.
+            PdfPage page = doc.Pages.Add();
+
+            //Create a PdfGrid.
+            PdfGrid pdfGrid = new PdfGrid();
+
+            //Create 2 columns
+            pdfGrid.Columns.Add(2);
+
+            //Get font
+            Stream fontStream = File.OpenRead(Path.Combine(_webHostEnvironment.WebRootPath, "fonts/TanoheSans-Regular.ttf"));
+
+            //PDF row categories style
+            PdfGridRowStyle gridRowCategoryStyle = new PdfGridRowStyle();
+            gridRowCategoryStyle.BackgroundBrush = PdfBrushes.WhiteSmoke;
+            gridRowCategoryStyle.Font = new PdfTrueTypeFont(fontStream, 14, PdfFontStyle.Bold);
+
+            //PDF else rows style
+            PdfGridRowStyle gridRowStyle = new PdfGridRowStyle();
+            gridRowStyle.BackgroundBrush = PdfBrushes.White;
+            gridRowStyle.Font = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Regular);
+
+            PdfGridCellStyle gridCellStyle = new PdfGridCellStyle();
+            gridCellStyle.Borders.Top.Width = 0;
+            gridCellStyle.Borders.Bottom.Width = 0;
+            gridCellStyle.Borders.Left.Width = 0;
+            gridCellStyle.Borders.Right.Width = 0;
+
+            //General style of grid
+            PdfGridStyle gridStyle = new PdfGridStyle();
+            gridStyle.CellPadding = new PdfPaddings(3, 3, 3, 3);
+
+            int index = 0;
+
+            foreach (var item in shoppingList)
+            {
+                PdfGridRow pdfGridHeader = pdfGrid.Rows.Add();
+                pdfGridHeader.Cells[0].Value = item.Category.GetDisplayName();
+                pdfGridHeader.Cells[1].Value = "";
+                pdfGridHeader.Cells[0].Style = gridCellStyle;
+                pdfGridHeader.Cells[1].Style = gridCellStyle;
+
+                foreach (var product in item.Products ?? new List<ProductWithQuantity>() )
+                {
+                    PdfGridRow pdfGridRow = pdfGrid.Rows.Add();
+                        pdfGridRow.Cells[0].Value = product.Name;
+                        pdfGridRow.Cells[1].Value = product.Quantity.ToString();
+                        pdfGridRow.Cells[0].Style = gridCellStyle;
+                        pdfGridRow.Cells[1].Style = gridCellStyle;
+                    pdfGridRow.Style = gridRowStyle;
+                }
+                pdfGridHeader.Style = gridRowCategoryStyle;
+                index++;
+            }
+
+            PdfTrueTypeFont tfont = new PdfTrueTypeFont(fontStream, 12, PdfFontStyle.Regular);
+
+            //pdfGrid.Columns[0].Width = 100;
+            pdfGrid.Headers.Clear();
+            pdfGrid.Style.Font = tfont;
+            //Draw grid to the page of PDF document.
+            pdfGrid.Draw(page, new Syncfusion.Drawing.PointF(10, 10));
+            //Write the PDF document to stream
+            MemoryStream stream = new MemoryStream();
+            doc.Save(stream);
+            //If the position is not set to '0' then the PDF will be empty.
+            stream.Position = 0;
+            //Close the document.
+            doc.Close(true);
+            return (stream, "ListaZakupów.pdf");
+        }
+
         public (MemoryStream, string, string) Generate()
         {
             //Initialize HTML converter with WebKit rendering engine
@@ -41,7 +255,7 @@ namespace DietMealApp.Application.Commons.Services
             htmlConverter.ConverterSettings = settings;
 
             //Convert URL to PDF
-            PdfDocument document = htmlConverter.Convert("http://localhost:50727/Shopping/Create/");
+            PdfDocument document = htmlConverter.ConvertPartialHtml("http://localhost:50727/Shopping/Create/", "shoppingList");
 
             //Save the document into stream.
             MemoryStream stream = new MemoryStream();
@@ -57,10 +271,53 @@ namespace DietMealApp.Application.Commons.Services
             string contentType = "application/pdf";
 
             //Define the file name.
-            string fileName = " Sample.pdf";
+            string fileName = "Sample.pdf";
 
             //Creates a FileContentResult object by using the file contents, content type, and file name.
             return (stream, contentType, fileName);
+        }
+
+        async void Save(Stream stream, string filename)
+
+        {
+
+            stream.Position = 0;
+
+            FileSavePicker savePicker = new FileSavePicker();
+
+            savePicker.DefaultFileExtension = ".pdf";
+
+            savePicker.SuggestedFileName = "Sample";
+
+            savePicker.FileTypeChoices.Add("Adobe PDF Document", new List<string>() { ".pdf" });
+
+            StorageFile stFile = await savePicker.PickSaveFileAsync();
+
+            if (stFile != null)
+
+            {
+
+                Windows.Storage.Streams.IRandomAccessStream fileStream = await stFile.OpenAsync(FileAccessMode.ReadWrite);
+
+                Stream stream1 = fileStream.AsStreamForWrite();
+
+                stream1.SetLength(0);
+
+                stream1.Write((stream as MemoryStream).ToArray(), 0, (int)stream.Length);
+
+                stream1.Flush();
+
+                stream1.Dispose();
+
+                fileStream.Dispose();
+
+            }
+
+        }
+
+        private bool IsDivisible(int x, int n)
+        {
+            return (x % n) == 0;
         }
 
     }

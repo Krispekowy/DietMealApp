@@ -26,46 +26,42 @@ namespace DietMealApp.Application.Functions.Shopping.Query
         public override async Task<List<ProductsToBuyDTO>> Handle(GetShoppingListQuery request, CancellationToken cancellationToken)
         {
             List<ProductsToBuyDTO> products = new List<ProductsToBuyDTO>();
-            if(request.ShoppingListModel.ListType == "day")
-            {
-                foreach (var day in request.ShoppingListModel.ListByDay)
-                {
-                    if (day.Quantity > 0)
-                    {
-                        var dayEntity = await _mediator.Send(new GetDayByIdQuery() { Id = day.Day.Id, UserId = request.UserId });
-                        if (dayEntity != null)
-                        {
-                            foreach (var product in dayEntity.DayMeals)
-                            {
-                                for (int i = 0; i < day.Quantity; i++)
-                                {
-                                    products.AddRange(product.Meal.MealProducts.Select(a => new ProductsToBuyDTO() { Category = a.Product.Category, Product = a.Product.ProductName, Quantity = a.Quantity }).ToList());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                foreach (var meal in request.ShoppingListModel.ListByMeal)
-                {
-                    if (meal.Quantity > 0)
-                    {
-                        var mealDetails = await _mediator.Send(new GetMealFormByIdQuery() { Id = meal.Meal.Id});
-                        if (mealDetails != null)
-                        {
-                                for (int i = 0; i < meal.Quantity; i++)
-                                {
-                                    products.AddRange(mealDetails.MealProducts.Select(a => new ProductsToBuyDTO() { Category = a.Product.Category, Product = a.Product.ProductName, Quantity = a.Quantity }).ToList());
-                                }
-                        }
-                    }
-                }
-            }
             
-            var groupedProducts = products.GroupBy(a => a.Product).Select(b => new ProductsToBuyDTO() { Product = b.Key, Quantity = b.Sum(c => c.Quantity), Category = b.First().Category }).ToList();
-            return groupedProducts;
+            //    foreach (var day in request.ShoppingListModel.Days)
+            //    {
+            //        if (day.Quantity > 0)
+            //        {
+            //            var dayEntity = await _mediator.Send(new GetDayByIdQuery() { Id = day.DayId, UserId = request.UserId });
+            //            if (dayEntity != null)
+            //            {
+            //                foreach (var product in dayEntity.DayMeals)
+            //                {
+            //                    for (int i = 0; i < day.Quantity; i++)
+            //                    {
+            //                        products.AddRange(product.Meal.MealProducts.Select(a => new ProductsToBuyDTO() { Category = a.Product.Category, Product = a.Product.ProductName, Quantity = a.Quantity }).ToList());
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            
+            //    foreach (var meal in request.ShoppingListModel.Meals)
+            //    {
+            //        if (meal.Quantity > 0)
+            //        {
+            //            var mealDetails = await _mediator.Send(new GetMealFormByIdQuery() { Id = meal.MealId});
+            //            if (mealDetails != null)
+            //            {
+            //                    for (int i = 0; i < meal.Quantity; i++)
+            //                    {
+            //                        products.AddRange(mealDetails.MealProducts.Select(a => new ProductsToBuyDTO() { Category = a.Product.Category, Product = a.Product.ProductName, Quantity = a.Quantity }).ToList());
+            //                    }
+            //            }
+            //        }
+            //    }
+            
+            //var groupedProducts = products.GroupBy(a => a.Product).Select(b => new ProductsToBuyDTO() { Product = b.Key, Quantity = b.Sum(c => c.Quantity), Category = b.First().Category }).ToList();
+            return products;
         }
     }
 }
